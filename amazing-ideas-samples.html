@@ -1,0 +1,467 @@
+<title>아인슈타인의 놀라운 생각들</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Gaegu:wght@700&display=swap">
+<style>
+/* Layout: 만화책 인쇄물 느낌의 단일 테마. 위에서 방법과 생각을 고르면 아래 한 칸만 바뀌어, 같은 내용을 방법별로 비교할 수 있다. */
+:root {
+  --paper: #eef5fb; --sheet: #ffffff; --ink: #16213e; --soft: #55617f; --line: #c7d5e6;
+  --sun: #ffc93c; --tomato: #e8434b; --teal: #0b8f80; --cobalt: #2856c9; --tint: #fff4cf;
+  --display: "Jua", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --hand: "Gaegu", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 17px/1.7 var(--body); word-break: keep-all; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.3; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 6vw, 3.1rem); }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.2rem; }
+p { margin: 0; }
+.lead { color: var(--soft); max-width: 62ch; }
+.label { font-family: var(--display); font-size: .95rem; margin-bottom: 8px; }
+.tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tab { font: inherit; color: var(--ink); background: var(--sheet); border: 3px solid var(--ink); border-radius: 6px; padding: 10px 12px; text-align: left; cursor: pointer; min-width: 0; }
+.tab b { display: block; font: 400 1.15rem/1.3 var(--display); }
+.tab small { display: block; font-size: .82rem; line-height: 1.4; color: var(--soft); margin-top: 3px; }
+.tab[aria-pressed="true"] { background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }
+.tab[aria-pressed="true"] small { color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 400 1rem/1.3 var(--display); color: var(--ink); background: transparent; border: 2px solid var(--ink); border-radius: 99px; padding: 7px 14px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: #fff; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 2px; }
+.note { font-size: .92rem; color: var(--soft); }
+.fit { background: var(--tint); border-left: 6px solid var(--sun); padding: 10px 14px; font-size: .95rem; }
+#stage { display: grid; gap: 16px; min-width: 0; }
+.head { display: grid; gap: 4px; }
+/* 만화 */
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.panel { background: var(--sheet); border: 3px solid var(--ink); display: flex; flex-direction: column; min-width: 0; }
+.bubble { font: 700 1.16rem/1.4 var(--hand); padding: 12px 14px; border-bottom: 3px solid var(--ink); flex: 1; }
+.who { font: 400 .85rem/1.3 var(--display); color: var(--cobalt); display: block; margin-bottom: 2px; }
+.panel svg { display: block; width: 100%; height: auto; }
+/* 공통 그림·실험 */
+.sheet { background: var(--sheet); border: 2px solid var(--line); border-radius: 6px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
+.sheet svg, .sheet canvas { display: block; width: 100%; height: auto; max-width: 100%; }
+canvas { background: #0f1830; border-radius: 4px; }
+.controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.control { display: grid; gap: 4px; min-width: 0; }
+.control label { font-family: var(--display); }
+.control output { color: var(--cobalt); margin-left: 6px; }
+input[type="range"] { width: 100%; accent-color: var(--tomato); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { border-top: 3px solid var(--ink); padding-top: 6px; min-width: 0; }
+.stat span { display: block; font-size: .86rem; color: var(--soft); line-height: 1.4; }
+.stat b { display: block; font: 400 1.4rem/1.3 var(--display); overflow-wrap: anywhere; }
+.result { background: var(--tint); padding: 10px 14px; font-weight: 700; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.steps li { min-width: 0; border-top: 3px solid var(--ink); padding-top: 8px; }
+.steps b { font-family: var(--display); font-weight: 400; display: block; }
+/* 퀴즈 */
+.q { background: var(--sheet); border: 3px solid var(--ink); padding: 16px; display: grid; gap: 10px; }
+.opts { display: grid; gap: 8px; }
+.opt { font: inherit; text-align: left; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 6px; padding: 9px 12px; cursor: pointer; }
+.opt:disabled { cursor: default; color: var(--ink); }
+.opt.right { background: #d6f3ec; border-color: var(--teal); font-weight: 700; }
+.opt.wrong { background: #fde2e3; border-color: var(--tomato); }
+.why { background: var(--tint); padding: 10px 14px; }
+.score { font-family: var(--display); font-size: 1.15rem; }
+@media (max-width: 640px) {
+  .tabs, .panels, .controls, .steps { grid-template-columns: minmax(0, 1fr); }
+  .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+
+<main class="wrap">
+  <header style="display:grid;gap:8px">
+    <h1>아인슈타인의 놀라운 생각들</h1>
+    <p class="lead">초등 5학년을 위한 설명 시안 네 가지예요. 위에서 방법을, 아래에서 생각을 고르면 같은 내용을 방법별로 비교할 수 있어요.</p>
+  </header>
+  <section aria-label="설명 방법">
+    <div class="label">설명 방법</div>
+    <div class="tabs" id="tabs"></div>
+  </section>
+  <section aria-label="놀라운 생각">
+    <div class="label">놀라운 생각</div>
+    <div class="chips" id="chips"></div>
+  </section>
+  <p class="fit" id="fit"></p>
+  <section id="stage" aria-live="polite"></section>
+</main>
+
+<script>
+const METHODS = [
+  { id: "comic", name: "A. 네 컷 만화", sub: "이야기로 읽기", fit: "처음 만나는 내용을 부담 없이 읽기 좋아요. 대신 스스로 조작해 볼 수는 없어요." },
+  { id: "lab", name: "B. 실험실 도구", sub: "직접 조작하기", fit: "값을 바꾸며 규칙을 스스로 발견할 수 있어요. 대신 화면을 움직여 볼 기기가 필요해요." },
+  { id: "guide", name: "C. 그림 설명서", sub: "한 장으로 정리", fit: "원리를 가장 정확하게 보여 주고 복습하기 좋아요. 대신 읽을 글이 가장 많아요." },
+  { id: "quiz", name: "D. 예상 퀴즈", sub: "맞혀 보며 배우기", fit: "먼저 예상한 뒤 이유를 읽어서 기억에 잘 남아요. 대신 그림이 없어 다른 방법과 함께 쓰면 더 좋아요." }
+];
+const IDEAS = [
+  { id: "photo", name: "광전효과", line: "빛은 에너지 알갱이처럼 행동하기도 해요." },
+  { id: "special", name: "특수상대성이론", line: "빛의 속도는 늘 같아서, 시간과 길이가 달라져요." },
+  { id: "energy", name: "E = mc²", line: "작은 질량도 어마어마한 에너지와 맞먹어요." },
+  { id: "general", name: "일반상대성이론", line: "무거운 천체는 주변의 공간과 시간을 휘게 해요." }
+];
+const state = { method: "comic", idea: "photo" };
+
+/* ---------- 만화 그림 ---------- */
+const INK = "#16213e";
+const scene = (s) => `<svg viewBox="0 0 320 170" role="img" aria-hidden="true"><rect width="320" height="170" fill="#dcecf9"/>${s}</svg>`;
+const space = (s) => `<svg viewBox="0 0 320 170" role="img" aria-hidden="true"><rect width="320" height="170" fill="#0f1830"/><g fill="#fff"><circle cx="30" cy="30" r="1.5"/><circle cx="110" cy="18" r="1.5"/><circle cx="210" cy="40" r="1.5"/><circle cx="290" cy="20" r="1.5"/><circle cx="60" cy="140" r="1.5"/><circle cx="265" cy="145" r="1.5"/></g>${s}</svg>`;
+const txt = (x, y, t, size = 13, fill = INK, anchor = "middle") => `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" text-anchor="${anchor}" font-family="Jua, sans-serif">${t}</text>`;
+const einstein = (x, y) => `<g transform="translate(${x} ${y})" stroke="${INK}" stroke-width="2.5">
+  <path d="M-24 62 Q0 34 24 62 L24 80 L-24 80Z" fill="#7a8fb5"/>
+  <path d="M-25 2 L-33 -10 L-20 -8 L-22 -24 L-9 -15 L-3 -30 L5 -16 L18 -26 L18 -9 L33 -11 L25 3 L32 15 L20 14Z" fill="#fff"/>
+  <circle cx="0" cy="12" r="21" fill="#ffd9b8"/>
+  <path d="M-12 21 Q0 13 12 21 Q0 27 -12 21Z" fill="#fff"/>
+  <circle cx="-8" cy="8" r="2.4" fill="${INK}" stroke="none"/><circle cx="8" cy="8" r="2.4" fill="${INK}" stroke="none"/>
+</g>`;
+const girl = (x, y) => `<g transform="translate(${x} ${y})" stroke="${INK}" stroke-width="2.5">
+  <path d="M-22 62 Q0 34 22 62 L26 80 L-26 80Z" fill="#ffc93c"/>
+  <circle cx="-27" cy="16" r="9" fill="#3b2a2a"/><circle cx="27" cy="16" r="9" fill="#3b2a2a"/>
+  <circle cx="0" cy="11" r="23" fill="#3b2a2a"/>
+  <circle cx="0" cy="15" r="18" fill="#ffd9b8"/>
+  <circle cx="-7" cy="13" r="2.4" fill="${INK}" stroke="none"/><circle cx="7" cy="13" r="2.4" fill="${INK}" stroke="none"/>
+  <path d="M-6 22 Q0 27 6 22" fill="none"/>
+</g>`;
+const lamp = (x, y, c) => `<g stroke="${INK}" stroke-width="2.5"><rect x="${x}" y="${y}" width="36" height="24" rx="4" fill="${c}"/><rect x="${x + 8}" y="${y + 24}" width="20" height="18" fill="#8895ad"/></g>`;
+const plate = (x, y = 50, h = 95) => `<rect x="${x}" y="${y}" width="16" height="${h}" fill="#a9b6c9" stroke="${INK}" stroke-width="2.5"/>`;
+const clock = (x, y, r, a) => `<g stroke="${INK}" stroke-width="2.5"><circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><line x1="${x}" y1="${y}" x2="${x + Math.sin(a) * r * .75}" y2="${y - Math.cos(a) * r * .75}" stroke="#e8434b" stroke-width="3.5"/></g>`;
+const rocket = (x, y, c = "#fff") => `<g transform="translate(${x} ${y})" stroke="${INK}" stroke-width="2.5"><path d="M-40 -14 H24 Q44 -8 52 0 Q44 8 24 14 H-40Z" fill="${c}"/><path d="M-40 -14 L-54 -24 V-8Z M-40 14 L-54 24 V8Z" fill="#e8434b"/><circle cx="14" cy="0" r="6" fill="#7fd0ff"/></g>`;
+const house = (x, y) => `<g stroke="${INK}" stroke-width="2.5"><path d="M${x} ${y + 18} L${x + 21} ${y} L${x + 42} ${y + 18}Z" fill="#e8434b"/><rect x="${x + 6}" y="${y + 18}" width="30" height="24" fill="#fff"/></g>`;
+
+const COMIC = {
+  photo: [
+    { who: "하나", say: "빨간빛을 아주 세게 비췄는데 금속에서 전자가 하나도 안 나와요!", art: scene(girl(45, 75) + lamp(95, 60, "#e8434b") + `<path d="M132 72 L250 60 V125 L132 84Z" fill="#e8434b" opacity=".35"/>` + plate(250) + txt(292, 95, "조용…", 14)) },
+    { who: "아인슈타인", say: "파란빛으로 바꿔 보렴. 약하게 비춰도 전자가 튀어나올 수 있단다.", art: scene(einstein(45, 75) + lamp(95, 60, "#2856c9") + `<path d="M132 72 L230 70 V110 L132 84Z" fill="#2856c9" opacity=".25"/>` + plate(230) + `<g fill="#ffc93c" stroke="${INK}" stroke-width="2"><circle cx="268" cy="62" r="6"/><circle cx="288" cy="95" r="6"/><circle cx="264" cy="125" r="6"/></g>` + txt(292, 40, "전자!", 14, "#e8434b")) },
+    { who: "아인슈타인", say: "빛은 에너지 알갱이처럼 행동해. 파란빛 알갱이는 빨간빛 알갱이보다 에너지가 더 크단다.", art: scene(`<g stroke="${INK}" stroke-width="2.5"><circle cx="90" cy="85" r="15" fill="#e8434b"/><circle cx="230" cy="85" r="33" fill="#2856c9"/></g>` + txt(90, 130, "빨간빛 알갱이", 15) + txt(230, 142, "파란빛 알갱이", 15) + txt(90, 62, "에너지 작음", 13) + txt(230, 40, "에너지 큼", 13)) },
+    { who: "하나", say: "500원을 넣어야 돌아가는 뽑기에 10원을 아무리 넣어도 안 되는 것과 비슷하네요!", art: scene(girl(55, 75) + `<g stroke="${INK}" stroke-width="2.5"><rect x="170" y="25" width="90" height="125" rx="8" fill="#e8434b"/><circle cx="215" cy="65" r="30" fill="#fff"/><circle cx="205" cy="60" r="7" fill="#ffc93c"/><circle cx="224" cy="72" r="7" fill="#7fd0ff"/><rect x="195" y="108" width="40" height="28" fill="#16213e"/></g><g stroke="${INK}" stroke-width="2" fill="#c9843e"><circle cx="125" cy="75" r="10"/><circle cx="125" cy="105" r="10"/><circle cx="145" cy="90" r="10"/></g>` + txt(135, 130, "10원", 13)) }
+  ],
+  special: [
+    { who: "아인슈타인", say: "달리는 기차에서 앞으로 공을 던지면, 밖에서는 공이 기차 속도만큼 더 빠르게 보인단다.", art: scene(`<g stroke="${INK}" stroke-width="2.5"><rect x="40" y="70" width="190" height="60" rx="8" fill="#ffc93c"/><circle cx="80" cy="138" r="11" fill="#55617f"/><circle cx="190" cy="138" r="11" fill="#55617f"/><circle cx="265" cy="60" r="10" fill="#e8434b"/></g><path d="M170 60 H248" stroke="${INK}" stroke-width="3"/><path d="M40 45 H110" stroke="${INK}" stroke-width="3"/>` + txt(75, 36, "기차 →", 14) + txt(210, 48, "공 →", 14)) },
+    { who: "아인슈타인", say: "그런데 빛은 달라. 우주선에서 앞으로 쏴도 밖에서 재면 빛의 속도는 똑같이 1초에 약 30만 km야.", art: space(rocket(90, 85) + `<path d="M150 85 H290" stroke="#ffc93c" stroke-width="5"/><path d="M280 75 L300 85 L280 95Z" fill="#ffc93c"/>` + txt(220, 65, "빛은 언제나 같은 속도", 14, "#fff")) },
+    { who: "하나", say: "속도가 같으려면… 대신 시간이나 길이가 달라져야 하는 거예요?", art: scene(girl(55, 75) + clock(170, 80, 34, 2.6) + clock(265, 80, 34, 1.2) + txt(170, 138, "지구 시계", 14) + txt(265, 138, "우주선 시계", 14) + txt(265, 158, "(더 느리게 감)", 12, "#e8434b")) },
+    { who: "아인슈타인", say: "그렇지! 빛에 가깝게 빨리 다녀온 우주선 쌍둥이는 지구 쌍둥이보다 시간이 덜 흘렀단다. 일상의 속도에서는 차이가 너무 작아 못 느껴.", art: space(`<circle cx="60" cy="150" r="70" fill="#2a8bd8"/>` + girl(70, 45) + rocket(200, 70) + girl(235, 80).replace(/#3b2a2a/g, "#6e4a2f") + txt(70, 25, "시간이 더 흐름", 13, "#fff") + txt(225, 30, "시간이 덜 흐름", 13, "#fff")) }
+  ],
+  energy: [
+    { who: "하나", say: "종이 클립은 1g밖에 안 되는데, 여기에 큰 에너지가 있다고요?", art: scene(girl(70, 75) + `<path d="M190 50 V115 A14 14 0 0 0 218 115 V45 A10 10 0 0 0 198 45 V105" fill="none" stroke="${INK}" stroke-width="5"/>` + txt(204, 150, "클립 약 1g", 14)) },
+    { who: "아인슈타인", say: "이 식을 보렴. E는 에너지, m은 질량, c는 빛의 속도란다.", art: scene(einstein(40, 75) + txt(195, 75, "E = m × c × c", 28, "#2856c9") + txt(195, 110, "에너지 = 질량 × 빛의 속도 × 빛의 속도", 12)) },
+    { who: "아인슈타인", say: "빛의 속도를 두 번 곱하니 아주 큰 수가 돼. 1g의 질량 전부는 집 한 채가 약 7천 년 쓸 전기와 맞먹는단다.", art: scene(`<g transform="translate(35 20) scale(.5)"><path d="M40 50 V115 A14 14 0 0 0 68 115 V45 A10 10 0 0 0 48 45 V105" fill="none" stroke="${INK}" stroke-width="9"/></g>` + txt(65, 120, "1g", 16) + txt(120, 80, "=", 28) + house(150, 30) + house(200, 30) + house(250, 30) + txt(220, 105, "약 2,500만 kWh", 17, "#e8434b") + txt(220, 130, "(월 300kWh 쓰는 집 기준)", 12)) },
+    { who: "아인슈타인", say: "태양도 1초에 약 400만 톤의 질량을 에너지로 바꾸며 빛나. 다만 클립을 통째로 전기로 바꾸는 방법은 아직 없단다.", art: space(`<circle cx="160" cy="85" r="52" fill="#ffc93c" stroke="#e8434b" stroke-width="5"/><g stroke="#ffc93c" stroke-width="4"><path d="M160 22 V5M160 148 V165M97 85 H75M223 85 H245M115 40 L100 25M205 40 L220 25M115 130 L100 145M205 130 L220 145"/></g>` + txt(160, 90, "빛과 열", 18)) }
+  ],
+  general: [
+    { who: "아인슈타인", say: "트램펄린에 볼링공을 놓으면 천이 움푹 들어가지? 이건 공간이 휘는 모습을 상상하게 돕는 비유란다.", art: scene(`<path d="M20 70 Q160 165 300 70" fill="#7fd0ff" stroke="${INK}" stroke-width="3"/><path d="M20 70 Q160 90 300 70" fill="#bfe5ff" stroke="${INK}" stroke-width="3"/><circle cx="160" cy="85" r="26" fill="#16213e"/>` + txt(160, 42, "볼링공 = 무거운 태양", 14)) },
+    { who: "하나", say: "구슬을 굴리면 볼링공 둘레를 빙글 도네요! 지구가 태양 둘레를 도는 것처럼요.", art: scene(`<path d="M20 70 Q160 165 300 70" fill="#7fd0ff" stroke="${INK}" stroke-width="3"/><path d="M20 70 Q160 90 300 70" fill="#bfe5ff" stroke="${INK}" stroke-width="3"/><circle cx="160" cy="85" r="24" fill="#16213e"/><ellipse cx="160" cy="88" rx="72" ry="17" fill="none" stroke="#e8434b" stroke-width="3" stroke-dasharray="6 5"/><circle cx="232" cy="88" r="9" fill="#2856c9" stroke="${INK}" stroke-width="2"/>` + txt(160, 36, "구슬 = 지구", 14)) },
+    { who: "아인슈타인", say: "빛도 태양 옆을 지날 때 휘어. 1919년 일식 때 과학자들이 달에 가려진 태양 근처 별을 찍어 이 예측을 시험했단다.", art: space(`<circle cx="165" cy="120" r="42" fill="#232d4b" stroke="#ffc93c" stroke-width="4"/><path d="M15 55 H120 Q165 55 200 66 L310 100" fill="none" stroke="#ffc93c" stroke-width="3"/><path d="M310 100 L15 25" stroke="#fff" stroke-width="2" stroke-dasharray="5 6"/><circle cx="15" cy="55" r="6" fill="#ffc93c"/><circle cx="15" cy="25" r="6" fill="none" stroke="#fff" stroke-width="2"/>` + txt(72, 18, "별이 보이는 자리", 12, "#fff") + txt(60, 76, "진짜 별", 12, "#ffc93c") + txt(165, 125, "일식", 14, "#fff")) },
+    { who: "아인슈타인", say: "중력은 시간에도 영향을 줘. 그래서 스마트폰 지도에 쓰는 GPS는 위성 시계의 차이를 바로잡는단다.", art: space(`<circle cx="60" cy="180" r="90" fill="#2a8bd8"/>` + clock(70, 75, 24, 2.2) + `<g stroke="${INK}" stroke-width="2.5"><rect x="205" y="35" width="44" height="30" fill="#a9b6c9"/><rect x="170" y="42" width="32" height="16" fill="#2856c9"/><rect x="252" y="42" width="32" height="16" fill="#2856c9"/></g>` + clock(227, 100, 24, 2.3) + txt(227, 145, "위성 시계", 14, "#fff") + txt(115, 125, "땅 시계", 14, "#fff")) }
+  ]
+};
+
+/* ---------- 그림 설명서 ---------- */
+const lampRow = (y, c, name, result) => `<g stroke="${INK}" stroke-width="2"><rect x="30" y="${y - 16}" width="40" height="32" rx="5" fill="${c}"/></g><path d="M74 ${y} H320" stroke="${c}" stroke-width="5" stroke-dasharray="11 9"/>` + txt(50, y + 36, name, 14) + result;
+const GUIDE = {
+  photo: {
+    title: "빛 알갱이 하나의 에너지가 중요해요",
+    art: `<svg viewBox="0 0 640 310" role="img" aria-label="빨간빛은 전자를 내보내지 못하고, 초록빛은 느린 전자를, 파란빛은 빠른 전자를 내보내는 모습"><rect x="322" y="10" width="26" height="290" fill="#a9b6c9" stroke="${INK}" stroke-width="3"/>` + txt(335, 306, "", 12) +
+      lampRow(55, "#e8434b", "빨간빛", txt(495, 62, "전자가 나오지 않아요", 16)) +
+      lampRow(150, "#0b8f80", "초록빛", `<path d="M352 150 H425" stroke="${INK}" stroke-width="3"/><circle cx="436" cy="150" r="9" fill="#ffc93c" stroke="${INK}" stroke-width="2"/>` + txt(545, 157, "전자가 느리게 나와요", 16)) +
+      lampRow(245, "#2856c9", "파란빛", `<path d="M352 245 H445" stroke="${INK}" stroke-width="3"/><circle cx="456" cy="245" r="9" fill="#ffc93c" stroke="${INK}" stroke-width="2"/><path d="M380 233 H430M380 257 H430" stroke="${INK}" stroke-width="2"/>` + txt(555, 252, "전자가 빠르게 나와요", 16)) + `</svg>`,
+    steps: [["빛은 알갱이처럼", "빛의 에너지는 광자라는 알갱이 단위로 전달돼요. 전자 하나는 보통 광자 하나의 에너지를 받아요."],
+      ["문턱을 넘어야", "전자가 금속에서 빠져나오려면 일정한 에너지가 필요해요. 그림은 나트륨처럼 초록빛부터 전자가 나오는 금속의 예예요."],
+      ["밝기와 색의 역할", "빛을 더 밝게 하면 나오는 전자 수가 늘어요. 빛의 색이 파랑 쪽으로 갈수록 전자는 더 빠르게 나와요."]],
+    use: "디지털카메라 센서와 태양전지도 빛 알갱이가 전자를 움직이는 비슷한 원리를 이용해요."
+  },
+  special: {
+    title: "빛으로 만든 시계로 보면 시간이 느려져요",
+    art: `<svg viewBox="0 0 640 300" role="img" aria-label="멈춘 빛 시계에서는 빛이 수직으로 움직이고, 움직이는 빛 시계에서는 빛이 비스듬히 더 먼 길을 가는 모습"><g stroke="${INK}" stroke-width="5"><path d="M70 55 H170M70 225 H170"/><path d="M285 55 H365M285 225 H365M405 55 H485M405 225 H485M525 55 H605M525 225 H605"/></g><path d="M120 225 V55" stroke="#e8434b" stroke-width="4"/><path d="M325 225 L445 55 L565 225" fill="none" stroke="#e8434b" stroke-width="4"/>` + txt(120, 30, "멈춘 시계", 18) + txt(445, 30, "움직이는 시계 →", 18) + txt(120, 265, "빛이 가는 길이 짧아요", 15) + txt(445, 265, "밖에서 보면 빛이 가는 길이 더 길어요", 15) + `</svg>`,
+    steps: [["빛의 속도는 같아요", "진공에서 빛은 누가 재도 1초에 약 30만 km를 가요. 1초에 지구를 약 일곱 바퀴 반 도는 빠르기예요."],
+      ["길이 길면 오래 걸려요", "속도는 같은데 움직이는 시계의 빛은 더 먼 길을 가요. 그래서 밖에서 보면 그 시계의 한 칸이 더 오래 걸려요."],
+      ["길이도 달라져요", "밖에서 재면 빠르게 움직이는 물체는 움직이는 방향으로 더 짧아져요. 우주선 안의 사람에게는 모든 것이 평소와 같아요."]],
+    use: "GPS 위성은 빠르게 움직여서 이 효과만 따지면 시계가 하루에 약 7마이크로초 느려져요. 1마이크로초는 100만분의 1초예요."
+  },
+  energy: {
+    title: "질량과 에너지는 서로 맞먹어요",
+    art: `<svg viewBox="0 0 640 270" role="img" aria-label="E는 m 곱하기 c 곱하기 c이며, 1그램은 약 2500만 킬로와트시와 맞먹는다는 설명"><g stroke="${INK}" stroke-width="3"><rect x="15" y="35" width="130" height="90" rx="6" fill="#ffc93c"/><rect x="185" y="35" width="120" height="90" rx="6" fill="#bfe5ff"/><rect x="345" y="35" width="120" height="90" rx="6" fill="#f7c6c8"/><rect x="505" y="35" width="120" height="90" rx="6" fill="#f7c6c8"/></g>` + txt(80, 80, "E", 38) + txt(80, 108, "에너지", 14) + txt(165, 90, "=", 30) + txt(245, 80, "m", 38) + txt(245, 108, "질량", 14) + txt(325, 90, "×", 30) + txt(405, 80, "c", 38) + txt(405, 108, "빛의 속도", 14) + txt(485, 90, "×", 30) + txt(565, 80, "c", 38) + txt(565, 108, "빛의 속도", 14) + txt(320, 175, "클립 1g의 질량 전부 = 약 2,500만 kWh", 25, "#e8434b") + txt(320, 212, "한 달에 300kWh를 쓰는 집이 약 7천 년 동안 쓸 전기와 맞먹어요", 16) + `</svg>`,
+    steps: [["c는 아주 큰 수", "빛의 속도는 1초에 약 3억 m예요. 이 수를 두 번 곱하면 9 뒤에 0이 16개 붙는 큰 수가 돼요."],
+      ["그래서 큰 에너지", "질량이 아주 작아도 이 큰 수를 곱하면 에너지는 엄청나게 커져요."],
+      ["전부 바꾸기는 어려워요", "보통은 물질의 아주 작은 일부만 에너지로 바뀌어요. 원자력 발전에서도 줄어드는 질량은 연료의 약 0.1%예요."]],
+    use: "태양은 중심에서 일어나는 핵융합으로 1초에 약 400만 톤의 질량을 에너지로 바꾸며 빛나요."
+  },
+  general: {
+    title: "중력은 휘어진 공간과 시간으로 설명돼요",
+    art: `<svg viewBox="0 0 640 300" role="img" aria-label="별빛이 태양 옆을 지나며 휘어서 지구에서는 별이 실제와 다른 자리에 있는 것처럼 보이는 모습"><rect width="640" height="300" fill="#0f1830"/><g fill="none" stroke="#3c4a73" stroke-width="1.5"><path d="M0 40 Q320 70 640 40M0 95 Q320 145 640 95M0 285 Q320 240 640 285"/><path d="M90 0 Q130 180 90 300M205 0 Q265 180 205 300M435 0 Q375 180 435 300M550 0 Q510 180 550 300"/></g><circle cx="320" cy="200" r="52" fill="#ffc93c"/><path d="M30 120 H250 Q320 120 370 130 L610 170" fill="none" stroke="#fff" stroke-width="3.5"/><path d="M610 170 L30 76" stroke="#7fd0ff" stroke-width="2.5" stroke-dasharray="7 7"/><circle cx="30" cy="120" r="8" fill="#fff"/><circle cx="30" cy="76" r="8" fill="none" stroke="#7fd0ff" stroke-width="2.5"/><circle cx="612" cy="170" r="14" fill="#2a8bd8"/>` + txt(100, 145, "실제 별의 자리", 15, "#fff") + txt(125, 66, "지구에서 보이는 자리", 15, "#7fd0ff") + txt(320, 206, "태양", 18) + txt(590, 205, "지구", 15, "#fff") + txt(320, 285, "휘는 정도는 보기 쉽게 크게 그렸어요", 14, "#fff") + `</svg>`,
+    steps: [["무거운 천체가 휘게 해요", "태양 같은 천체는 주변의 공간과 시간을 휘게 해요. 지구는 그 휘어진 곳을 따라 태양 둘레를 돌아요."],
+      ["빛도 그 길을 따라요", "별빛은 태양 옆을 지날 때 약 0.0005도 휘어요. 아인슈타인은 1915년에 완성한 이론으로 이 값을 계산했어요."],
+      ["일식으로 시험했어요", "평소에는 해가 너무 밝아요. 그래서 1919년 일식 때 태양 근처 별을 찍어 위치를 비교했어요."]],
+    use: "높은 곳의 GPS 위성은 중력이 약해 시계가 하루 약 45마이크로초 빨라져요. 속도 효과까지 합치면 약 38마이크로초 빨라서, 이 차이를 바로잡아야 위치가 정확해요."
+  }
+};
+
+/* ---------- 퀴즈 ---------- */
+const QUIZ = {
+  photo: [
+    { q: "어떤 금속에 빨간빛을 아주 세게 비춰도 전자가 나오지 않아요. 전자를 나오게 하려면 어떻게 할까요?", o: ["빨간빛을 더 세게 비춘다", "파란빛으로 바꿔 비춘다", "빨간빛을 더 오래 비춘다"], a: 1, why: "전자 하나는 보통 빛 알갱이 하나의 에너지를 받아요. 파란빛 알갱이는 빨간빛 알갱이보다 에너지가 커서 문턱을 넘을 수 있어요." },
+    { q: "전자가 나오고 있을 때 같은 색의 빛을 더 밝게 하면 어떻게 될까요?", o: ["나오는 전자 수가 늘어난다", "전자 하나하나가 더 빨라진다", "아무 변화도 없다"], a: 0, why: "밝은 빛에는 알갱이가 더 많아요. 알갱이 하나의 에너지는 그대로라서 전자의 빠르기는 색에 따라 정해져요." },
+    { q: "아인슈타인은 이 연구와 이론물리학 공로로 어떤 상을 받았을까요?", o: ["1921년 노벨 물리학상", "1919년 일식상", "1905년 특허상"], a: 0, why: "1921년 노벨 물리학상의 수상 이유에는 광전효과 법칙의 발견이 특히 강조되어 있어요." }
+  ],
+  special: [
+    { q: "빠르게 달리는 기차에서 앞으로 손전등을 켰어요. 밖에 있는 사람이 빛의 속도를 재면 어떻게 나올까요?", o: ["기차 속도만큼 더 빠르다", "빛의 속도 그대로다", "기차 속도만큼 더 느리다"], a: 1, why: "공과 달리 빛의 속도는 누가 재도 똑같아요. 특수상대성이론의 출발점이에요." },
+    { q: "빛에 가까운 빠르기로 나는 우주선의 시계를 지구에서 재면 어떻게 될까요?", o: ["지구 시계보다 빠르게 간다", "지구 시계와 똑같이 간다", "지구 시계보다 느리게 간다"], a: 2, why: "속도가 빛의 속도에 가까울수록 차이가 커져요. 빛의 속도의 90%에서는 시간이 약 2.3배 느리게 흐르는 것으로 재어져요." },
+    { q: "그 우주선 안에 있는 사람은 자기 시간을 어떻게 느낄까요?", o: ["평소와 똑같이 느낀다", "슬로모션처럼 느낀다", "시간이 멈춘 것처럼 느낀다"], a: 0, why: "우주선 안에서는 자기 시계도 몸도 함께 움직여서 모든 것이 평소처럼 느껴져요." }
+  ],
+  energy: [
+    { q: "E = mc²에서 c는 무엇일까요?", o: ["물의 양", "빛의 속도", "온도"], a: 1, why: "E는 에너지, m은 질량, c는 빛의 속도예요. c²은 c × c를 뜻해요." },
+    { q: "작은 질량이 어마어마한 에너지와 맞먹는 까닭은 무엇일까요?", o: ["c × c가 아주 큰 수이기 때문에", "질량이 원래 무겁기 때문에", "에너지를 잴 수 없기 때문에"], a: 0, why: "빛의 속도는 1초에 약 3억 m예요. 이 수를 두 번 곱하니 작은 질량에도 아주 큰 수가 곱해져요." },
+    { q: "태양이 빛과 열을 내보내는 동안 태양의 질량은 어떻게 될까요?", o: ["조금씩 늘어난다", "그대로다", "조금씩 줄어든다"], a: 2, why: "태양은 1초에 약 400만 톤의 질량을 에너지로 바꿔요. 태양이 워낙 커서 전체에 비하면 아주 작은 양이에요." }
+  ],
+  general: [
+    { q: "일반상대성이론은 중력을 어떻게 설명할까요?", o: ["무거운 천체가 공간과 시간을 휘게 한다", "지구 안에 큰 자석이 있다", "공기가 물체를 아래로 누른다"], a: 0, why: "지구는 태양이 휘게 한 공간과 시간 속에서 가장 자연스러운 길을 따라 움직여요." },
+    { q: "과학자들이 1919년 일식 때 별 사진을 찍은 까닭은 무엇일까요?", o: ["달의 크기를 재려고", "태양빛이 가려져 태양 근처 별이 보여서", "일식 때 별이 더 많아져서"], a: 1, why: "평소에는 태양이 너무 밝아 그 근처 별이 보이지 않아요. 일식 때는 별의 위치가 달라졌는지 비교할 수 있어요." },
+    { q: "속도와 중력의 효과를 합치면, GPS 위성의 시계는 땅의 시계보다 어떻게 갈까요?", o: ["하루에 약 38마이크로초 빠르게", "하루에 약 38초 느리게", "완전히 똑같이"], a: 0, why: "아주 작은 차이지만 빛은 38마이크로초 동안 약 11km를 가요. 그래서 GPS는 이 차이를 바로잡아요." }
+  ]
+};
+const quizState = {};
+
+/* ---------- 화면 그리기 ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let frame = null;
+const stopLoop = () => { if (frame) cancelAnimationFrame(frame); frame = null; };
+function loop(draw) { stopLoop(); const run = () => { draw(); frame = requestAnimationFrame(run); }; run(); }
+function setupCanvas(id, w, h) {
+  const c = $(id); c.width = w * 2; c.height = h * 2;
+  const ctx = c.getContext("2d"); ctx.scale(2, 2);
+  return ctx;
+}
+
+function renderNav() {
+  $("#tabs").innerHTML = METHODS.map(m => `<button class="tab" type="button" data-m="${m.id}" aria-pressed="${state.method === m.id}"><b>${m.name}</b><small>${m.sub}</small></button>`).join("");
+  $("#chips").innerHTML = IDEAS.map(i => `<button class="chip" type="button" data-i="${i.id}" aria-pressed="${state.idea === i.id}">${i.name}</button>`).join("");
+  $("#fit").textContent = METHODS.find(m => m.id === state.method).fit;
+}
+function headHtml() {
+  const i = IDEAS.find(x => x.id === state.idea);
+  return `<div class="head"><h2>${i.name}</h2><p>${i.line}</p></div>`;
+}
+function renderComic() {
+  $("#stage").innerHTML = headHtml() + `<div class="panels">` + COMIC[state.idea].map(p => `<article class="panel"><div class="bubble"><span class="who">${p.who}</span>${p.say}</div>${p.art}</article>`).join("") + `</div><p class="note">하나와 아인슈타인의 대화는 이해를 돕기 위해 꾸민 이야기예요. 아인슈타인이 실제로 한 말이 아니에요.</p>`;
+}
+function renderGuide() {
+  const g = GUIDE[state.idea];
+  $("#stage").innerHTML = headHtml() + `<div class="sheet"><h3>${g.title}</h3>${g.art}<ul class="steps">${g.steps.map(s => `<li><b>${s[0]}</b>${s[1]}</li>`).join("")}</ul><p class="result">${g.use}</p></div>`;
+}
+function renderQuiz() {
+  const list = QUIZ[state.idea];
+  const answers = quizState[state.idea] || (quizState[state.idea] = {});
+  const done = Object.keys(answers).length;
+  const right = list.filter((q, n) => answers[n] === q.a).length;
+  $("#stage").innerHTML = headHtml() + list.map((q, n) => {
+    const picked = answers[n];
+    const opts = q.o.map((o, k) => {
+      let cls = "opt";
+      if (picked !== undefined && k === q.a) cls += " right";
+      if (picked === k && k !== q.a) cls += " wrong";
+      return `<button class="${cls}" type="button" data-q="${n}" data-k="${k}"${picked !== undefined ? " disabled" : ""}>${o}</button>`;
+    }).join("");
+    const verdict = picked === undefined ? "" : `<p class="why"><b>${picked === q.a ? "맞았어요!" : "다시 볼까요?"}</b> ${q.why}</p>`;
+    return `<article class="q"><h3>${n + 1}. ${q.q}</h3><div class="opts">${opts}</div>${verdict}</article>`;
+  }).join("") + `<p class="score">${done === list.length ? `${list.length}문제 중 ${right}문제를 맞혔어요.` : `먼저 답을 예상해 보세요. ${done}/${list.length}문제 풀었어요.`}</p>`;
+}
+
+/* ---------- 실험실 ---------- */
+const wlColor = (wl) => `hsl(${(700 - wl) / 300 * 270} 95% 60%)`;
+const wlName = (wl) => wl < 450 ? "보라" : wl < 495 ? "파랑" : wl < 570 ? "초록" : wl < 590 ? "노랑" : wl < 620 ? "주황" : "빨강";
+const THRESHOLD = 2.3;
+
+function labPhoto() {
+  $("#stage").innerHTML = headHtml() + `<div class="sheet">
+    <canvas id="c1" aria-label="빛 알갱이가 금속판에 부딪혀 전자가 튀어나오는 실험"></canvas>
+    <div class="controls">
+      <div class="control"><label for="wl">빛의 색<output id="wlOut"></output></label><input id="wl" type="range" min="400" max="700" value="650"></div>
+      <div class="control"><label for="br">밝기<output id="brOut"></output></label><input id="br" type="range" min="10" max="100" value="80"></div>
+    </div>
+    <div class="stats"><div class="stat"><span>빛 알갱이 하나의 에너지</span><b id="sE"></b></div><div class="stat"><span>전자가 빠져나올 문턱</span><b>약 ${THRESHOLD}eV</b></div><div class="stat"><span>튀어나온 전자</span><b id="sN">0개</b></div></div>
+    <p class="result" id="res"></p>
+    <p class="note">나트륨 금속을 예로 든 실험이에요. eV는 아주 작은 에너지를 재는 단위예요. 알갱이 크기와 움직임은 보기 쉽게 그린 그림이에요.</p></div>`;
+  const ctx = setupCanvas("#c1", 640, 280);
+  let photons = [], electrons = [], count = 0;
+  const wl = $("#wl"), br = $("#br");
+  function update() {
+    const E = 1240 / +wl.value;
+    $("#wlOut").textContent = `${wlName(+wl.value)} (${wl.value}nm)`;
+    $("#brOut").textContent = `${br.value}%`;
+    $("#sE").textContent = `약 ${E.toFixed(1)}eV`;
+    $("#res").textContent = E > THRESHOLD ? "에너지가 문턱을 넘었어요. 밝기를 높이면 전자가 많아지고, 파랑 쪽으로 가면 전자가 빨라져요." : "알갱이 하나의 에너지가 문턱보다 작아요. 밝기를 높여도 전자는 나오지 않아요. 색을 바꿔 보세요.";
+    photons = []; electrons = []; count = 0;
+  }
+  function step() {
+    const E = 1240 / +wl.value;
+    if (Math.random() < +br.value / 100 * .4) photons.push({ x: 90, y: 110, ty: 45 + Math.random() * 190, t: 0 });
+    photons = photons.filter(p => {
+      p.t += .035;
+      if (p.t >= 1) {
+        if (E > THRESHOLD) { const v = 1 + 5 * Math.sqrt(E - THRESHOLD); electrons.push({ x: 408, y: p.ty, vx: v, vy: (Math.random() - .5) * v * .7 }); count++; }
+        return false;
+      }
+      return true;
+    });
+    electrons = electrons.filter(e => { e.x += e.vx; e.y += e.vy; return e.x < 650 && e.y > -10 && e.y < 290; });
+  }
+  function paint() {
+    const color = wlColor(+wl.value), E = 1240 / +wl.value;
+    ctx.fillStyle = "#0f1830"; ctx.fillRect(0, 0, 640, 280);
+    ctx.fillStyle = color; ctx.fillRect(38, 92, 52, 36);
+    ctx.fillStyle = "#8895ad"; ctx.fillRect(52, 128, 24, 80);
+    ctx.fillStyle = "#a9b6c9"; ctx.fillRect(390, 30, 18, 220);
+    ctx.fillStyle = color;
+    photons.forEach(p => { ctx.beginPath(); ctx.arc(90 + (390 - 90) * p.t, 110 + (p.ty - 110) * p.t, 1.5 + E * 1.3, 0, 7); ctx.fill(); });
+    ctx.fillStyle = "#ffc93c";
+    electrons.forEach(e => { ctx.beginPath(); ctx.arc(e.x, e.y, 6, 0, 7); ctx.fill(); });
+    ctx.fillStyle = "#fff"; ctx.font = "15px Jua, sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("빛", 64, 80); ctx.fillText("금속판", 399, 270); ctx.fillText("전자", 540, 30);
+    $("#sN").textContent = `${count}개`;
+  }
+  const onChange = () => { update(); if (reduced) { for (let n = 0; n < 240; n++) step(); paint(); } };
+  wl.addEventListener("input", onChange); br.addEventListener("input", onChange);
+  onChange();
+  if (reduced) paint(); else loop(() => { step(); paint(); });
+}
+
+function labSpecial() {
+  $("#stage").innerHTML = headHtml() + `<div class="sheet">
+    <canvas id="c2" aria-label="지구 시계와 우주선 시계, 그리고 짧아지는 우주선"></canvas>
+    <div class="control"><label for="v">우주선 속도<output id="vOut"></output></label><input id="v" type="range" min="0" max="99.5" step="0.5" value="90"></div>
+    <div class="stats"><div class="stat"><span>시간이 느려지는 정도</span><b id="sG"></b></div><div class="stat"><span>지구에서 10년이 흐를 때 우주선 시계</span><b id="sY"></b></div><div class="stat"><span>정지했을 때 100m인 우주선의 길이</span><b id="sL"></b></div></div>
+    <p class="result" id="res"></p>
+    <p class="note">모두 지구에서 재는 값이고, 우주선이 일정한 속도로 날고 있다고 가정했어요. 일상의 속도에서는 차이가 너무 작아 느낄 수 없어요.</p></div>`;
+  const ctx = setupCanvas("#c2", 640, 280);
+  const v = $("#v");
+  let a1 = 0, a2 = 0, g = 1;
+  const face = (x, a, label) => {
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x, 95, 62, 0, 7); ctx.fill();
+    ctx.strokeStyle = "#e8434b"; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(x, 95); ctx.lineTo(x + Math.sin(a) * 48, 95 - Math.cos(a) * 48); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.font = "16px Jua, sans-serif"; ctx.textAlign = "center"; ctx.fillText(label, x, 180);
+  };
+  function paint() {
+    ctx.fillStyle = "#0f1830"; ctx.fillRect(0, 0, 640, 280);
+    face(165, a1, "지구 시계"); face(475, a2, "우주선 시계");
+    const w = 300 / g, x = 320 - w / 2;
+    ctx.fillStyle = "#dfe7f3"; ctx.fillRect(x, 212, w, 34);
+    ctx.fillStyle = "#e8434b"; ctx.beginPath(); ctx.moveTo(x + w, 212); ctx.lineTo(x + w + 20 / g, 229); ctx.lineTo(x + w, 246); ctx.fill();
+  }
+  function update() {
+    const b = +v.value / 100; g = 1 / Math.sqrt(1 - b * b);
+    $("#vOut").textContent = `빛의 속도의 ${v.value}%`;
+    $("#sG").textContent = `약 ${g.toFixed(2)}배`;
+    $("#sY").textContent = `약 ${(10 / g).toFixed(1)}년`;
+    $("#sL").textContent = `약 ${(100 / g).toFixed(1)}m`;
+    $("#res").textContent = g < 1.05 ? "차이가 아주 작아요. 속도를 더 올려 보세요." : "지구에서 재면 우주선의 시계는 느리게 가고, 우주선은 나는 방향으로 짧아져요.";
+    if (reduced) { a1 = 2.4; a2 = 2.4 / g; paint(); }
+  }
+  v.addEventListener("input", update);
+  update();
+  if (!reduced) loop(() => { a1 += .03; a2 += .03 / g; paint(); });
+}
+
+const koNum = (n) => {
+  if (n >= 1e8) return `${(n / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}억`;
+  if (n >= 1e4) return `${(n / 1e4).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}만`;
+  return n.toLocaleString("ko-KR", { maximumFractionDigits: 0 });
+};
+function labEnergy() {
+  const things = [["쌀 한 톨", .02], ["종이 클립", 1], ["100원 동전", 5.42], ["사과 한 개", 200]];
+  $("#stage").innerHTML = headHtml() + `<div class="sheet">
+    <div class="chips" id="things">${things.map(t => `<button class="chip" type="button" data-g="${t[1]}">${t[0]} (${t[1]}g)</button>`).join("")}</div>
+    <div class="control"><label for="m">질량<output id="mOut"></output></label><input id="m" type="range" min="-2" max="3" step="0.01" value="0"></div>
+    <div class="stats"><div class="stat"><span>질량 전부와 맞먹는 전기</span><b id="sK"></b></div><div class="stat"><span>집 한 채가 쓸 수 있는 기간</span><b id="sH"></b></div><div class="stat"><span>실제 연료에서 줄어드는 비율의 예</span><b>약 0.1%</b></div></div>
+    <p class="result">계산식: 에너지 = 질량 × 빛의 속도 × 빛의 속도</p>
+    <p class="note">한 달에 300kWh를 쓰는 집을 기준으로 어림한 값이고, 물건의 무게는 대략적인 값이에요. 질량을 전부 전기로 바꾸는 방법은 아직 없어요. 0.1%는 원자력 발전에서 우라늄 연료의 질량이 에너지로 바뀌는 대략적인 비율이에요.</p></div>`;
+  const m = $("#m");
+  function show(g) {
+    const kWh = g * 2.5e7;
+    $("#mOut").textContent = `${g.toLocaleString("ko-KR", { maximumSignificantDigits: 3 })}g`;
+    $("#sK").textContent = `약 ${koNum(kWh)} kWh`;
+    const years = kWh / 3600;
+    $("#sH").textContent = `약 ${koNum(Number(years.toPrecision(2)))}년`;
+    document.querySelectorAll("#things .chip").forEach(b => b.setAttribute("aria-pressed", String(Math.abs(+b.dataset.g - g) < 1e-6)));
+  }
+  m.addEventListener("input", () => show(Number((10 ** +m.value).toPrecision(3))));
+  $("#things").addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b) return; const g = +b.dataset.g; m.value = Math.log10(g); show(g); });
+  show(1);
+}
+
+function labGeneral() {
+  $("#stage").innerHTML = headHtml() + `<div class="sheet">
+    <canvas id="c4" aria-label="별 주변의 격자가 휘고 빛의 길이 휘는 모습"></canvas>
+    <div class="controls">
+      <div class="control"><label for="mass">별의 질량<output id="massOut"></output></label><input id="mass" type="range" min="0" max="100" value="60"></div>
+      <div class="control"><label for="gap">빛이 지나는 거리<output id="gapOut"></output></label><input id="gap" type="range" min="50" max="150" value="80"></div>
+    </div>
+    <p class="result" id="res"></p>
+    <p class="note">휘는 정도를 아주 크게 과장한 그림이에요. 실제 공간은 평평한 천이 아니라 입체이고, 태양 옆을 지나는 별빛도 약 0.0005도만 휘어요.</p></div>`;
+  const ctx = setupCanvas("#c4", 640, 340);
+  const mass = $("#mass"), gap = $("#gap");
+  const cx = 320, cy = 170;
+  let path = [], t = 0;
+  function warp(x, y, M) {
+    const dx = cx - x, dy = cy - y, r = Math.hypot(dx, dy) || 1;
+    const d = Math.min(r * .8, M * 1.3 * 60 / (r + 60));
+    return [x + dx / r * d, y + dy / r * d];
+  }
+  function compute() {
+    const M = +mass.value, b = +gap.value, R = 8 + M * .2;
+    let x = 0, y = cy - b, vx = 3, vy = 0;
+    path = [[x, y]];
+    while (x < 650 && x > -10 && y > -20 && y < 360) {
+      const dx = cx - x, dy = cy - y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2);
+      if (r < R) break;
+      vx += 1.35 * M / r2 * dx / r; vy += 1.35 * M / r2 * dy / r;
+      const s = Math.hypot(vx, vy); vx = vx / s * 3; vy = vy / s * 3;
+      x += vx; y += vy; path.push([x, y]);
+    }
+    const hit = Math.hypot(cx - x, cy - y) < R;
+    $("#massOut").textContent = `${M}`;
+    $("#gapOut").textContent = `${b}`;
+    $("#res").textContent = M === 0 ? "질량이 없으면 빛은 곧게 지나가요." : hit ? "빛이 별에 부딪혔어요. 거리를 더 멀게 해 보세요." : "질량이 클수록, 별에 가까이 지날수록 빛이 더 많이 휘어요.";
+    t = 0;
+  }
+  function paint() {
+    const M = +mass.value, b = +gap.value, R = 8 + M * .2;
+    ctx.fillStyle = "#0f1830"; ctx.fillRect(0, 0, 640, 340);
+    ctx.strokeStyle = "#3c4a73"; ctx.lineWidth = 1;
+    for (let a = 0; a <= 640; a += 40) { ctx.beginPath(); for (let s = 0; s <= 340; s += 10) { const p = warp(a, s, M); s ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke(); }
+    for (let a = 10; a <= 340; a += 40) { ctx.beginPath(); for (let s = 0; s <= 640; s += 10) { const p = warp(s, a, M); s ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke(); }
+    ctx.setLineDash([6, 7]); ctx.strokeStyle = "#7fd0ff"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, cy - b); ctx.lineTo(640, cy - b); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 3;
+    ctx.beginPath(); path.forEach((p, n) => n ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+    ctx.fillStyle = "#ffc93c"; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+    if (path.length) { const p = path[Math.min(Math.floor(t), path.length - 1)]; ctx.fillStyle = "#ffc93c"; ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill(); }
+    ctx.fillStyle = "#7fd0ff"; ctx.font = "14px Jua, sans-serif"; ctx.textAlign = "left"; ctx.fillText("휘지 않았을 때의 길", 12, Math.max(18, cy - b - 8));
+    t = t >= path.length ? 0 : t + 2;
+  }
+  const onChange = () => { compute(); if (reduced) { t = path.length - 1; paint(); } };
+  mass.addEventListener("input", onChange); gap.addEventListener("input", onChange);
+  onChange();
+  if (!reduced) loop(paint);
+}
+
+function render() {
+  stopLoop();
+  renderNav();
+  if (state.method === "comic") renderComic();
+  else if (state.method === "guide") renderGuide();
+  else if (state.method === "quiz") renderQuiz();
+  else ({ photo: labPhoto, special: labSpecial, energy: labEnergy, general: labGeneral })[state.idea]();
+}
+
+$("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-m]"); if (b) { state.method = b.dataset.m; render(); } });
+$("#chips").addEventListener("click", e => { const b = e.target.closest("[data-i]"); if (b) { state.idea = b.dataset.i; render(); } });
+$("#stage").addEventListener("click", e => {
+  const b = e.target.closest("[data-q]"); if (!b) return;
+  quizState[state.idea][b.dataset.q] = +b.dataset.k; renderQuiz();
+});
+render();
+</script>
