@@ -40,6 +40,7 @@ main.inner { padding-block: 28px 56px; display: grid; gap: 24px; }
 .method img { width: 26px; height: 26px; flex: none; }
 .method:hover { border-color: var(--accent); }
 .method[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.method[aria-pressed="true"] img { background: #fff; border-radius: 50%; padding: 2px; }
 button:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
 #stage { display: grid; gap: 18px; min-width: 0; }
 .note { font-size: .92rem; color: var(--soft); line-height: 1.6; }
@@ -177,10 +178,11 @@ const ic = (n, x, y, s, rot = 0, flip = false) => {
   if (flip) t.push(`translate(${2 * x + s} 0) scale(-1 1)`);
   return t.length ? `<g transform="${t.join(" ")}">${c}</g>` : c;
 };
-const txt = (x, y, t, size = 14, fill = INK) => `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" text-anchor="middle" font-family="Jua, sans-serif">${t}</text>`;
+let TS = 1;
+const txt = (x, y, t, size = 14, fill = INK) => `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="Jua, sans-serif">${t}</text>`;
 const tag = (x, y, t, bg = "#ffffff", fill = INK, size = 13) => {
-  const w = [...t].length * size * .86 + 18;
-  return `<rect x="${x - w / 2}" y="${y - size - 3}" width="${w}" height="${size + 11}" rx="${(size + 11) / 2}" fill="${bg}"/>` + txt(x, y, t, size, fill);
+  const s = size * TS, w = [...t].length * s * .86 + 18;
+  return `<rect x="${x - w / 2}" y="${y - s - 3}" width="${w}" height="${s + 11}" rx="${(s + 11) / 2}" fill="${bg}"/>` + txt(x, y, t, size, fill);
 };
 const svg = (w, h, label, s) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">${s}</svg>`;
 const bg = (w, h, id) => `<rect width="${w}" height="${h}" fill="url(#${id})"/>`;
@@ -247,8 +249,10 @@ const COMIC = {
 
 /* ---------- 그림 설명서 ---------- */
 const photon = (x, y, r, c) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
-const row = (y, c, name, r, xs = [80, 118, 156, 194, 232, 270]) => ic("light-bulb", 14, y - 26, 48) + txt(38, y + 38, name, 14) + xs.map(x => photon(x, y, r, c)).join("");
+const row = (y, c, name, r, xs = [80, 118, 156, 194, 232, 270]) => ic("light-bulb", 14, y - 26, 48) + txt(TS > 1 ? 54 : 38, y + 38, name, 14) + xs.map(x => photon(x, y, r, c)).join("");
 const leap = (y, x) => elec(x, y - 28, 9) + `<path d="M298 ${y - 6} L${x + 11} ${y - 25}" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`;
+/* 휴대폰에서는 그림 전체가 줄어들므로, 그림 설명서의 글자를 키워 그린다. */
+TS = window.innerWidth <= 620 ? 1.35 : 1;
 const GUIDE = {
   photo: {
     title: "빛의 색에 따라 결과가 달라요",
@@ -288,7 +292,7 @@ const GUIDE = {
     art: svg(480, 236, "E는 m 곱하기 c 곱하기 c이고, 1그램은 약 2500만 킬로와트시와 맞먹는다는 그림", `<rect width="480" height="236" fill="#fff8ec"/>` +
       [[58, "E", "에너지", "#ffd166"], [176, "m", "질량", "#a7d8ff"], [294, "c", "빛의 속도", "#ffc9d1"], [412, "c", "빛의 속도", "#ffc9d1"]].map(b => `<rect x="${b[0] - 48}" y="20" width="96" height="84" rx="14" fill="${b[3]}"/>` + txt(b[0], 62, b[1], 34) + txt(b[0], 90, b[2], 13)).join("") +
       txt(117, 70, "=", 26) + txt(235, 70, "×", 26) + txt(353, 70, "×", 26) +
-      ic("paperclip", 22, 122, 60) + txt(52, 204, "질량 1g", 15) + txt(104, 160, "=", 28) + ic("high-voltage", 136, 122, 60) + txt(166, 204, "약 2,500만 kWh", 15) + txt(232, 160, "=", 28) + ic("house", 250, 122, 60) + txt(382, 142, "집 한 채가", 15) + txt(382, 164, "약 7천 년 동안", 15) + txt(382, 186, "쓸 전기", 15)),
+      ic("paperclip", 22, 122, 60) + txt(TS > 1 ? 40 : 52, 204, "질량 1g", 15) + txt(104, 160, "=", 28) + ic("high-voltage", 136, 122, 60) + txt(166, 204, "약 2,500만 kWh", 15) + txt(232, 160, "=", 28) + ic("house", 250, 122, 60) + txt(382, 142, "집 한 채가", 15) + txt(382, 164, "약 7천 년 동안", 15) + txt(382, 186, "쓸 전기", 15)),
     steps: [
       ["c는 아주 큰 수예요", ["빛의 속도는 1초에 약 3억 m예요.", "이 수를 두 번 곱하면 9 뒤에 0이 16개 붙는 수가 돼요."]],
       ["그래서 작은 질량도 큰 에너지와 맞먹어요", ["질량이 아주 작아도 이 큰 수를 곱하면 에너지가 엄청나게 커져요."]],
@@ -312,6 +316,8 @@ const GUIDE = {
     life: { icon: "mobile-phone", text: ["GPS 위성은 땅보다 중력이 약한 곳에 있어요.", "중력의 효과만 따지면 위성의 시계는 하루에 약 45마이크로초 빨라져요.", "속도의 효과까지 합치면 위성의 시계는 하루에 약 38마이크로초 빨라요.", "GPS는 이 차이를 바로잡아서 위치를 정확하게 알려 줘요."] }
   }
 };
+
+TS = 1;
 
 /* ---------- 퀴즈 ---------- */
 const QUIZ = {
@@ -366,7 +372,9 @@ function nightBg(ctx, w, h) {
   ctx.fillStyle = "rgba(255,255,255,.75)";
   [[.06, .12], [.22, .85], [.37, .08], [.56, .9], [.74, .1], [.93, .8], [.47, .5]].forEach(p => { ctx.beginPath(); ctx.arc(p[0] * w, p[1] * h, 1.5, 0, 7); ctx.fill(); });
 }
-const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => { ctx.fillStyle = c; ctx.font = `${size}px Jua, sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); };
+/* 캔버스가 작게 보이면 글자를 키워 그린다. */
+const textScale = (ctx) => Math.min(1.7, Math.max(1, 640 / (ctx.canvas.clientWidth || 640)));
+const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => { ctx.fillStyle = c; ctx.font = `${size * textScale(ctx)}px Jua, sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); };
 
 function renderNav() {
   const idea = IDEAS.find(i => i.id === state.idea);
@@ -480,10 +488,11 @@ function labPhoto() {
     ctx.globalAlpha = 1;
     electrons.forEach(e => { const g = ctx.createRadialGradient(e.x, e.y, 1, e.x, e.y, 8); g.addColorStop(0, "#fff3bf"); g.addColorStop(1, "#f59f00"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(e.x, e.y, 8, 0, 7); ctx.fill(); });
     label(ctx, "금속판", 570, 292);
-    ctx.fillStyle = color; ctx.beginPath(); ctx.arc(24, 24, 7, 0, 7); ctx.fill(); label(ctx, "빛 알갱이", 38, 30, 15, "#fff", "left");
-    ctx.fillStyle = "#ffc533"; ctx.beginPath(); ctx.arc(24, 50, 7, 0, 7); ctx.fill(); label(ctx, "전자", 38, 56, 15, "#fff", "left");
-    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(24, 76, 6, 0, 7); ctx.stroke(); label(ctx, "튕겨 나가는 빛 알갱이", 38, 82, 15, "#fff", "left");
-    if (heat > .2) label(ctx, "따뜻해져요", 568, 20, 15, "#ffb27a");
+    const k = textScale(ctx), y0 = k > 1.2 ? 196 : 24, gap = 26 * k, dot = 7 * k, tx = 24 + 14 * k;
+    ctx.fillStyle = color; ctx.beginPath(); ctx.arc(24, y0, dot, 0, 7); ctx.fill(); label(ctx, "빛 알갱이", tx, y0 + 5 * k, 15, "#fff", "left");
+    ctx.fillStyle = "#ffc533"; ctx.beginPath(); ctx.arc(24, y0 + gap, dot, 0, 7); ctx.fill(); label(ctx, "전자", tx, y0 + gap + 5 * k, 15, "#fff", "left");
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(24, y0 + gap * 2, dot - 1, 0, 7); ctx.stroke(); label(ctx, "튕겨 나가는 빛 알갱이", tx, y0 + gap * 2 + 5 * k, 15, "#fff", "left");
+    if (heat > .2) label(ctx, "따뜻해져요", 560, 24, 15, "#ffb27a");
   }
   const onChange = () => { update(); if (reduced) { for (let n = 0; n < 240; n++) step(); paint(); } };
   wlInput.addEventListener("input", onChange); br.addEventListener("input", onChange);
