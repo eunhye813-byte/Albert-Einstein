@@ -1,0 +1,894 @@
+<title>아인슈타인 이야기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 밤하늘 띠 위에 네 가지 생각을 큰 카드로 먼저 보여 주고, 그 아래에서 설명 방법을 고른다. 한 가지 그림책 같은 밝은 테마로 고정한다. */
+:root {
+  color-scheme: light;
+  --night: #15204a; --night2: #26357a; --paper: #f5f7fc; --sheet: #ffffff;
+  --ink: #1b2340; --soft: #545e7d; --line: #d9e0ef; --gold: #ffd166;
+  --accent: #c2410c; --tint: #fff1e6;
+  --display: "Jua", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 18px/1.75 var(--body); word-break: keep-all; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.3; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.inner { max-width: 1000px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hero { background: linear-gradient(180deg, var(--night), var(--night2)); color: #fff; }
+.hero .inner { padding-block: 36px 40px; display: grid; gap: 24px; }
+.hero h2 { font-size: clamp(1.9rem, 6vw, 3rem); }
+.hero p { color: #dfe6ff; max-width: 40em; }
+.ideas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.idea { font: inherit; color: var(--ink); background: #fff; border: 0; border-radius: 18px; padding: 16px 14px; text-align: left; cursor: pointer; display: grid; gap: 6px; align-content: start; min-width: 0; transition: transform .15s; }
+.idea:hover { transform: translateY(-3px); }
+.idea img { width: 58px; height: 58px; }
+.idea b { font: 400 1.32rem/1.25 var(--display); }
+.idea small { font-size: .9rem; line-height: 1.45; color: var(--soft); }
+.idea[aria-pressed="true"] { background: var(--gold); box-shadow: 0 0 0 4px #fff; }
+.idea[aria-pressed="true"] small { color: var(--ink); }
+main.inner { padding-block: 28px 56px; display: grid; gap: 24px; }
+.core { background: var(--tint); border-radius: 18px; padding: 22px 24px; display: grid; gap: 12px; }
+.core h2 { font-size: clamp(1.55rem, 4.5vw, 2.15rem); color: var(--accent); }
+.lines { display: grid; gap: 4px; }
+.pick { display: grid; gap: 10px; }
+.pick h3 { font-size: 1.05rem; color: var(--soft); }
+.methods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.method { font: 400 1.04rem/1.25 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; min-width: 0; }
+.method img { width: 26px; height: 26px; flex: none; }
+.method:hover { border-color: var(--accent); }
+.method[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.method[aria-pressed="true"] img { background: #fff; border-radius: 50%; padding: 2px; }
+button:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+#stage { display: grid; gap: 18px; min-width: 0; }
+.note { font-size: .92rem; color: var(--soft); line-height: 1.6; }
+.next { justify-self: end; font: 400 1.08rem/1.3 var(--display); color: #fff; background: var(--accent); border: 0; border-radius: 999px; padding: 12px 22px; cursor: pointer; }
+/* 만화 */
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panel { background: var(--sheet); border-radius: 18px; overflow: hidden; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); display: flex; flex-direction: column; min-width: 0; }
+.panel svg { display: block; width: 100%; height: auto; }
+.talk { display: flex; gap: 10px; padding: 14px; align-items: flex-start; flex: 1; }
+.talk img { width: 44px; height: 44px; flex: none; }
+.talk div { min-width: 0; }
+.who { font: 400 .92rem/1.3 var(--display); color: var(--accent); display: block; margin-bottom: 2px; }
+.talk p + p { margin-top: 3px; }
+/* 그림과 실험 */
+.sheet { background: var(--sheet); border-radius: 18px; padding: 20px; display: grid; gap: 16px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); min-width: 0; }
+.sheet h3 { font-size: 1.32rem; }
+.sheet svg, .sheet canvas { display: block; width: 100%; height: auto; border-radius: 12px; }
+.mission { background: var(--tint); border-radius: 12px; padding: 10px 14px; }
+.mission b { font-family: var(--display); font-weight: 400; color: var(--accent); margin-right: 6px; }
+.controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.control { display: grid; gap: 2px; min-width: 0; }
+.control label { font-family: var(--display); }
+.ends { display: flex; justify-content: space-between; gap: 12px; font-size: .84rem; line-height: 1.4; color: var(--soft); }
+.control output { color: var(--accent); margin-left: 8px; }
+input[type="range"] { width: 100%; accent-color: var(--accent); height: 28px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.stat { background: var(--paper); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.stat span { display: block; font-size: .88rem; line-height: 1.4; color: var(--soft); }
+.stat b { display: block; font: 400 1.4rem/1.3 var(--display); overflow-wrap: anywhere; margin-top: 4px; }
+.result { font-weight: 700; }
+.things { display: flex; flex-wrap: wrap; gap: 8px; }
+.thing { font: inherit; font-size: .96rem; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 999px; padding: 4px 13px 4px 7px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.thing img { width: 26px; height: 26px; }
+.thing[aria-pressed="true"] { border-color: var(--accent); background: var(--tint); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
+.steps li { min-width: 0; background: var(--paper); border-radius: 12px; padding: 12px 14px; counter-increment: s; }
+.steps b { font-family: var(--display); font-weight: 400; font-size: 1.08rem; display: block; margin-bottom: 4px; }
+.steps b::before { content: counter(s) ". "; color: var(--accent); }
+.steps p + p { margin-top: 4px; }
+.cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.case { background: var(--paper); border-radius: 12px; padding: 12px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.case b { font-family: var(--display); font-weight: 400; font-size: 1.08rem; }
+.tbl-wrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: .95rem; line-height: 1.45; }
+.tbl th, .tbl td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { font-family: var(--display); font-weight: 400; background: var(--paper); }
+#houses { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+#houses img { width: 42px; height: 42px; }
+.life { display: flex; gap: 12px; align-items: flex-start; background: var(--tint); border-radius: 12px; padding: 12px 14px; }
+.life img { width: 40px; height: 40px; flex: none; }
+.life div { min-width: 0; }
+.life b { font-family: var(--display); font-weight: 400; color: var(--accent); display: block; }
+/* 퀴즈 */
+.q { background: var(--sheet); border-radius: 18px; padding: 18px; display: grid; gap: 12px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
+.q h3 { font-size: 1.18rem; line-height: 1.45; }
+.opts { display: grid; gap: 8px; }
+.opt { font: inherit; text-align: left; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 9px 14px; cursor: pointer; }
+.opt:hover:enabled { border-color: var(--accent); }
+.opt:disabled { cursor: default; color: var(--ink); }
+.opt.right { background: #d9f5e6; border-color: #15803d; font-weight: 700; }
+.opt.wrong { background: #fde4e4; border-color: #dc2626; }
+.why { background: var(--tint); border-radius: 12px; padding: 10px 14px; display: grid; gap: 3px; }
+.why b { font-family: var(--display); font-weight: 400; color: var(--accent); }
+.score { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-family: var(--display); font-size: 1.14rem; }
+.retry { font: 400 1rem/1.3 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 7px 15px; cursor: pointer; }
+footer { color: var(--soft); font-size: .84rem; line-height: 1.6; }
+footer a { color: inherit; }
+@media (max-width: 760px) {
+  .ideas, .methods { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .cases { grid-template-columns: minmax(0, 1fr); }
+  .panels, .controls { grid-template-columns: minmax(0, 1fr); }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .sheet { padding: 14px; }
+  .core { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .idea { transition: none; } .idea:hover { transform: none; } }
+
+/* 전체 이야기 페이지 */
+.top { background: linear-gradient(180deg, var(--night), var(--night2)); color: #fff; }
+.top-in { padding-block: 36px 32px; display: grid; gap: 22px; }
+.top-head { display: flex; align-items: center; gap: 18px; }
+.top-head img { width: 92px; height: 92px; flex: none; }
+.top-head > div { display: grid; gap: 6px; min-width: 0; }
+.top h1 { font-size: clamp(2.1rem, 7vw, 3.5rem); }
+.top p { color: #dfe6ff; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.facts .stat { color: var(--ink); background: #fff; }
+.facts .stat b { font-size: 1.14rem; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sheet); }
+.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--sheet); border-bottom: 1px solid var(--line); }
+.jump-in { display: flex; gap: 4px; max-width: 1000px; margin: 0 auto; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
+.jump button { font: 400 .98rem/1.3 var(--display); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+.jump button:hover { background: var(--paper); }
+.story { padding-block: 32px; display: grid; gap: 40px; }
+.part { display: grid; gap: 16px; min-width: 0; }
+.part h2 { font-size: clamp(1.55rem, 4.5vw, 2.15rem); }
+.part, #sec-ideas, #core { scroll-margin-top: 64px; }
+.infos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.infos.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.info { background: var(--sheet); border-radius: 18px; padding: 18px; display: grid; gap: 6px; align-content: start; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); min-width: 0; }
+.info img { width: 54px; height: 54px; }
+.tongue { display: flex; gap: 18px; align-items: flex-start; background: var(--tint); border-radius: 18px; padding: 18px; }
+.tongue img { width: 84px; height: 84px; flex: none; }
+.tongue > div { display: grid; gap: 4px; min-width: 0; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.timeline b { font-family: var(--display); font-weight: 400; color: #c2410c; }
+.compass-box { display: flex; gap: 22px; align-items: center; background: var(--sheet); border-radius: 18px; padding: 18px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
+.compass-box svg { width: 150px; height: 150px; flex: none; }
+#compassBody { transform-box: fill-box; transform-origin: center; transition: transform 1s ease; }
+.next.left { justify-self: start; }
+.myths { display: grid; gap: 10px; }
+.myth { background: var(--sheet); border-radius: 14px; padding: 14px 18px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
+.myth summary { font-family: var(--display); font-size: 1.1rem; cursor: pointer; }
+.myth .lines { margin-top: 10px; }
+.myth b { color: #c2410c; }
+.letter { margin: 0; background: #fff8e7; border: 1px solid #e8d9b5; border-radius: 6px; padding: 22px; display: grid; gap: 10px; }
+.letter img { width: 54px; height: 54px; }
+.letter .ko { font: 400 clamp(1.25rem, 4vw, 1.6rem)/1.5 var(--display); }
+.letter .en { color: var(--soft); font-style: italic; }
+summary:focus-visible, .jump button:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+@media (max-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .infos, .infos.two { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) { .tongue, .compass-box { flex-direction: column; align-items: flex-start; } .timeline li { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+@media (prefers-reduced-motion: reduce) { #compassBody { transition: none; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7ecff"/><stop offset="1" stop-color="#f4faff"/></linearGradient>
+  <linearGradient id="gWarm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9c9"/><stop offset="1" stop-color="#fff8ec"/></linearGradient>
+  <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15204a"/><stop offset="1" stop-color="#2d3c86"/></linearGradient>
+  <linearGradient id="gMetal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c3cedf"/><stop offset="1" stop-color="#8f9db5"/></linearGradient>
+  <radialGradient id="gBall" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#7c6bb0"/><stop offset="1" stop-color="#2f2558"/></radialGradient>
+  <radialGradient id="gE"><stop offset="0" stop-color="#fff3bf"/><stop offset=".6" stop-color="#ffc533"/><stop offset="1" stop-color="#f59f00"/></radialGradient>
+</defs></svg>
+
+<header class="top"><div class="inner top-in">
+  <div class="top-head"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRjNFRUY4IiBkPSJtMjUuNzg3IDYuMzc2bC0uOC0uMzk3Yy0uNi0uMjk5LTEuMS0uNTk3LTEuNS0xLjA5NWwtMS41MDEtMS40OTFjLTEuMi0xLjA5NC0yLjkwMS0xLjQ5Mi00LjQwMi0uOTk1Yy0xIC4yOTgtMi4xLjI5OC0zLjEgMGMtMS40MDEtLjY5Ni0zLjAwMS0uMzk4LTQuMTAyLjU5N2wtMS44IDEuODljLS41LjM5Ny0xIC43OTUtMS41IDEuMDk0bC0uODAxLjM5N2MtMS40LjY5Ny0yLjIgMi4yODgtMiAzLjg4bDEuMSA1LjY2OWMuMS41OTYuNi45OTQgMS4yLjk5NGM1LjkxOSAwIDEyLjQxOS4xIDE4LjkwNi4xYy42IDAgMS0uMzk4IDEuMS0uOTk1bDEuMS01LjY3Yy4zLTEuNjktLjUtMy4yODEtMS45LTMuOTc4Ii8+PHBhdGggZmlsbD0iI0Y0QzZBRCIgZD0iTTI1LjYyMiAxNS4wNjVjLS4wNzUuOTI0LS4xMzUgMS45NTQtLjEzNSAxLjk1NGMuNiAwIDEtLjM5OCAxLjEtLjk5NWwuMDk4LS41MDZhMyAzIDAgMSAxLTEuMDYzLS40NTNtLTIwLjMxOS40NjFsLjA3OC4zOThjLjEuNTk3LjYuOTk1IDEuMi45OTVjMCAwLS4wNTktLjkzOC0uMTMyLTEuODY5UTYuNzE4IDE1IDcgMTVhMyAzIDAgMSAxLTEuNjk3LjUyNSIvPjxwYXRoIGZpbGw9IiNGRkQ3QzIiIGQ9Ik02LjQ5IDE2LjkxNnEuMDQ1LjAwMy4wOTEuMDAzcy0uMS0xLjU5MS0uMi0yLjY4NWMwLS40OTguMi0xLjA5NC42LTEuMzkzbC4zLS4yOThjLjUtLjM5OC43LS45OTUuNy0xLjU5MVY5LjM2YzAtLjQ5Ny4zLS44OTUuOC0uOTk0YzEuMjAxLS4yOTkgMy43MDItLjc5NiA3LjMwMy0uNzk2czYuMTAyLjQ5NyA3LjMwMi43OTZjLjQuMDk5LjguNDk3LjguOTk0djEuNTkyYzAgLjU5Ni4zIDEuMTkzLjcgMS41OWwuMi4zOTljLjQuMzk3LjYuODk1LjYgMS4zOTJjLS4xLjk5NS0uMiAyLjY4NS0uMiAyLjY4NWguMDM0bC0uNDk1IDcuMzgyYy0uMyAzLjMtMi44OTQgNS42LTUuOTg3IDUuNkgxMy4wNWMtMy4xOTMgMC01LjY4OC0yLjMtNS45ODctNS42eiIvPjxwYXRoIGZpbGw9IiNFNUFGOTMiIGQ9Im0xNS4yODcgMTcuNTI3bC0uOTkgMy4xN2ExLjAwNSAxLjAwNSAwIDAgMCAuOTcgMS4zMDNoMS40NjZjLjY4OCAwIDEuMTczLS42NjIuOTctMS4zMDRsLS45OS0zLjE3Yy0uMjEzLS43MDEtMS4yMDMtLjcwMS0xLjQyNiAwIi8+PHBhdGggZmlsbD0iIzk5MDgzOCIgZD0iTTE2IDIzLjg5NWE1LjYgNS42IDAgMCAxLTIuNTgzLS42MTJjLS4yNTUtLjEzLS41My4xNTgtLjM2OS4zOUEzLjUzIDMuNTMgMCAwIDAgMTYgMjUuMjVhMy41MyAzLjUzIDAgMCAwIDIuOTUyLTEuNTc3Yy4xNi0uMjQxLS4xMTQtLjUyLS4zNjktLjM5YTUuNiA1LjYgMCAwIDEtMi41ODMuNjEyIi8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTkuMDE1IDE3LjM2N2EyLjYwNyAyLjYwNyAwIDAgMSA1LjA4NS4xMjhhLjQyOC40MjggMCAwIDEtLjQyNS41MDVIOS41MThhLjUxMi41MTIgMCAwIDEtLjUwMy0uNjMzbTEzLjk3IDBhMi42MiAyLjYyIDAgMCAwLTIuNTI3LTEuOTY3YTIuNiAyLjYgMCAwIDAtMi41NTcgMi4wOTZhLjQyOC40MjggMCAwIDAgLjQyNC41MDRoNC4xNTdhLjUxMi41MTIgMCAwIDAgLjUwMy0uNjMzIi8+PHBhdGggZmlsbD0iIzdENDUzMyIgZD0iTTEwLjI1OSAxNy41NTdhMS42NjQgMS42NjQgMCAxIDEgMy4yNjguNDQzaC0zLjIwOWExLjcgMS43IDAgMCAxLS4wNi0uNDQzbTExLjQ4MyAwYzAtLjkyNi0uNzUtMS42NjQtMS42NjgtMS42NjRhMS42NSAxLjY1IDAgMCAwLTEuNjU5IDEuNjY0cTAgLjIzNi4wNi40NDNoMy4yMDhjLjA0LS4xNDguMDYtLjI4Ni4wNi0uNDQzIi8+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTExLjkyNyAxNi42MTFhLjk0Ny45NDcgMCAwIDEgLjg0IDEuMzg5aC0xLjY3OWEuOTQ3Ljk0NyAwIDAgMSAuODQtMS4zODltOC4xMzUgMGEuOTQ3Ljk0NyAwIDAgMC0uODQgMS4zODloMS42NzlhLjk0Ny45NDcgMCAwIDAtLjg0LTEuMzg5Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjY1IDE2LjkyYzAgLjE2Ni0uMTMyLjMtLjI5NS4zYS4zLjMgMCAwIDEtLjI5Ni0uM2MwLS4xNjYuMTMyLS4zLjI5Ni0uM3MuMjk2LjEzNC4yOTYuM204LjE5NSAwYzAgLjE2Ni0uMTMzLjMtLjI5Ny4zYS4zLjMgMCAwIDEtLjI5Ni0uM2MwLS4xNjYuMTMzLS4zLjI5Ni0uM2MuMTY0IDAgLjI5Ny4xMzQuMjk3LjMiLz48cGF0aCBmaWxsPSIjRjNFRUY4IiBkPSJtOC45NjMgMTIuOTg3bC4wMDItLjAwMmwuMDAzLS4wMDJsLjAwOS0uMDA3bC4wMjItLjAxOGwuMDY3LS4wNXEuMDgzLS4wNjEuMjIyLS4xNWMuMTg2LS4xMTcuNDUtLjI2Mi43ODMtLjM5NGE1LjMgNS4zIDAgMCAxIDIuNzgzLS4yOTVhLjk5NS45OTUgMCAxIDEtLjMxIDEuOTY3YTMuMyAzLjMgMCAwIDAtMS43NDIuMThhMi44IDIuOCAwIDAgMC0uNTYuMjk3bC0uMDE0LjAxMWEuOTk1Ljk5NSAwIDAgMS0xLjI2Ni0xLjUzNm0xMy45NzMtLjAwMWwtLjAwMi0uMDAybC0uMDAzLS4wMDJsLS4wMDktLjAwN2wtLjAyMi0uMDE4bC0uMDY3LS4wNWE0IDQgMCAwIDAtLjIyMi0uMTVhNSA1IDAgMCAwLS43ODMtLjM5NGE1LjMgNS4zIDAgMCAwLTIuNzgzLS4yOTVhLjk5NS45OTUgMCAxIDAgLjMxIDEuOTY3YTMuMyAzLjMgMCAwIDEgMS43NDIuMThhMyAzIDAgMCAxIC41Ni4yOTdsLjAxNC4wMTFhLjk5NS45OTUgMCAwIDAgMS4yNjUtMS41MzciLz48L2c+PC9zdmc+" alt="아인슈타인을 나타낸 일러스트"><div><h1>알베르트 아인슈타인</h1><p>아인슈타인은 빛과 시간과 우주를 새로운 눈으로 바라본 과학자예요.</p></div></div>
+  <div class="facts">
+    <div class="stat"><span>태어난 날</span><b>1879년 3월 14일</b></div>
+    <div class="stat"><span>세상을 떠난 날</span><b>1955년 4월 18일</b></div>
+    <div class="stat"><span>하는 일</span><b>이론물리학자</b></div>
+    <div class="stat"><span>큰 상</span><b>1921년 노벨 물리학상</b></div>
+  </div>
+</div></header>
+<nav class="jump" aria-label="이야기 바로 가기"><div class="jump-in"><button type="button" data-go="sec-who">누구일까요?</button><button type="button" data-go="sec-child">어린 시절</button><button type="button" data-go="sec-school">학교와 직장</button><button type="button" data-go="sec-ideas">놀라운 생각들</button><button type="button" data-go="sec-famous">유명한 과학자</button><button type="button" data-go="sec-true">진짜일까요?</button><button type="button" data-go="sec-letter">편지</button></div></nav>
+
+<div class="inner story">
+  <section id="sec-who" class="part">
+    <h2>아인슈타인은 누구일까요?</h2>
+    <div class="lines"><p>아인슈타인은 이론물리학자예요.</p><p>이론물리학자는 생각과 계산으로 자연의 규칙을 찾는 과학자예요.</p><p>아인슈타인은 독일에서 태어났어요.</p><p>아인슈타인은 1933년에 미국으로 건너갔어요. 그해는 나치가 독일에서 권력을 잡은 해예요.</p></div>
+    <article class="tongue"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJNMTUuOTk5IDI5Ljk5OGM5LjMzNCAwIDEzLjk5OS02LjI2OCAxMy45OTktMTRjMC03LjczLTQuNjY1LTEzLjk5OC0xNC0xMy45OThDNi42NjUgMiAyIDguMjY4IDIgMTUuOTk5czQuNjY0IDEzLjk5OSAxMy45OTkgMTMuOTk5Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEwLjQyIDE2LjIyNGE0LjIwNiA0LjIwNiAwIDEgMCAwLTguNDExYTQuMjA2IDQuMjA2IDAgMCAwIDAgOC40MTFtMTEuMTQ4LjA3N2E0LjI0NCA0LjI0NCAwIDEgMCAwLTguNDg5YTQuMjQ0IDQuMjQ0IDAgMCAwIDAgOC40OSIvPjxwYXRoIGZpbGw9IiM0MDJBMzIiIGQ9Ik0xMSAxNWEzIDMgMCAxIDAgMC02YTMgMyAwIDAgMCAwIDZtMTAgMGEzIDMgMCAxIDAgMC02YTMgMyAwIDAgMCAwIDYiLz48cGF0aCBmaWxsPSIjQkIxRDgwIiBkPSJNMTUuOTk5IDI2Yy03IDAtNy03LTctN2gxNHMwIDctNyA3Ii8+PHBhdGggZmlsbD0iI0Y3MEE4RCIgZD0iTTE2LjAxNiAyOWM0LjIgMCA0Ljg3LTQuMiA1LTUuMjVjLjEtLjg1LS4zNS0xLjI4LS44NC0xLjU3cy0xLjk2LS41Ni00LjE2LS41NnMtMy42Ni4yNy00LjE2LjU2cy0uOTUuNzItLjg0IDEuNTdjLjEzIDEuMDUuOCA1LjI1IDUgNS4yNSIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yMi44NTkgMjAuNDNjLjA5LS40Ni4xNC0uOTQuMTQtMS40M2gtMTRjMCAuNDkuMDUuOTYuMTQgMS40M3oiLz48L2c+PC9zdmc+" alt="혀를 내민 얼굴 일러스트"><div><h3>혀를 내민 사진 이야기</h3><p>아인슈타인이 혀를 쏙 내민 사진을 본 적 있나요?</p><p>이 사진은 1951년 3월 14일, 아인슈타인의 72번째 생일에 찍혔어요.</p><p>사진기자들이 저녁 내내 아인슈타인에게 포즈를 부탁했어요.</p><p>아인슈타인은 차에 탄 뒤 장난스럽게 혀를 내밀었어요.</p><p>이 사진을 찍은 사람은 아서 사스예요.</p><p class="note">이 그림은 실제 사진이 아니라 일러스트예요.</p></div></article>
+    <h3>아인슈타인의 삶</h3>
+    <ol class="timeline"><li><b>1879년</b><span>아인슈타인이 독일 울름에서 태어났어요.</span></li><li><b>4~6세 무렵</b><span>아버지가 아인슈타인에게 나침반을 주었어요.</span></li><li><b>6세 무렵</b><span>아인슈타인이 어머니의 권유로 바이올린을 시작했어요.</span></li><li><b>13세 무렵</b><span>아인슈타인이 모차르트의 곡을 만나 음악을 좋아하게 되었어요.</span></li><li><b>16세 무렵</b><span>아인슈타인이 취리히 공과대학 입학시험에 떨어졌어요.</span></li><li><b>1905년</b><span>아인슈타인이 특허청에서 일하며 중요한 논문들을 발표했어요.</span></li><li><b>1915년</b><span>아인슈타인이 일반상대성이론을 완성했어요.</span></li><li><b>1919년</b><span>일식 관측 결과가 발표되어 아인슈타인이 세계적으로 유명해졌어요.</span></li><li><b>1921년</b><span>아인슈타인이 노벨 물리학상 수상자가 되었어요.</span></li><li><b>1933년</b><span>아인슈타인이 미국으로 건너갔어요.</span></li><li><b>1951년</b><span>아인슈타인이 혀를 내민 사진이 찍혔어요.</span></li><li><b>1955년</b><span>아인슈타인이 미국 프린스턴에서 세상을 떠났어요.</span></li></ol>
+    <p class="note">어릴 때의 나이는 자료마다 조금씩 달라요.</p>
+  </section>
+
+  <section id="sec-child" class="part">
+    <h2>어린 시절</h2>
+    <div class="infos">
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRjRGNEY0IiBkPSJNMTUuNSAyOEMyMS44NTEgMjggMjcgMjIuODUxIDI3IDE2LjVTMjEuODUxIDUgMTUuNSA1UzQgMTAuMTQ5IDQgMTYuNVM5LjE0OSAyOCAxNS41IDI4Ii8+PHBhdGggZmlsbD0iI0Y5QzIzQyIgZD0iTTI1Ljc2NiA3LjczM2MuMzc3LjE3MS43OTUuMjY3IDEuMjM0LjI2N2MxLjY1IDAgMy0xLjM1IDMtM3MtMS4zNS0zLTMtM3MtMyAxLjM1LTMgM2MwIC40NC4wOTYuODU3LjI2NyAxLjIzNEExMy40NSAxMy40NSAwIDAgMCAxNS41IDNDOC4wNDQgMyAyIDkuMDQ0IDIgMTYuNVM4LjA0NCAzMCAxNS41IDMwUzI5IDIzLjk1NiAyOSAxNi41YTEzLjQ1IDEzLjQ1IDAgMCAwLTMuMjM0LTguNzY3TTI1LjM5IDQuOTlhMS42MDkgMS42MDkgMCAxIDEgMy4yMiAwYTEuNjA5IDEuNjA5IDAgMSAxLTMuMjIgME0yNiAxNi41QzI2IDIyLjI5OSAyMS4yOTkgMjcgMTUuNSAyN1M1IDIyLjI5OSA1IDE2LjVTOS43MDEgNiAxNS41IDZTMjYgMTAuNzAxIDI2IDE2LjUiLz48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJtMjUuMzUgOGwtMS4zNi0xLjM2bDEuMzYtMS4zNmMuMzctLjM3Ljk4LS4zNyAxLjM2IDBjLjM3LjM3LjM3Ljk4IDAgMS4zNnoiLz48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJNMTMuMjIzIDE3LjcyNEwxMS40MSAyMC4yMWMtLjE4LjI0LjEyLjU0LjM3LjM3bDIuNDk0LTEuODJsLjkzNiA1Ljk5Yy4wNS4zMy41My4zMy41OCAwbDEuMDc2LTYuODg0bDYuODg0LTEuMDc2Yy4zMy0uMDUuMzMtLjUzIDAtLjU4bC01Ljk5LS45MzdsMS44Mi0yLjQ5M2MuMTgtLjI0LS4xMi0uNTQtLjM3LS4zN2wtMi40ODYgMS44MTNsLS45MzQtNS45NzNjLS4wNS0uMzMtLjUzLS4zMy0uNTggMGwtMS4wNzYgNi44ODRMNy4yNSAxNi4yMWMtLjMzLjA1LS4zMy41MyAwIC41OHoiLz48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJtMTcuMzM4IDE1bDMuNjAxIDYuMzI3Yy4yMjQuMzk4LS4yMTQuODM2LS42MTMuNjEyTDE0IDE4LjMzNHoiLz48cGF0aCBmaWxsPSIjRTUzMzZEIiBkPSJtMTMuNjc2IDE4bC0zLjYxNi02LjMyOGEuNDQ4LjQ0OCAwIDAgMSAuNjExLS42MTFMMTcgMTQuNjd6Ii8+PHBhdGggZmlsbD0iI0QzRDNEMyIgZD0iTTE1LjUgMTlhMi41IDIuNSAwIDEgMCAwLTVhMi41IDIuNSAwIDAgMCAwIDUiLz48L2c+PC9zdmc+" alt=""><h3>나침반</h3><p>아인슈타인이 아파서 누워 있을 때 아버지가 나침반을 주었어요.</p><p>나침반을 아무리 돌려도 바늘은 늘 같은 쪽을 가리켰어요.</p><p>아인슈타인은 이 일을 무척 신기해했어요.</p><p>아인슈타인은 나중에 이 일을 물리학에 관심을 갖게 된 계기로 꼽았어요.</p></article>
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjOEM1NTQzIiBkPSJNMTUuOCAyMy41NzNjLS43OS0uNzgtLjg1LTIuMDUtLjEtMi44NmMuMDItLjAyLjA0LS4wNS4wNi0uMDdsLjAzLS4wM2MuNzEtLjY5IDEuOS0uNjUgMi42MS4wNGwuMDQuMDRjLjE1LjE1LjM5LjE1LjU0IDBsMi4yMy0yLjIzYy4xNC0uMTkuMjktLjM2LjQ1LS41M2MuMjEtLjIxLjM5LS40My41Ni0uNjZjLjgzLTEuMTUuNjUtMi45My0uMzYtMy45M2wtMy4zNS0zLjMzYy0xLjAzLTEuMDItMi42NS0xLjE4LTMuODMtLjM1Yy0uMTEuMDgtLjIxLjE4LS4zMS4yNmwtMy4wOSAzLjA5YS4zOC4zOCAwIDAgMCAwIC41NGMuNjkuNjguNzQgMS44NS4wOCAyLjU2bC0uMDYuMDZjLS4wMi4wMi0uMDQuMDQtLjA3LjA2Yy0uODEuNzUtMi4wOC43LTIuODYtLjA4Yy0uMDktLjA5LS4yOC0uMjctLjUtLjVhLjcxLjcxIDAgMCAwLTEuMDEgMGwtMi4xOSAyLjE5bC0uMDEuMDFsLTEuMDMgMS4wNGMtLjQuNDEtLjc1Ljg1LTEuMDMgMS4zM2MtMS4wNSAxLjc3LS42OCA0LjA0Ljc4IDUuNDlsMi45NSAyLjkzYzEuNTEgMS41IDMuODggMS43NyA1LjY2LjZjLjM3LS4yNS43My0uNTQgMS4wNi0uODdsLjIzLS4yM2wuODgtLjg4Yy4wMS0uMDEuMDMtLjAyLjA0LS4wM2wyLjE1LTIuMTVjLjI4LS4yOC4yOC0uNzMgMC0xLjAxbC0uMDMtLjAzYy0uMjUtLjE5LS40My0uMzctLjUyLS40NyIvPjxwYXRoIGZpbGw9IiNGM0MwN0IiIGQ9Im0xMC44IDIzLjE5M2wtMi0xLjk5YS43MS43MSAwIDAgMC0xLjAxIDBjLS4yOC4yOC0uMjguNzMgMCAxLjAxbDIgMS45OWMuMjguMjguNzMuMjggMS4wMSAwcy4yNy0uNzQgMC0xLjAxIi8+PHBhdGggZmlsbD0iIzMyMUI0MSIgZD0iTTI0LjUzIDMuMjUzYS42LjYgMCAwIDAgLjIzNi0uMDQ1bC40ODYuNDk4bC4zNTYtLjM0N2wtLjQ4Ny0uNWEuNjQuNjQgMCAxIDAtLjU5MS4zOTRtLS44NiAxLjIxcS4xMjEgMCAuMjMtLjA0M2wuNDgyLjQ5NmwuMzU2LS4zNDdsLS40OC0uNDkzYS42NC42NCAwIDEgMC0uNTg4LjM4N00yOC40NCA2LjNsLjQ4My41MDRhLjY0LjY0IDAgMSAxLS4zNi4zNDNsLS40ODItLjUwMnptLS43NTcgMS4zMjRMMjcuMiA3LjEybC0uMzU4LjM0NWwuNDgyLjUwMmEuNjQuNjQgMCAxIDAgLjM2LS4zNDNNMjQuNDQgNS43MTNsMS43MiAxLjdsLTcuODcgOC43NWMtLjI2LjI4LS42OS4zLS45Ni4wM2wtMS42LTEuNThhLjY2LjY2IDAgMCAxIC4wMi0uOTZ6TTguNzIgMjUuMTgzbC0xLjkxLTEuODlhLjQyLjQyIDAgMCAwLS42My4wNGwtMi40IDMuMTVjLS4xMy4xNy0uMTEuNC4wNC41NWwxLjIgMS4xOWMuMTUuMTUuMzkuMTYuNTUuMDNsMy4xMi0yLjQ0Yy4xOS0uMTYuMjEtLjQ1LjAzLS42M20zLjU5NS02Ljk3bC4wMTUuMDRjLjEuMjctLjAyLjU5LS4yOC43M2EuNjIyLjYyMiAwIDAgMS0uNzgtLjk0YS43My43MyAwIDAgMC0uNjEuMDVsLTEuMy43M2MtLjY4LjM4LTEuNTMuMTQtMS45MS0uNTNsLS4wNi0uMWMtLjAxIDAtLjAxLS4wMS0uMDEtLjAxYS42MTMuNjEzIDAgMCAxIC4yNC0uODNhLjYyMi42MjIgMCAwIDEgLjc2Ljk2Yy4yLjA4LjQ0LjA4LjY1LS4wNGwxLjMtLjczYy42OC0uMzggMS41My0uMTQgMS45MS41M2wuMDYuMXptMS4zOTUgMS4zOWwuMDQuMDE1bC4wNC4wMTVsLjEuMDZjLjY4LjM3LjkzIDEuMjIuNTcgMS45bC0uNzEgMS4zMWMtLjExLjIxLS4xMi40NS0uMDMuNjVhLjYyMy42MjMgMCAwIDEgLjk3Ljc1Yy0uMTYuMy0uNTMuNDEtLjgzLjI1YzAgMC0uMDEgMC0uMDEtLjAxbC0uMS0uMDZjLS42OC0uMzctLjkzLTEuMjItLjU3LTEuOWwuNzEtMS4zMWMuMTEtLjIuMTEtLjQyLjA0LS42MWEuNjIzLjYyMyAwIDAgMS0uOTUtLjc3Yy4xNC0uMjYuNDUtLjM4LjczLS4yOSIvPjxwYXRoIGZpbGw9IiM4QzU1NDMiIGQ9Im0yOC42OSA0LjU1M2wtMS40LTEuMzljLS41Ni0uNTYtMS41LS40Ny0xLjk0LjJsLTEuMTMgMS42OWEuNTkuNTkgMCAwIDAgLjA3LjczbDEuOCAxLjc4Yy4yLjE5LjUuMjIuNzMuMDdsMS42OC0xLjE0Yy42Ni0uNDUuNzUtMS4zOC4xOS0xLjk0Ii8+PHBhdGggZmlsbD0iI0UxQURBMCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMy45NzcgNi44NjZhLjUuNSAwIDAgMSAuNzA3IDBMMjMuNDQgMjUuNjIyYS41LjUgMCAwIDEtLjcwNy43MDdMMy45NzcgNy41NzNhLjUuNSAwIDAgMSAwLS43MDciIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGZpbGw9IiM1MDMzNDQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0ibTcuMTcgNi41NzVsMTkuODA0IDE5Ljc1MmEuNS41IDAgMSAxLS43MDguNzA3TDYuNDg4IDcuMzI4Yy0uMzQ4LS4zNDctLjkzMy0uMjYtMS4zMDguMDU5Yy0uMjYzLjIyMy0uNTg1LjM4NC0uOTE3LjI4MmMtLjcxMi0uMjItMS40MTItMS4zNzYtMS4xMDMtMS40OGMuMTU1LS4wNTEuOTEtLjE4IDEuNjItLjI5NWEyLjk0IDIuOTQgMCAwIDEgMi4zOS42ODEiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGZpbGw9IiNGM0MwN0IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0ibTIzLjQyMyAyNC4yMDZsLTEuNzY4LTEuNzY3bC43MDctLjcwN2wxLjc2OCAxLjc2N2EuNS41IDAgMCAxLS43MDcuNzA3IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz48cGF0aCBmaWxsPSIjMzIxQjQxIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Im0yNS4zOTEgMjYuMTZsLTIuNTctMi41N2wuNzA3LS43MDdsMi41NyAyLjU3eiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0idXJsKCNmbHVlbnRFbW9qaUZsYXRWaW9saW4wKSIgZD0iTTIzLjM4MiAyNS40NzNjLjE4LS4xOTMtLjA2LS41NjUtLjI3MS0uODVhLjI5Ni4yOTYgMCAwIDEgLjQ0NC0uMzlsMS4zMTYgMS4yOTdhLjI3LjI3IDAgMCAxIC4wMDIuMzgzbC0xLjA5MyAxLjA5M2EuMjY3LjI2NyAwIDAgMS0uMzc3IDBsLTEuMjktMS4yOWEuMzA3LjMwNyAwIDAgMSAwLS40MzVjLjExNS0uMTE1LjMtLjEyLjQzMi0uMDIzYy4yODUuMjA2LjY2My40MDEuODM3LjIxNSIvPjxwYXRoIGZpbGw9InVybCgjZmx1ZW50RW1vamlGbGF0VmlvbGluMSkiIGQ9Ik0yMy4zODIgMjUuNDczYy4xOC0uMTkzLS4wNi0uNTY1LS4yNzEtLjg1YS4yOTYuMjk2IDAgMCAxIC40NDQtLjM5bDEuMzE2IDEuMjk3YS4yNy4yNyAwIDAgMSAuMDAyLjM4M2wtMS4wOTMgMS4wOTNhLjI2Ny4yNjcgMCAwIDEtLjM3NyAwbC0xLjI5LTEuMjlhLjMwNy4zMDcgMCAwIDEgMC0uNDM1Yy4xMTUtLjExNS4zLS4xMi40MzItLjAyM2MuMjg1LjIwNi42NjMuNDAxLjgzNy4yMTUiLz48cGF0aCBmaWxsPSJ1cmwoI2ZsdWVudEVtb2ppRmxhdFZpb2xpbjIpIiBkPSJNMjMuMzgyIDI1LjQ3M2MuMTgtLjE5My0uMDYtLjU2NS0uMjcxLS44NWEuMjk2LjI5NiAwIDAgMSAuNDQ0LS4zOWwxLjMxNiAxLjI5N2EuMjcuMjcgMCAwIDEgLjAwMi4zODNsLTEuMDkzIDEuMDkzYS4yNjcuMjY3IDAgMCAxLS4zNzcgMGwtMS4yOS0xLjI5YS4zMDcuMzA3IDAgMCAxIDAtLjQzNWMuMTE1LS4xMTUuMy0uMTIuNDMyLS4wMjNjLjI4NS4yMDYuNjYzLjQwMS44MzcuMjE1Ii8+PHBhdGggZmlsbD0idXJsKCNmbHVlbnRFbW9qaUZsYXRWaW9saW4zKSIgZD0iTTIzLjM4MiAyNS40NzNjLjE4LS4xOTMtLjA2LS41NjUtLjI3MS0uODVhLjI5Ni4yOTYgMCAwIDEgLjQ0NC0uMzlsMS4zMTYgMS4yOTdhLjI3LjI3IDAgMCAxIC4wMDIuMzgzbC0xLjA5MyAxLjA5M2EuMjY3LjI2NyAwIDAgMS0uMzc3IDBsLTEuMjktMS4yOWEuMzA3LjMwNyAwIDAgMSAwLS40MzVjLjExNS0uMTE1LjMtLjEyLjQzMi0uMDIzYy4yODUuMjA2LjY2My40MDEuODM3LjIxNSIvPjxwYXRoIGZpbGw9IiMzMjFCNDEiIGQ9Ik0yMy4zODIgMjUuNDczYy4xOC0uMTkzLS4wNi0uNTY1LS4yNzEtLjg1YS4yOTYuMjk2IDAgMCAxIC40NDQtLjM5bDEuMzE2IDEuMjk3YS4yNy4yNyAwIDAgMSAuMDAyLjM4M2wtMS4wOTMgMS4wOTNhLjI2Ny4yNjcgMCAwIDEtLjM3NyAwbC0xLjI5LTEuMjlhLjMwNy4zMDcgMCAwIDEgMC0uNDM1Yy4xMTUtLjExNS4zLS4xMi40MzItLjAyM2MuMjg1LjIwNi42NjMuNDAxLjgzNy4yMTUiLz48Y2lyY2xlIGN4PSIyMy45MTYiIGN5PSIyNS45MTkiIHI9Ii4zODIiIGZpbGw9IiNGRkVDNTYiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImZsdWVudEVtb2ppRmxhdFZpb2xpbjAiIHgxPSIyNC43NDEiIHgyPSIyMi45MzIiIHkxPSIyNS4xMDQiIHkyPSIyNi45MDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9Ii4xMDYiIHN0b3AtY29sb3I9IiM0MTNFNDQiLz48c3RvcCBvZmZzZXQ9Ii4yMDEiIHN0b3AtY29sb3I9IiMzOTMzM0YiLz48c3RvcCBvZmZzZXQ9Ii43MzUiIHN0b3AtY29sb3I9IiMzODMyM0YiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMzMTI0M0MiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iZmx1ZW50RW1vamlGbGF0VmlvbGluMSIgeDE9IjI0LjQzNCIgeDI9IjIzLjk1MyIgeTE9IjI2LjYwNCIgeTI9IjI2LjEyMyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iLjIxNiIgc3RvcC1jb2xvcj0iIzIwMTcyOCIvPjxzdG9wIG9mZnNldD0iLjc5OSIgc3RvcC1jb2xvcj0iIzNCMzI0NCIgc3RvcC1vcGFjaXR5PSIwIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImZsdWVudEVtb2ppRmxhdFZpb2xpbjIiIHgxPSIyMy4xMDciIHgyPSIyMy45NTMiIHkxPSIyNi45NjkiIHkyPSIyNi4xMjMiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9Ii4yMTYiIHN0b3AtY29sb3I9IiMyMDE3MjgiLz48c3RvcCBvZmZzZXQ9Ii41MzgiIHN0b3AtY29sb3I9IiMzQjMyNDQiIHN0b3Atb3BhY2l0eT0iMCIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJmbHVlbnRFbW9qaUZsYXRWaW9saW4zIiB4MT0iMjIuMjk1IiB4Mj0iMjMuNzU3IiB5MT0iMjQuMjc5IiB5Mj0iMjUuOTAyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIuMjE2IiBzdG9wLWNvbG9yPSIjMjAxNzI4Ii8+PHN0b3Agb2Zmc2V0PSIuNTM4IiBzdG9wLWNvbG9yPSIjM0IzMjQ0IiBzdG9wLW9wYWNpdHk9IjAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L2c+PC9zdmc+" alt=""><h3>바이올린</h3><p>아인슈타인은 여섯 살쯤 어머니의 권유로 바이올린을 시작했어요.</p><p>처음에 아인슈타인은 바이올린을 귀찮은 숙제처럼 느꼈어요.</p><p>아인슈타인은 열세 살쯤 모차르트의 곡을 만나면서 음악을 좋아하게 되었어요.</p><p>아인슈타인은 평생 바이올린을 연주했어요.</p></article>
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJNMTYuMDI4IDRDOC4xNjYgNCAzLjUzIDkuNzU2IDEuNjY4IDEyLjcwM2E0LjI3IDQuMjcgMCAwIDAgMCA0LjU5NGMuODY3IDEuMzczIDIuMzA1IDMuMzA3IDQuMzYgNS4wMDV2NC4yYTEuNSAxLjUgMCAwIDAgMi4xODQgMS4zMzVsNC4zNS0yLjIzYTE1LjMgMTUuMyAwIDAgMCAzLjQ2Ni4zOTNjNy44NjEgMCAxMi40OTctNS43NTYgMTQuMzYtOC43MDNhNC4yNyA0LjI3IDAgMCAwIDAtNC41OTRDMjguNTI0IDkuNzU2IDIzLjg5IDQgMTYuMDI4IDQiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTYuMDI4IDI1YTE0LjIgMTQuMiAwIDAgMS0zLjU5LS40NTRsLTQuNjgyIDIuNGEuNS41IDAgMCAxLS43MjgtLjQ0NHYtNC42OGMtMi4xNDItMS42NzMtMy42MzItMy42NjItNC41MTYtNS4wNmEzLjI3IDMuMjcgMCAwIDEgMC0zLjUyNUM0LjMyOCAxMC4zNjcgOC43MDIgNSAxNi4wMjggNXMxMS43IDUuMzY3IDEzLjUxNSA4LjIzN2EzLjI3IDMuMjcgMCAwIDEgMCAzLjUyNkMyNy43MjggMTkuNjMzIDIzLjM1MyAyNSAxNi4wMjggMjUiLz48L2c+PC9zdmc+" alt=""><h3>늦은 말</h3><p>아인슈타인은 말을 늦게 시작했다고 전해져요.</p><p>그래서 부모님이 걱정했다고 해요.</p><p>몇 살에 말을 시작했는지는 자료마다 달라요.</p></article>
+    </div>
+    <div class="compass-box">
+      <svg viewBox="0 0 120 120" role="img" aria-label="돌려도 바늘이 같은 쪽을 가리키는 나침반">
+        <g id="compassBody"><circle cx="60" cy="60" r="56" fill="#fff4cf" stroke="#c2410c" stroke-width="5"/><g font-family="Jua, sans-serif" font-size="15" fill="#1b2340" text-anchor="middle"><text x="60" y="24">북</text><text x="60" y="108">남</text><text x="100" y="65">동</text><text x="20" y="65">서</text></g></g>
+        <path d="M60 18 L68 60 H52Z" fill="#e8434b"/><path d="M60 102 L68 60 H52Z" fill="#9aa6bd"/><circle cx="60" cy="60" r="6" fill="#1b2340"/>
+      </svg>
+      <div class="lines"><h3>나침반을 돌려 보세요</h3><p>나침반의 몸체를 돌려도 빨간 바늘은 같은 쪽을 가리켜요.</p><p class="note">이 그림에서 바늘의 방향은 고정해 두었어요.</p><button class="next left" type="button" id="spin">나침반 돌리기</button></div>
+    </div>
+  </section>
+
+  <section id="sec-school" class="part">
+    <h2>학교와 첫 직장</h2>
+    <div class="infos">
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjNTMzNTY2IiBkPSJNMTkuMyAyMy4xMzhoLTYuNjRjLTMuODQgMC02Ljk1LTMuMTEtNi45NS02Ljk1di00LjM2aDIwLjUzdjQuMzZjLjAxIDMuODQtMy4xIDYuOTUtNi45NCA2Ljk1Ii8+PHBhdGggZmlsbD0iIzMyMUI0MSIgZD0ibTE3LjEzIDUuMjc4bDEyLjI4IDYuMjljLjc2LjM5Ljc2IDEuNDggMCAxLjg3bC0xMi4yOCA2LjI5Yy0uNzIuMzctMS41Ni4zNy0yLjI4IDBsLTEyLjI4LTYuMjljLS43Ni0uMzktLjc2LTEuNDggMC0xLjg3bDEyLjI4LTYuMjlhMi40OCAyLjQ4IDAgMCAxIDIuMjggMCIvPjxwYXRoIGZpbGw9IiNGRkIwMkUiIGQ9Ik0xNS4xNSAxMi4wNDhjLjE5LS40MS42OC0uNTcgMS4wOC0uMzdsNi43MSAzLjQ0Yy4yNy4xNC40My40MS40My43MXY2LjI4YTEuODMgMS44MyAwIDAgMSAuOTcgMi4xdi4wMmMtLjAxLjA0LS4wMi4wOS0uMDQuMTNjMCAuMDEtLjAxLjAyLS4wMS4wM2MtLjAxLjA0LS4wMy4wOC0uMDUuMTJjMCAuMDEtLjAxLjAyLS4wMS4wMmMtLjA1LjExLS4xMi4yMi0uMTkuMzFjLS4wMS4wMi0uMDIuMDMtLjA0LjA1bC40NyAyLjJhMS45NCAxLjk0IDAgMCAxLTEuOSAyLjM1YTEuOTQgMS45NCAwIDAgMS0xLjktMi4zNWwuNDctMi4yYy0uMjUtLjMxLS40LS43LS40LTEuMTNjMC0uMjUuMDUtLjQ5LjE0LS43YzAtLjAxLjAxLS4wMi4wMi0uMDNjLjAxLS4wMy4wMy0uMDcuMDUtLjFjLjAyLS4wNC4wNC0uMDguMDctLjEyYy4wMS0uMDEuMDEtLjAyLjAyLS4wM2MuMTgtLjI4LjQ0LS41MS43NC0uNjZ2LTUuOGwtNi4yNS0zLjJjLS4zOS0uMi0uNTctLjY4LS4zOC0xLjA3Ii8+PC9nPjwvc3ZnPg==" alt=""><h3>입학시험</h3><p>아인슈타인은 열여섯 살쯤 스위스 취리히에 있는 공과대학 입학시험을 봤어요.</p><p>아인슈타인은 보통 학생들보다 어린 나이에 시험을 봤어요.</p><p>아인슈타인은 수학을 잘 봤지만 다른 과목 성적이 부족해서 떨어졌어요.</p></article>
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjQjRBQ0JDIiBkPSJNMjAuMzQzIDIuMjkzQTEgMSAwIDAgMCAxOS42MzYgMkg3YTIgMiAwIDAgMC0yIDJ2MjRhMiAyIDAgMCAwIDIgMmgxOGEyIDIgMCAwIDAgMi0yVjkuMzY0YTEgMSAwIDAgMC0uMjkzLS43MDd6Ii8+PHBhdGggZmlsbD0iI0YzRUVGOCIgZD0iTTE5LjY4MiAzSDdhMSAxIDAgMCAwLTEgMXYyNGExIDEgMCAwIDAgMSAxaDE4YTEgMSAwIDAgMCAxLTFWOS40NTN6Ii8+PHBhdGggZmlsbD0iIzk5OEVBNCIgZD0iTTkuNSAxMmgxM2EuNS41IDAgMCAxIDAgMWgtMTNhLjUuNSAwIDAgMSAwLTFtMCAzYS41LjUgMCAwIDAgMCAxaDEzYS41LjUgMCAwIDAgMC0xek05IDE4LjVhLjUuNSAwIDAgMSAuNS0uNWgxM2EuNS41IDAgMCAxIDAgMWgtMTNhLjUuNSAwIDAgMS0uNS0uNW0uNSAyLjVhLjUuNSAwIDAgMCAwIDFoOGEuNS41IDAgMCAwIDAtMXoiLz48cGF0aCBmaWxsPSIjQ0RDNEQ2IiBkPSJNMjYgOS40NTNoLTQuNjFhMS43MDcgMS43MDcgMCAwIDEtMS43MDgtMS43MDdWM3oiLz48cGF0aCBmaWxsPSIjRkY4MjJEIiBkPSJtMjYuNzY2IDIwLjE3MmwtMS4wOC0zLjIzMWwtMi43OTYtMi4wMDZsLTEwLjYwNyA3Ljg0OWwxLjE0OCAzLjE1NmwyLjcyNyAyLjA4MnoiLz48cGF0aCBmaWxsPSIjRkZDRTdDIiBkPSJtMTEuMTA2IDI2LjY1NWwuMTcxLjg5M2wuODM2LjQ2OGw0LjAzOS0uMDA2bC0zLjg2LTUuMjE2eiIvPjxwYXRoIGZpbGw9IiM0MDJBMzIiIGQ9Im0xMC42ODcgMjguMDE4bC40MTgtMS4zNjNsMS4wMDcgMS4zNnoiLz48cGF0aCBmaWxsPSIjRjkyRjYwIiBkPSJNMjYuNTIgMTIuMjQ5YTIgMiAwIDAgMSAyLjc5OC40MThsMS40OTYgMi4wMjJhMiAyIDAgMCAxLS40MTggMi43OTdsLTIuMDU4IDEuNTI0bC0yLjgwNS0yLjA2OWwtMS4wNzEtMy4xN3oiLz48cGF0aCBmaWxsPSIjRDNEM0QzIiBkPSJtMjQuNDYyIDEzLjc3MmwzLjg3NiA1LjIzOGwtMS41NzIgMS4xNjJsLTMuODc1LTUuMjM3eiIvPjwvZz48L3N2Zz4=" alt=""><h3>특허청</h3><p>아인슈타인은 스물여섯 살이던 1905년에 스위스 베른의 특허청에서 일하고 있었어요.</p><p>특허청은 새로운 발명품을 심사하는 곳이에요.</p></article>
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjRjlDMjNDIiBkPSJNMTAuNTIgNy4wNTJhMS4xNyAxLjE3IDAgMCAxLS42MzktLjYzNkw4LjkzIDQuMjU3Yy0uMTc4LS4zNDMtLjY5LS4zNDMtLjg1OCAwbC0uOTUyIDIuMTZhMS4yOCAxLjI4IDAgMCAxLS42MzguNjM1bC0xLjIxNC41MjRhLjQ2Mi40NjIgMCAwIDAgMCAuODM4bDEuMjE0LjUyNGMuMjkzLjEyMS41MjMuMzUzLjYzOC42MzZsLjk1MiAyLjE2OWMuMTc4LjM0My42OS4zNDMuODU4IDBsLjk1Mi0yLjE3Yy4xMjYtLjI4Mi4zNTYtLjUwNC42MzgtLjYzNWwxLjIxNC0uNTI0YS40NjIuNDYyIDAgMCAwIDAtLjgzOHptMTUuMDU0IDYuNTAzYTMuNzMgMy43MyAwIDAgMS0xLjkyMi0xLjk3N0wyMC43OSA0LjgxYTEuNDMyIDEuNDMyIDAgMCAwLTIuNTggMGwtMi44NjMgNi43NjhhMy44IDMuOCAwIDAgMS0xLjkyMSAxLjk3N2wtMy42MjIgMS42NGMtMS4wNzIuNTMtMS4wNzIgMi4wOCAwIDIuNjFsMy42MjIgMS42NGEzLjc0IDMuNzQgMCAwIDEgMS45MjIgMS45NzdsMi44NjIgNi43NjhhMS40MzIgMS40MzIgMCAwIDAgMi41OCAwbDIuODYzLTYuNzY4YTMuOCAzLjggMCAwIDEgMS45MjEtMS45NzdsMy42MjItMS42NGMxLjA3Mi0uNTMgMS4wNzItMi4wOCAwLTIuNjF6TTguMjgxIDIwLjMzYy4xNi4zOTIuNDU0LjY5Ni44MjIuODcybDEuNTUuNzI1YS42NDYuNjQ2IDAgMCAxIDAgMS4xNDZsLTEuNTUuNzI1Yy0uMzY4LjE3Ni0uNjYxLjQ5LS44MjIuODcybC0xLjIyOCAyLjk3N2EuNjEuNjEgMCAwIDEtMS4xMDYgMEw0LjcyIDI0LjY3YTEuNjYgMS42NiAwIDAgMC0uODIyLS44NzJsLTEuNTUtLjcyNWEuNjQ2LjY0NiAwIDAgMSAwLTEuMTQ2bDEuNTUtLjcyNWMuMzY4LS4xNzYuNjYxLS40OS44MjItLjg3MmwxLjIyOC0yLjk3N2EuNjEuNjEgMCAwIDEgMS4xMDYgMHoiLz48L3N2Zz4=" alt=""><h3>기적의 해</h3><p>아인슈타인은 1905년에 세상을 바꾼 논문들을 잇따라 발표했어요.</p><p>그래서 사람들은 1905년을 기적의 해라고 불러요.</p></article>
+    </div>
+  </section>
+</div>
+
+<section id="sec-ideas">
+<div class="hero"><div class="inner">
+  <div style="display:grid;gap:8px">
+    <h2>아인슈타인의 놀라운 생각들</h2>
+    <p>아인슈타인은 빛과 시간과 우주를 새로운 눈으로 바라보았어요. 궁금한 생각을 하나 골라 보세요.</p>
+  </div>
+  <div class="ideas" id="ideas" role="group" aria-label="놀라운 생각 고르기"></div>
+</div></div>
+
+<main class="inner">
+  <section class="core" id="core"></section>
+  <section class="pick">
+    <h3>어떤 방법으로 알아볼까요?</h3>
+    <div class="methods" id="methods" role="group" aria-label="설명 방법 고르기"></div>
+  </section>
+  <section id="stage"></section>
+</main>
+</section>
+<div class="inner story">
+  <section id="sec-famous" class="part">
+    <h2>세계적인 과학자가 되다</h2>
+    <div class="infos two">
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkY4MjJEIiBkPSJNMTMuNjM4IDMuMjAyYTIuOTM2IDIuOTM2IDAgMCAxIDQuNzI0IDBhMi45NCAyLjk0IDAgMCAwIDMuMjUgMS4wNTVhMi45MzYgMi45MzYgMCAwIDEgMy44MjIgMi43NzhhMi45NCAyLjk0IDAgMCAwIDIuMDA4IDIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxIDEuNDYgNC40OTRhMi45NCAyLjk0IDAgMCAwIDAgMy40MTZhMi45MzYgMi45MzYgMCAwIDEtMS40NiA0LjQ5NGEyLjk0IDIuOTQgMCAwIDAtMi4wMDggMi43NjNhMi45MzYgMi45MzYgMCAwIDEtMy44MjMgMi43NzhhMi45NCAyLjk0IDAgMCAwLTMuMjQ5IDEuMDU1YTIuOTM2IDIuOTM2IDAgMCAxLTQuNzI0IDBhMi45NCAyLjk0IDAgMCAwLTMuMjUtMS4wNTVhMi45MzYgMi45MzYgMCAwIDEtMy44MjItMi43NzhhMi45NCAyLjk0IDAgMCAwLTIuMDA4LTIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxLTEuNDYtNC40OTRhMi45NCAyLjk0IDAgMCAwIDAtMy40MTZhMi45MzYgMi45MzYgMCAwIDEgMS40Ni00LjQ5NGEyLjk0IDIuOTQgMCAwIDAgMi4wMDgtMi43NjNhMi45MzYgMi45MzYgMCAwIDEgMy44MjMtMi43NzhhMi45NCAyLjk0IDAgMCAwIDMuMjQ5LTEuMDU1Ii8+PHBhdGggZmlsbD0iI0ZDRDUzRiIgZD0iTTI1LjA2MiAyMS4yMzJjLTIuODkgNS4wMDUtOS4yOSA2LjcyLTE0LjI5NCAzLjgzcy02LjcyLTkuMjktMy44My0xNC4yOTRzOS4yOS02LjcyIDE0LjI5NC0zLjgzczYuNzIgOS4yOSAzLjgzIDE0LjI5NCIvPjwvZz48L3N2Zz4=" alt=""><h3>1919년 일식 관측</h3><p>아인슈타인은 태양 옆을 지나는 별빛이 살짝 휜다고 예측했어요.</p><p>낮에는 햇빛이 너무 밝아서 태양 근처의 별을 볼 수 없어요.</p><p>그래서 과학자들은 달이 태양을 가리는 일식을 기다렸어요.</p><p>1919년 5월 29일, 영국 과학자들이 아프리카 근처의 프린시페섬과 브라질 소브라우에서 사진을 찍었어요.</p><p>관측 결과는 아인슈타인의 예측을 뒷받침했어요.</p><p>아인슈타인은 곧 세계에서 가장 유명한 과학자가 되었어요.</p></article>
+      <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRDM4ODNFIiBkPSJNMTAuNTIgNy41MjFhMy40MzUgMy40MzUgMCAwIDAtNC4yMTMtMi4zNjlhMiAyIDAgMCAwLS4xNjMuMDQ2Yy0yLjQ5My44MzEtMi42OTEgNC4yMTQtLjQ1NSA1LjQ1bDQuOTcgMi43NWEuODY2Ljg2NiAwIDEgMCAuODM4LTEuNTE2bC00Ljk3LTIuNzVjLS45ODItLjU0My0uODIzLTEuOTU2LjE2LTIuMjg4bC4wMDUtLjAwMmwuMDctLjAxOGMuODk5LS4yNSAxLjgzNC4yNyAyLjA5MyAxLjE3NWEuODY2Ljg2NiAwIDEgMCAxLjY2Ni0uNDc4bTExLjkzOS40NzhhMS43IDEuNyAwIDAgMSAyLjExOC0xLjE2OGwuMDQ1LjAxMWwuMDA3LjAwMmMuOTgxLjMzMiAxLjE0IDEuNzQ1LjE1OCAyLjI4OGwtNC45NyAyLjc1YS44NjYuODY2IDAgMSAwIC44NCAxLjUxNmw0Ljk3LTIuNzVjMi4yMzUtMS4yMzYgMi4wMzctNC42MTktLjQ1Ni01LjQ1YTIgMiAwIDAgMC0uMTY0LS4wNDZhMy40MzUgMy40MzUgMCAwIDAtNC4yMTMgMi4zN2EuODY2Ljg2NiAwIDEgMCAxLjY2Ni40NzdtLTUuMTMzIDkuNTExdi00LjIyaC0zLjM0djQuMjJjMCAuNzQtLjMzIDEuNDUtLjkgMS45MmwtMS45MiAxLjZoOC45OGwtMS45Mi0xLjZhMi41MSAyLjUxIDAgMCAxLS45LTEuOTIiLz48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJNMTUuNjU4IDE2LjU0YTYuOTcgNi45NyAwIDAgMS02Ljk3LTYuOTdWMi43MWMwLS4zOS4zMi0uNzEuNzEtLjcxaDEyLjUzYy4zOSAwIC43MS4zMi43MS43MXY2Ljg2YzAgMy44NS0zLjEyIDYuOTctNi45OCA2Ljk3Ii8+PHBhdGggZmlsbD0iIzZENDUzNCIgZD0iTTIyLjc5MiAyMS4wM0g4LjE5N2MtLjc3IDAtMS40MjMuNTEtMS41NzEgMS4yMmwtMS42MTQgNy4wOWMtLjA3My4zMy4xOS42NC41NDkuNjRoMTkuODc4Yy4zNTkgMCAuNjIyLS4zMS41NDktLjY0bC0xLjYxNC03LjA5Yy0uMTU4LS43MS0uODEyLTEuMjItMS41ODItMS4yMiIvPjxwYXRoIGZpbGw9IiNGRkIwMkUiIGQ9Ik0xOC4zODMgMjMuOTZoLTUuNzY2YS42MjUuNjI1IDAgMCAwLS42MTMuNjR2MS44MWMwIC4zNS4yNjguNjQuNjEzLjY0aDUuNzY2Yy4zMzUgMCAuNjEzLS4yOC42MTMtLjY0VjI0LjZjMC0uMzUtLjI2OC0uNjQtLjYxMy0uNjQiLz48L2c+PC9zdmc+" alt=""><h3>1921년 노벨 물리학상</h3><p>아인슈타인은 1921년 노벨 물리학상을 받았어요.</p><p>수상 이유는 유명한 상대성이론이 아니에요.</p><p>수상 이유는 이론물리학에 기여한 공로와, 특히 광전효과 법칙의 발견이에요.</p></article>
+    </div>
+  </section>
+
+  <section id="sec-true" class="part">
+    <h2>진짜일까요?</h2>
+    <p>소문을 눌러서 사실을 확인해 보세요.</p>
+    <div class="myths"><details class="myth"><summary>아인슈타인은 수학을 못해서 낙제했대요.</summary><div class="lines"><b>사실이 아니에요.</b><p>아인슈타인은 열다섯 살이 되기 전에 미적분을 익혔다고 직접 말했어요.</p></div></details><details class="myth"><summary>아인슈타인은 시험에 떨어진 적이 한 번도 없대요.</summary><div class="lines"><b>사실이 아니에요.</b><p>아인슈타인은 대학교 입학시험에 떨어진 적이 있어요.</p><p>수학 때문이 아니라 다른 과목 때문이었어요.</p></div></details><details class="myth"><summary>아인슈타인은 상대성이론으로 노벨상을 받았대요.</summary><div class="lines"><b>사실이 아니에요.</b><p>노벨상의 수상 이유에서 특히 강조된 것은 광전효과 법칙의 발견이에요.</p></div></details></div>
+  </section>
+
+  <section id="sec-letter" class="part">
+    <h2>바버라에게 보낸 편지</h2>
+    <div class="lines"><p>1943년 1월, 미국 워싱턴 D.C.에 사는 바버라라는 여학생이 아인슈타인에게 편지를 보냈어요.</p><p>아인슈타인은 1월 7일에 바버라에게 답장을 썼어요.</p></div>
+    <blockquote class="letter"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjQjRBQ0JDIiBkPSJNMiA4YTIgMiAwIDAgMSAyLTJoMjRhMiAyIDAgMCAxIDIgMnYxNmEyIDIgMCAwIDEtMiAySDRhMiAyIDAgMCAxLTItMnoiLz48cGF0aCBmaWxsPSIjRTFEOEVDIiBkPSJtMy4wNTcgNy44NzZsNy43MiA1LjIwOGwtLjU1NC44MzJMMyA5LjA0djEzLjkxbDkuMjMyLTUuODdsLjUzNi44NDNsLTkuNzE4IDYuMThhMS4yNSAxLjI1IDAgMCAwIDEuMi44OThoMjMuNWExLjI1IDEuMjUgMCAwIDAgMS4yMDQtLjkxNGwtOS43MjItNi4xNjRsLjUzNi0uODQ0TDI5IDIyLjkzVjkuMDRsLTcuMjIzIDQuODc2bC0uNTU0LS44MzJsNy43Mi01LjIwOEExLjI1IDEuMjUgMCAwIDAgMjcuNzUgN0g0LjI1YTEuMjUgMS4yNSAwIDAgMC0xLjE5My44NzYiLz48cGF0aCBmaWxsPSIjRjkyRjYwIiBkPSJNMTIgOWMxLjY5NCAwIDIuOTMuOTE5IDMuNTUgMS41MWMuMjQuMjMuNjYuMjMuOSAwQzE3LjA3IDkuOTIgMTguMzA3IDkgMjAgOWMyLjUgMCA0IDIgNCA1YzAgNC02LjUgOS04IDlzLTgtNS04LTljMC0zIDEuNS01IDQtNSIvPjwvZz48L3N2Zz4=" alt=""><p class="ko">"수학이 어렵다고 걱정하지 마세요. 내가 겪는 어려움이 훨씬 더 크다고 장담할 수 있어요."</p><p class="en" lang="en">"Do not worry about your difficulties in mathematics; I can assure you that mine are still greater."</p></blockquote>
+    <p class="note">영어 문장은 학술 논문에 인용된 문장이에요. 한국어 문장은 이 페이지에서 직접 번역했어요.</p>
+  </section>
+  <footer>그림: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener">Microsoft Fluent Emoji</a> (© Microsoft Corporation, <a href="https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>). 아인슈타인의 실제 초상이 아니라, 그를 나타내는 일러스트예요.</footer>
+</div>
+
+<script>
+const ICONS = {"man-white-hair-light":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRjNFRUY4IiBkPSJtMjUuNzg3IDYuMzc2bC0uOC0uMzk3Yy0uNi0uMjk5LTEuMS0uNTk3LTEuNS0xLjA5NWwtMS41MDEtMS40OTFjLTEuMi0xLjA5NC0yLjkwMS0xLjQ5Mi00LjQwMi0uOTk1Yy0xIC4yOTgtMi4xLjI5OC0zLjEgMGMtMS40MDEtLjY5Ni0zLjAwMS0uMzk4LTQuMTAyLjU5N2wtMS44IDEuODljLS41LjM5Ny0xIC43OTUtMS41IDEuMDk0bC0uODAxLjM5N2MtMS40LjY5Ny0yLjIgMi4yODgtMiAzLjg4bDEuMSA1LjY2OWMuMS41OTYuNi45OTQgMS4yLjk5NGM1LjkxOSAwIDEyLjQxOS4xIDE4LjkwNi4xYy42IDAgMS0uMzk4IDEuMS0uOTk1bDEuMS01LjY3Yy4zLTEuNjktLjUtMy4yODEtMS45LTMuOTc4Ii8+PHBhdGggZmlsbD0iI0Y0QzZBRCIgZD0iTTI1LjYyMiAxNS4wNjVjLS4wNzUuOTI0LS4xMzUgMS45NTQtLjEzNSAxLjk1NGMuNiAwIDEtLjM5OCAxLjEtLjk5NWwuMDk4LS41MDZhMyAzIDAgMSAxLTEuMDYzLS40NTNtLTIwLjMxOS40NjFsLjA3OC4zOThjLjEuNTk3LjYuOTk1IDEuMi45OTVjMCAwLS4wNTktLjkzOC0uMTMyLTEuODY5UTYuNzE4IDE1IDcgMTVhMyAzIDAgMSAxLTEuNjk3LjUyNSIvPjxwYXRoIGZpbGw9IiNGRkQ3QzIiIGQ9Ik02LjQ5IDE2LjkxNnEuMDQ1LjAwMy4wOTEuMDAzcy0uMS0xLjU5MS0uMi0yLjY4NWMwLS40OTguMi0xLjA5NC42LTEuMzkzbC4zLS4yOThjLjUtLjM5OC43LS45OTUuNy0xLjU5MVY5LjM2YzAtLjQ5Ny4zLS44OTUuOC0uOTk0YzEuMjAxLS4yOTkgMy43MDItLjc5NiA3LjMwMy0uNzk2czYuMTAyLjQ5NyA3LjMwMi43OTZjLjQuMDk5LjguNDk3LjguOTk0djEuNTkyYzAgLjU5Ni4zIDEuMTkzLjcgMS41OWwuMi4zOTljLjQuMzk3LjYuODk1LjYgMS4zOTJjLS4xLjk5NS0uMiAyLjY4NS0uMiAyLjY4NWguMDM0bC0uNDk1IDcuMzgyYy0uMyAzLjMtMi44OTQgNS42LTUuOTg3IDUuNkgxMy4wNWMtMy4xOTMgMC01LjY4OC0yLjMtNS45ODctNS42eiIvPjxwYXRoIGZpbGw9IiNFNUFGOTMiIGQ9Im0xNS4yODcgMTcuNTI3bC0uOTkgMy4xN2ExLjAwNSAxLjAwNSAwIDAgMCAuOTcgMS4zMDNoMS40NjZjLjY4OCAwIDEuMTczLS42NjIuOTctMS4zMDRsLS45OS0zLjE3Yy0uMjEzLS43MDEtMS4yMDMtLjcwMS0xLjQyNiAwIi8+PHBhdGggZmlsbD0iIzk5MDgzOCIgZD0iTTE2IDIzLjg5NWE1LjYgNS42IDAgMCAxLTIuNTgzLS42MTJjLS4yNTUtLjEzLS41My4xNTgtLjM2OS4zOUEzLjUzIDMuNTMgMCAwIDAgMTYgMjUuMjVhMy41MyAzLjUzIDAgMCAwIDIuOTUyLTEuNTc3Yy4xNi0uMjQxLS4xMTQtLjUyLS4zNjktLjM5YTUuNiA1LjYgMCAwIDEtMi41ODMuNjEyIi8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTkuMDE1IDE3LjM2N2EyLjYwNyAyLjYwNyAwIDAgMSA1LjA4NS4xMjhhLjQyOC40MjggMCAwIDEtLjQyNS41MDVIOS41MThhLjUxMi41MTIgMCAwIDEtLjUwMy0uNjMzbTEzLjk3IDBhMi42MiAyLjYyIDAgMCAwLTIuNTI3LTEuOTY3YTIuNiAyLjYgMCAwIDAtMi41NTcgMi4wOTZhLjQyOC40MjggMCAwIDAgLjQyNC41MDRoNC4xNTdhLjUxMi41MTIgMCAwIDAgLjUwMy0uNjMzIi8+PHBhdGggZmlsbD0iIzdENDUzMyIgZD0iTTEwLjI1OSAxNy41NTdhMS42NjQgMS42NjQgMCAxIDEgMy4yNjguNDQzaC0zLjIwOWExLjcgMS43IDAgMCAxLS4wNi0uNDQzbTExLjQ4MyAwYzAtLjkyNi0uNzUtMS42NjQtMS42NjgtMS42NjRhMS42NSAxLjY1IDAgMCAwLTEuNjU5IDEuNjY0cTAgLjIzNi4wNi40NDNoMy4yMDhjLjA0LS4xNDguMDYtLjI4Ni4wNi0uNDQzIi8+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTExLjkyNyAxNi42MTFhLjk0Ny45NDcgMCAwIDEgLjg0IDEuMzg5aC0xLjY3OWEuOTQ3Ljk0NyAwIDAgMSAuODQtMS4zODltOC4xMzUgMGEuOTQ3Ljk0NyAwIDAgMC0uODQgMS4zODloMS42NzlhLjk0Ny45NDcgMCAwIDAtLjg0LTEuMzg5Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjY1IDE2LjkyYzAgLjE2Ni0uMTMyLjMtLjI5NS4zYS4zLjMgMCAwIDEtLjI5Ni0uM2MwLS4xNjYuMTMyLS4zLjI5Ni0uM3MuMjk2LjEzNC4yOTYuM204LjE5NSAwYzAgLjE2Ni0uMTMzLjMtLjI5Ny4zYS4zLjMgMCAwIDEtLjI5Ni0uM2MwLS4xNjYuMTMzLS4zLjI5Ni0uM2MuMTY0IDAgLjI5Ny4xMzQuMjk3LjMiLz48cGF0aCBmaWxsPSIjRjNFRUY4IiBkPSJtOC45NjMgMTIuOTg3bC4wMDItLjAwMmwuMDAzLS4wMDJsLjAwOS0uMDA3bC4wMjItLjAxOGwuMDY3LS4wNXEuMDgzLS4wNjEuMjIyLS4xNWMuMTg2LS4xMTcuNDUtLjI2Mi43ODMtLjM5NGE1LjMgNS4zIDAgMCAxIDIuNzgzLS4yOTVhLjk5NS45OTUgMCAxIDEtLjMxIDEuOTY3YTMuMyAzLjMgMCAwIDAtMS43NDIuMThhMi44IDIuOCAwIDAgMC0uNTYuMjk3bC0uMDE0LjAxMWEuOTk1Ljk5NSAwIDAgMS0xLjI2Ni0xLjUzNm0xMy45NzMtLjAwMWwtLjAwMi0uMDAybC0uMDAzLS4wMDJsLS4wMDktLjAwN2wtLjAyMi0uMDE4bC0uMDY3LS4wNWE0IDQgMCAwIDAtLjIyMi0uMTVhNSA1IDAgMCAwLS43ODMtLjM5NGE1LjMgNS4zIDAgMCAwLTIuNzgzLS4yOTVhLjk5NS45OTUgMCAxIDAgLjMxIDEuOTY3YTMuMyAzLjMgMCAwIDEgMS43NDIuMThhMyAzIDAgMCAxIC41Ni4yOTdsLjAxNC4wMTFhLjk5NS45OTUgMCAwIDAgMS4yNjUtMS41MzciLz48L2c+PC9zdmc+","girl-light":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjMjEyMTIxIiBkPSJNMjUuNSAxNC41Yy0uMjQzIDAtLjcwOC4wNzctLjcwOC4wNzdMNi4wNTQgMTQuNTNzLTEuNTA0LjUxLTIuMDA4IDEuMDg5YTcgNyAwIDAgMS0uMDE3LS40ODl2LTQuMDdhNy4wNiA3LjA2IDAgMCAxIDUuOTkzLTYuOThBMi4xODcgMi4xODcgMCAwIDEgMTIuMTk5IDJoNS44MWM1LjUyIDAgMTAgNC40OCAxMCAxMHYzLjEzcTAgLjI2Ni0uMDIuNTNBMy4yNCAzLjI0IDAgMCAwIDI1LjUgMTQuNU04LjQzOSAyMS4yMmwtNiA0LjAzYy0uNTUuMzctLjU5IDEuMTctLjA4IDEuNmwzLjE5IDIuODFjLjcyLjY0IDEuODUuMzQgMi4xOC0uNTZsMi4zMi02LjQ5em0xNS4xOSAwbDYgNC4wM2MuNTUuMzcuNTkgMS4xNy4wOCAxLjZsLTMuMTkgMi44MWMtLjcyLjY0LTEuODUuMzQtMi4xOC0uNTZsLTIuMzItNi40OXoiLz48cGF0aCBmaWxsPSIjRjRDNkFEIiBkPSJNOS43NSAxNy43NWEzLjI1IDMuMjUgMCAxIDEtNi41IDBhMy4yNSAzLjI1IDAgMCAxIDYuNSAwbTE5IDBhMy4yNSAzLjI1IDAgMSAxLTYuNSAwYTMuMjUgMy4yNSAwIDAgMSA2LjUgMCIvPjxwYXRoIGZpbGw9IiNGRkQ3QzIiIGQ9Ik0xOC44MjkgMTNhOC44MiA4LjgyIDAgMCAxLTguMS01LjMzN2ExMC4yNCAxMC4yNCAwIDAgMS0zLjYyIDUuNDE3YTMuMjMgMy4yMyAwIDAgMC0xLjA1NSAxLjQ1cS0uMTA2LjAxNS0uMjEuMDM2bC4xOTIgNS42NDlDNi4yNzUgMjYuMDc0IDEwLjY1OSAzMCAxNiAzMGM1LjMzIDAgOS43MjUtMy45MjYgOS45NjQtOS43ODVsLjE5Mi01LjY0OWEzLjMgMy4zIDAgMCAwLTEuMzY0LjAxMUE0Ljg2IDQuODYgMCAwIDAgMjEuMTkgMTN6Ii8+PHBhdGggZmlsbD0iIzk5MDgzOSIgZD0iTTE2LjAxNCAyMy4zNzNhNi41IDYuNSAwIDAgMS0zLjAxNi0uNzMzYS4zMjkuMzI5IDAgMCAwLS40My40NzJhNC4wODggNC4wODggMCAwIDAgNi44OSAwYy4xOC0uMjgxLS4xMy0uNjIyLS40MjktLjQ3MmE2LjM1IDYuMzUgMCAwIDEtMy4wMTUuNzMzIi8+PHBhdGggZmlsbD0iI0U1QUY5MyIgZD0iTTE2LjAwMyAyMmMuNjcgMCAxLjI3LS4zNDUgMS42Mi0uODczYy4zMi0uNDc3LS4wMi0xLjEyNy0uNTktMS4xMjdoLTIuMDdjLS41NyAwLS45MS42NS0uNTkgMS4xMjdjLjM2LjUyOC45Ni44NzMgMS42My44NzMiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNOC4yMTkgMTguNDdhMy4wOSAzLjA5IDAgMCAxIDMtMi4zNGMxLjUgMCAyLjc2IDEuMDcgMy4wNSAyLjQ5Yy4wNi4zMS0uMTkuNi0uNTEuNmgtNC45NGMtLjQgMC0uNy0uMzctLjYtLjc1bTE1LjYgMGEzLjA5IDMuMDkgMCAwIDAtMy0yLjM0Yy0xLjUgMC0yLjc1IDEuMDctMy4wNSAyLjQ5Yy0uMDYuMzEuMTkuNi41MS42aDQuOTRjLjQgMCAuNy0uMzcuNi0uNzUiLz48cGF0aCBmaWxsPSIjN0Q0NTMzIiBkPSJNOS42OTkgMTguN2MwLTEuMDkuODktMS45OCAxLjk4LTEuOThzMS45OC44OSAxLjk3IDEuOThjMCAuMTgtLjAyLjM1LS4wNy41MmgtMy44MWMtLjA0LS4xNi0uMDctLjM0LS4wNy0uNTJtMTIuNjUgMGMwLTEuMDktLjg5LTEuOTgtMS45OC0xLjk4Yy0xLjEgMC0xLjk4Ljg5LTEuOTcgMS45OGMwIC4xOC4wMi4zNS4wNy41MmgzLjgxYy4wNC0uMTYuMDctLjM0LjA3LS41MiIvPjxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0xMS42NzkgMTcuNTdjLjYyIDAgMS4xMy41MSAxLjEzIDEuMTNjMCAuMTktLjA1LjM3LS4xMy41MmgtMmMtLjA4LS4xNS0uMTMtLjMzLS4xMy0uNTJjMC0uNjIuNTEtMS4xMyAxLjEzLTEuMTNtOC42OSAwYy0uNjIgMC0xLjEzLjUxLTEuMTMgMS4xM2MwIC4xOS4wNC4zNy4xMy41MmgyYy4wOC0uMTUuMTMtLjMzLjEzLS41MmMwLS42Mi0uNTEtMS4xMy0xLjEzLTEuMTMiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTEuMzQ5IDE3LjkyYS4zNS4zNSAwIDEgMS0uNyAwYS4zNS4zNSAwIDAgMSAuNyAwbTguNzUgMGEuMzUuMzUgMCAxIDEtLjcgMGEuMzUuMzUgMCAwIDEgLjcgMCIvPjxwYXRoIGZpbGw9IiMyMTIxMjEiIGQ9Ik05LjkwNiAxNS4xNzFjLjUyMi0uMTg1IDEuMjY4LS4zMjYgMi4yNTYtLjIzM2EuNS41IDAgMCAwIC4wOTQtLjk5NmMtMS4xMzMtLjEwNy0yLjAyNi4wNTMtMi42ODUuMjg3YS41LjUgMCAwIDAgLjMzNS45NDJtMTIuNTYtLjk0MmMtLjY1OC0uMjM0LTEuNTUyLS4zOTQtMi42ODQtLjI4N2EuNS41IDAgMSAwIC4wOTQuOTk2Yy45ODctLjA5MyAxLjczNC4wNDcgMi4yNTUuMjMzYS41LjUgMCAxIDAgLjMzNS0uOTQyIi8+PC9nPjwvc3ZnPg==","open-book":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjQjRBQ0JDIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNiA4LjA1QTMuNSAzLjUgMCAwIDEgMTguNSA3aDhjLjc0MyAwIDEuMzkuNDA0IDEuNzM0IDEuMDAzYy4wNy4xMjEuMDk2LjI2LjA5Ni40djIuMjk0TDI5IDI1LjVhMi41IDIuNSAwIDAgMS0yLjUgMi41aC0yMUEyLjUgMi41IDAgMCAxIDMgMjUuNWwuNjctMTQuODAzVjguNDAzYzAtLjE0LjAyNi0uMjc5LjA5Ni0uNEEyIDIgMCAwIDEgNS41IDdoOGMuOTggMCAxLjg2NS40MDIgMi41IDEuMDUiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGZpbGw9IiMwMDc0QkEiIGQ9Ik0xNy43MzIgMzBIMjguNWMuODMgMCAxLjUwMS0uNjc4IDEuNTAxLTEuNTA1VjI3LjQ0YzAtLjgyNy0uNjctMi40NDEtMS41MDEtMi40NDFoLTI1QzIuNjcxIDI1IDIgMjYuNjE0IDIgMjcuNDQxdjEuMDY0QzIgMjkuMzMyIDIuNjcgMzAgMy41MDEgMzBoMTAuNzY3YTIgMiAwIDAgMCAzLjQ2NCAwIi8+PHBhdGggZmlsbD0iIzAwQTZFRCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMy41MDEgMTBIMTR2MWg0di0xaDEwLjQ5OWMuODMgMCAxLjUwMS42NjggMS41MDEgMS40OTV2MTZjMCAuODI3LS42NyAxLjUwNS0xLjUwMSAxLjUwNUgxNy43MzJhMiAyIDAgMCAxLTMuNDY0IDBIMy41Yy0uODI5IDAtMS41LS42NjgtMS41LTEuNDk1di0xNi4wMUMyIDEwLjY2OCAyLjY3IDEwIDMuNTAxIDEwTTE3LjUgMjcuNWExLjUgMS41IDAgMSAxLTMgMGExLjUgMS41IDAgMCAxIDMgMCIgY2xpcC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0iI0I0QUNCQyIgZD0iTTEzIDhINS44MDNhMS41IDEuNSAwIDAgMC0xLjI0OC42NjhMMyAxMXYxNC41QTEuNSAxLjUgMCAwIDAgNC41IDI3aDIzYTEuNSAxLjUgMCAwIDAgMS41LTEuNVYxMWwtMS41NTUtMi4zMzJBMS41IDEuNSAwIDAgMCAyNi4xOTcgOEgxOXYzaC02eiIvPjxwYXRoIGZpbGw9IiNGM0VFRjgiIGQ9Ik01LjUgOGg4YTIuNSAyLjUgMCAwIDEgMi41IDIuNVYyN2wtLjQ0Ny0uODk0QTIgMiAwIDAgMCAxMy43NjMgMjVINS41YTEgMSAwIDAgMS0xLTFWOWExIDEgMCAwIDEgMS0xbTEzIDBoOGExIDEgMCAwIDEgMSAxdjE1YTEgMSAwIDAgMS0xIDFoLTguMjY0YTIgMiAwIDAgMC0xLjczNiAxLjAwN1Y5Yy40NTYtLjYwNyAxLjE4Mi0xIDItMSIvPjwvZz48L3N2Zz4=","test-tube":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjQzNFRjNDIiBkPSJNMTIuMzE0IDEyLjc1N0wyMC41IDExbDUuMjQ5IDIuNDY1bC0xNC4xNDIgMTQuMTQyYTUgNSAwIDAgMS03LjA3Mi03LjA3MWwxLjA1Ny0xLjA1N2wxLjA1Ny4wODd2LTEuMTQ0bDMuMTk3LTMuMTk3bDEuMDQ5LS4wM3YtMS4wMTl6Ii8+PHBhdGggZmlsbD0iI0FFRERGRiIgZD0iTTIxLjg2IDIuNTA0YTEuNSAxLjUgMCAxIDAtMi4xMjIgMi4xMjJsLjM1NC4zNTNsLTQuOTc1IDQuOTc1TDE1LjUgMTFsLTEuMzk2LS4wMzNsLTEuNzkgMS43OWwxMy40MzUuNzA3bDEuNDE0LTEuNDE0bC4zNTQuMzU0YTEuNSAxLjUgMCAxIDAgMi4xMi0yLjEyMXoiLz48cGF0aCBmaWxsPSIjMDA4NDYzIiBkPSJtMTUuMTQyIDkuOTI5bDIuMjk4IDIuMjk4YS43NS43NSAwIDEgMS0xLjA2IDEuMDZsLTIuMy0yLjI5N3pNMTAuOSAxNC4xNzJsMi4yOTcgMi4yOThhLjc1Ljc1IDAgMCAxLTEuMDYgMS4wNmwtMi4yOTgtMi4yOTh6bS0xLjk0NSA2LjU0bC0yLjI5OC0yLjI5OGwtMS4wNiAxLjA2bDIuMjk3IDIuMjk5YS43NS43NSAwIDAgMCAxLjA2MS0xLjA2Ii8+PC9nPjwvc3ZnPg==","artist-palette":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkJCOEFCIiBkPSJNMjEuOTkzIDUuODU0Yy02LjcwNy0zLjQyLTE0LjY1Ni0yLjEtMTguMjc5IDMuODgzUzIuMzk4IDIzLjY4IDguODcgMjcuNTE3YzMuMTggMS44ODYgOC4zMTIgMy44MTEgMTAuMzk4IDEuMjQ0YzIuMDQ0LTIuNTE2LS45NzItNC4xMS0uMjY4LTUuNTAyYzEuMTMzLTIuMjQgNi4yLjY5OSA5LjUxNS0yLjkyMmMzLjczNC00LjA4Mi4wMDktMTEuMTUxLTYuNTIyLTE0LjQ4M00yNCAxOWMtMS43NDUgMC0zLTEuMjczLTMtM3MxLjI1NS0zIDMtM3MzIDEuMjczIDMgM3MtMS4yNTUgMy0zIDMiLz48cGF0aCBmaWxsPSIjOEQ2NUM1IiBkPSJNMTQuMjUgMTFhMi4yNSAyLjI1IDAgMSAwIDAtNC41YTIuMjUgMi4yNSAwIDAgMCAwIDQuNSIvPjxwYXRoIGZpbGw9IiNGNzBBOEQiIGQ9Ik04LjI1IDE1YTIuMjUgMi4yNSAwIDEgMCAwLTQuNWEyLjI1IDIuMjUgMCAwIDAgMCA0LjUiLz48cGF0aCBmaWxsPSIjMDBEMjZBIiBkPSJNOC4yNSAyMmEyLjI1IDIuMjUgMCAxIDAgMC00LjVhMi4yNSAyLjI1IDAgMCAwIDAgNC41Ii8+PHBhdGggZmlsbD0iIzNGNUZGRiIgZD0iTTEzLjc1IDI2LjVhMi4yNSAyLjI1IDAgMSAwIDAtNC41YTIuMjUgMi4yNSAwIDAgMCAwIDQuNSIvPjwvZz48L3N2Zz4=","red-question-mark":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjRjgzMTJGIiBkPSJNMTMuMDM3IDIwLjg2M2MwIDEuMzAyIDEuMTQ1IDIuMzYgMi41NTUgMi4zNnMyLjU1Ni0xLjA1OCAyLjU1Ni0yLjM3VjE5LjE1YzAtLjExMS4wNzMtLjIwOS4xOC0uMjQyQzIxLjY3NiAxNy44NSAyNCAxNC45MTkgMjQgMTEuNTYydi0xLjI1NGMwLTQuMjM5LTMuNjktNy43NzMtOC4yMjctNy44NjFjLTIuMjgtLjA1LTQuNDMyLjc0NC02LjA2NSAyLjIxMmMtMS42MjIgMS40NjktMi41MjMgMy40NDctMi41MjMgNS41NTJjMCAxLjMxMSAxLjE1NSAyLjM2OSAyLjU2NiAyLjM2OXMyLjU1NS0xLjA1OCAyLjU1NS0yLjM2YzAtLjgyMi4zNS0xLjU5Ni45ODYtMi4xNzNhMy40IDMuNCAwIDAgMSAyLjM3NS0uODcyYzEuNzguMDQgMy4yMjMgMS40NSAzLjIyMyAzLjE0M3YxLjI0NGMwIDEuNDY4LTEuMTI0IDIuNzMxLTIuNjgzIDIuOTk2Yy0xLjgzNC4zMTMtMy4xNyAxLjc5MS0zLjE3IDMuNTE0ek0xNS41IDMwYTIuNSAyLjUgMCAxIDAgMC01YTIuNSAyLjUgMCAwIDAgMCA1Ii8+PC9zdmc+","light-bulb":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJNMTcuNjUxIDIyLjI3aC0zLjg5Yy0uNzkgMC0xLjQ0LjY0LTEuNDMgMS40M3YzLjg5YzAgLjc5LjY0IDEuNDMgMS40MyAxLjQzaC4yNDhhMS45NCAxLjk0IDAgMCAwIDMuMzg0IDBoLjI1OGMuNzkgMCAxLjQzLS42NCAxLjQzLTEuNDNWMjMuN2MwLS43OS0uNjQtMS40My0xLjQzLTEuNDMiLz48cGF0aCBmaWxsPSIjRkNENTNGIiBkPSJNMTguMTYxIDIzLjEzYy4yNCAwIC40My0uMTguNDUtLjQxYy4wNy0uODYuNDQtMi45NSAyLjQ2LTUuMTlhOC42NiA4LjY2IDAgMCAwIDMuMjktNi4zMWMuMDItLjI0LjAzLS40LjAzLS41di0uMWMtLjA2LTQuNzgtMy45My04LjYyLTguNy04LjYyYTguNjkgOC42OSAwIDAgMC04LjY5IDguNnMtLjAxLjI0LjAzLjY0Yy4xNiAyLjU0IDEuNCA0Ljc5IDMuMjkgNi4yOGMyLjAyIDIuMjUgMi40MiA0LjM0IDIuNDkgNS4yYy4wMi4yMy4yMS40MS40NS40MXoiLz48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJNMTUuNzAxIDEwLjdjMS42MiAwIDIuOTQgMS4zMSAyLjk2IDIuOTN2LjA4YzAgLjAzIDAgLjA3LS4wMS4xM2MtLjA1Ljg0LS40NiAxLjYzLTEuMTIgMi4xNWwtLjA3LjA1bC0uMDYuMDZjLTEuMSAxLjIyLTEuMzMgNC4zMi0xLjM3IDYuMDJoLS42NWMtLjA1LTEuNy0uMjktNC44LTEuMzktNi4wMmwtLjA2LS4wNmwtLjA3LS4wNWEyLjk2IDIuOTYgMCAwIDEtMS4xMi0yLjE3YzAtLjA0LS4wMS0uMDctLjAxLS4wOXYtLjA5Yy4wMy0xLjYyIDEuMzYtMi45NCAyLjk3LTIuOTRtMC0xYTMuOTYgMy45NiAwIDAgMC0yLjQ1IDcuMDdjMS4yIDEuMzQgMS4xNCA2LjM2IDEuMTQgNi4zNmgyLjY0cy0uMDgtNS4wMiAxLjEzLTYuMzVjLjg2LS42OCAxLjQzLTEuNzEgMS41LTIuODhjLjAxLS4xMS4wMS0uMTguMDEtLjIzdi0uMDRhMy45NyAzLjk3IDAgMCAwLTMuOTctMy45MyIvPjxwYXRoIGZpbGw9IiNEM0QzRDMiIGQ9Ik0xOS4xNjcgMjUuMDUzYS41LjUgMCAxIDAtLjE3Mi0uOTg2bC02Ljc0IDEuMThhLjUuNSAwIDEgMCAuMTcyLjk4NnptLS4wNSAyLjE1YS41LjUgMCAwIDAtLjE3Mi0uOTg1bC02LjY1IDEuMTdhLjUuNSAwIDEgMCAuMTczLjk4NHoiLz48cGF0aCBmaWxsPSIjRkZGNDc4IiBkPSJNMTMuNzkxIDUuNDRjLTEuMTEgMS45Mi0uNTUgNC4zMiAxLjI1IDUuMzVzNC4xNS4zMiA1LjI2LTEuNnMuNTUtNC4zMi0xLjI1LTUuMzVzLTQuMTUtLjMyLTUuMjYgMS42Ii8+PC9nPjwvc3ZnPg==","rocket":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjQ0EwQjRBIiBkPSJNMjkuMiAyLjk1Yy0uOTQ3LS45NDctMi43LS45OTgtMy44MTgtLjQyNWMtLjkxMy4zMTQtMS44NzQuNjY3LTIuODU0IDEuMDYzbC4wMS4wMWMtMi41NzUgMS4wOTUtNi40MjcgMy4wNC05LjUxIDUuOTAyYy0yLjE2NCAyLjAxLTMuNDA0IDMuNTU2LTQuMjM1IDQuOTY1bC01LjI5OCAxLjk1YTEgMSAwIDAgMC0uMzYyIDEuNjQ2bDExLjEzOCAxMS4xMzdhMSAxIDAgMCAwIDEuNjQ1LS4zNjJsMi4yMDQtNS45ODZjMS42MDgtLjk1OCAzLjIyMy0yLjE2NSA0LjkwOC0zLjg1YzIuMzktMi4zOSA0LjM2Ni02LjU2IDUuNTEzLTkuMzU3bC4wMDkuMDA4Yy40LS45OS43NTgtMS45NjEgMS4wNzQtMi44ODNjLjU3My0xLjExOC43NC0yLjY1NC0uNDI0LTMuODE4Ii8+PHBhdGggZmlsbD0iI0Y0RjRGNCIgZD0iTTIzLjI5OSA0LjM2NWMtMi41MTcgMS4wNC02LjQ3OCAyLjk3OC05LjU5IDUuODY4Yy0yLjAxNSAxLjg3LTMuMTcyIDMuMjk0LTMuOTQgNC41NWMtLjc2OSAxLjI1NS0xLjE3NSAyLjM4LTEuNjYzIDMuNzRsLS4wMDIuMDA3Yy0uMTcuNDc0LS4zNS45NzctLjU1OSAxLjUxNGw0LjU1NiA0LjU1NmMzLjYwMi0xLjQ4IDYuNzQtMi44MjggMTAuMjItNi4zMDdjMi4zNTEtMi4zNTIgNC4zMzktNi42NDIgNS40NTQtOS40MjF6Ii8+PHBhdGggZmlsbD0iIzlCOUI5QiIgZD0iTTI0LjUyOCAxMS4yNWEzLjI1IDMuMjUgMCAxIDEtNi41IDBhMy4yNSAzLjI1IDAgMCAxIDYuNSAwIi8+PHBhdGggZmlsbD0iIzgzQ0JGRiIgZD0iTTIzLjUyOCAxMS4yNWEyLjI1IDIuMjUgMCAxIDEtNC41IDBhMi4yNSAyLjI1IDAgMCAxIDQuNSAwIi8+PHBhdGggZmlsbD0iI0ZGODI1NyIgZD0iTTIuNDUxIDI5LjYxQzEuNzQ0IDI4LjkwNSAyLjAyOCAyNCA0LjUyOCAyM2MwIDAgMi41LTEgNC4xMS42YzEuNjEyIDEuNjAxLjg5IDMuNC44OSAzLjRjLS43MDcgMi4xMjEtMy43MTggMi45NjUtNC4wNzEgMi42MWMtLjE5NS0uMTk0LjE1Ni0uNTUgMC0uNzA2Yy0uMTU3LS4xNTctLjM5OC4wMjItMS4wNi4zNTNjLS40NzIuMjM2LTEuNjYzLjYzNy0xLjk0Ni4zNTQiLz48cGF0aCBmaWxsPSIjNTMzNTY2IiBkPSJNNi4wODggMjEuMDZhMS41IDEuNSAwIDAgMSAyLjEyMiAwbDMuNTM1IDMuNTM2YTEuNSAxLjUgMCAxIDEtMi4xMjEgMi4xMjJsLTMuNTM2LTMuNTM2YTEuNSAxLjUgMCAwIDEgMC0yLjEyMSIvPjxwYXRoIGZpbGw9IiNGOTJGNjAiIGQ9Ik0xNS41MzUgMTguNzIyYy40NDItMS4yLS43MjUtMi4zNjgtMS45MjYtMS45MjZsLTcuMTE0IDIuNjE5YTEgMSAwIDAgMC0uMzYyIDEuNjQ2bDUuMTM4IDUuMTM3YTEgMSAwIDAgMCAxLjY0NS0uMzYyeiIvPjwvZz48L3N2Zz4=","high-voltage":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjRkY4MjJEIiBkPSJtMTcuODMxIDMuMzA2bC05LjcyNiAxMy45Yy0uMjYuMzctLjA0NS43OTQuMzk1Ljc5NGg0Yy4zNSAwIC41LjE0LjUuNXYxMC43NjNjMCAuNzEuODYgMS4wMiAxLjI3LjQ1bDkuNjE4LTEyLjgyOGMuMjctLjM3LjA1Mi0uODg1LS4zODgtLjg4NUgyMGMtLjUgMC0xLS41LTEtMVYzLjVjMC0uNS0uNzYtLjc3NC0xLjE2OS0uMTk0Ii8+PC9zdmc+","ringed-planet":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkY5NDRDIiBkPSJNMjUuMDU0IDE2LjAwNWE5LjAyNyA5LjAyNyAwIDAgMS0xMC42MzIgOC44ODVDMTIuNzk0IDIzLjMyIDExIDIyLjUgOS4xNyAyMS44NzVhOSA5IDAgMCAxLTIuMTQzLTYuNTY2YzEuNjE4LTMuMDA2IDUuMDQ2LTYuODk0IDguMTc2LTguMjk0cS40MDgtLjAzNy44MjUtLjAzN2MyLjA3NyAwIDMuOTkuNzAxIDUuNTE1IDEuODhjLjYzNyAxLjU4OSAyLjExIDQuMzA5IDMuMzY1IDUuNTEycS4xNDYuNzk2LjE0NyAxLjYzNSIvPjxwYXRoIGZpbGw9IiNGQkI4QUIiIGQ9Ik0xMS45NTcgMTEuOTA5Yy0xLjggMS45MjEtMy43NzMgMi45NTktNC45MyAzLjM4NmE5LjAzIDkuMDMgMCAwIDEgOC4xNjgtOC4yOGMtLjI1Mi44NjktLjk0IDIuNDQyLTMuMjM4IDQuODk0bTguNjM4IDguMzg2YzEuOTA0LTIuMTQ1IDMuMjc4LTQuMTU3IDQuMzAyLTUuOTc1YTkuMDMgOS4wMyAwIDAgMC0zLjM2LTUuNDY2Yy0uNjM3IDEuNTQxLTIuMzUzIDQuMjY0LTUuNTEyIDcuNDg2Yy0yLjQ5NyAyLjU0Ny00Ljc5OCA0LjI5Ny02Ljg3IDUuNTJhOS4wMiA5LjAyIDAgMCAwIDUuMjk1IDMuMDM1YzIuMzU1LTEuMzEyIDQuNjE1LTIuODc3IDYuMTQ1LTQuNiIvPjxwYXRoIGZpbGw9IiNGQ0Q1M0YiIGQ9Ik0yNy4yMzEgNC44OGMtLjQ1My0uNTI3LTEuMDYtLjcwMy0xLjU4NC0uNzE4Yy0uNDk2LS4wMTUtLjk5LjEwOS0xLjQyNS4yNjRjLS44NzUuMzEyLTEuODYuODgzLTIuODExIDEuNTIyYTM3IDM3IDAgMCAwLTIuMTk4IDEuNjA4YTkgOSAwIDAgMSAyLjQ1MiAxLjM5OGMuNDAyLS4yOTkuODAzLS41ODUgMS4xOTQtLjg0N2MuODk4LS42MDIgMS42Ny0xLjAzIDIuMjM3LTEuMjMzbC4wNjYtLjAyM2MtLjAyNy4xMS0uMDcuMjQ3LS4xMzcuNDJjLS4yOC43Mi0uODQgMS42Ni0xLjYzMyAyLjc1NGMtMS41NyAyLjE2OS0zLjg1IDQuNjY5LTUuOTA5IDYuNzUyYy0xLjk5NiAyLjAyLTQuNzEzIDQuNDMtNy4wOTYgNi4xN2MtMS4xOTkuODc1LTIuMjYgMS41NDItMy4wNzQgMS45MTVxLS4yNi4xMTktLjQ1Mi4xODVjLjEyNS0uMzQuMzYyLS43OTQuNzI1LTEuMzY3Yy4zOTItLjYyMi44NzYtMS4yOTkgMS40MDItMi4wMjNhOSA5IDAgMCAxLTEuNDE0LTIuNDc4cS0uMjE2LjMtLjQzOC42MDNsLS4wNy4wOThjLS41ODcuODA1LTEuMTg4IDEuNjM1LTEuNjc5IDIuNDExYy0uNDc3Ljc1NS0uOTI0IDEuNTczLTEuMTE5IDIuMzVjLS4yLjgwMS0uMTk0IDEuODkuNzM3IDIuNjU0Yy41OS40ODQgMS4yOTguNTA0IDEuODAzLjQzNWMuNTIzLS4wNyAxLjA2OC0uMjY2IDEuNTg4LS41MDRjMS4wNDktLjQ4IDIuMjc1LTEuMjY3IDMuNTI0LTIuMThjMi41MTUtMS44MzcgNS4zMzctNC4zNDEgNy40MTMtNi40NDFjMi4wOTItMi4xMTggNC40OC00LjcyOCA2LjE2Ni03LjA1NWMuODM1LTEuMTU1IDEuNTUtMi4zMDggMS45NS0zLjMzOGMuMzU0LS45MTQuNjc3LTIuMjktLjIxOC0zLjMzM002Ljc1OCAyNS40NTF2LjAxMnoiLz48L2c+PC9zdmc+","coin":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRjlDMjNDIiBkPSJNMTYgMzBjNy43MzIgMCAxNC02LjI2OCAxNC0xNFMyMy43MzIgMiAxNiAyUzIgOC4yNjggMiAxNnM2LjI2OCAxNCAxNCAxNCIvPjxwYXRoIGZpbGw9IiNEMzg4M0UiIGQ9Ik0yNyAxNmMwIDYuMDc1LTQuOTI1IDExLTExIDExUzUgMjIuMDc1IDUgMTZTOS45MjUgNSAxNiA1czExIDQuOTI1IDExIDExbS00LjY4IDMuODlhLjU0LjU0IDAgMCAwLS41MS0uMzdoLjAzdi03Ljc2Yy40My0uMjguNTEtLjk3LS4wMS0xLjI4bC01LjM5LTMuMjZhLjczLjczIDAgMCAwLS43OCAwbC01LjQgMy4yNmMtLjUyLjMxLS40NCAxLS4wMiAxLjI4djcuNzdoLS4xMWMtLjI0IDAtLjQ1LjE2LS41MS4zOWwtLjM1IDEuMjVjLS4xLjM0LjE2LjY4LjUxLjY4aDEyLjQ1Yy4zNS0uMDEuNjEtLjM2LjUtLjcxek0xMS45IDExLjg4djcuNjRoMS42NnYtNy42NHptMy4zMSAwdjcuNjRoMS42OXYtNy42NHptMy4zNSAwdjcuNjRoMS42MnYtNy42NHoiIG9wYWNpdHk9Ii41MyIvPjwvZz48L3N2Zz4=","bullet-train":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRDNEM0QzIiBkPSJNMjkuOTgxIDdoLTEwLjEzYTkuNDMgOS40MyAwIDAgMC02Ljg5MiAzYzAgMS0xLjA1NCAyLjQ0Mi0xLjQ1OSAzLjVMNy43MzcgMTZsLTEuNzM2IDJsMTEuOTkgMWwxMS45OS0xeiIvPjxwYXRoIGZpbGw9IiNFNkU2RTYiIGQ9Ik0yOS45OSAxOEg2LjAwMmwtMi4zNiA0LjE2QzIuMSAyNC4xMyAzLjUxMSAyNyA2LjAxMSAyN0gzMHYtOXoiLz48cGF0aCBmaWxsPSIjNjM2MzYzIiBkPSJtNiAxOGwtMy4zNTggNC4xNUMxLjEgMjQuMTIzIDIuNTEyIDI3IDUuMDE4IDI3SDZ6Ii8+PHBhdGggZmlsbD0iIzI2QzlGQyIgZD0iTTcuNzM3IDE2aDE0LjA0OGE1Ljg5IDUuODkgMCAwIDAgNC43MzYtMi40bDEuMjQzLTEuNjhjLjU4Mi0uNzkuMDItMS45Mi0uOTU3LTEuOTJIMTIuOTZxLS4xMDYuMTEzLS4yMDguMjNsLTIuODcgMy4zeiIvPjxwYXRoIGZpbGw9IiM0NkE0RkIiIGQ9Ik0yOCAxMUgxMi4wODFsLjY3LS43N3EuMTAyLS4xMTcuMjA4LS4yM2gxMy44OWMuNjE0IDAgMS4wNjMuNDYgMS4xNTEgMU0xMyAyN2wxLjIzNC0xLjU5NkMxNS40MDcgMjMuODg4IDE3LjIzNyAyMyAxOS4xOTEgMjNIMzB2NHoiLz48cGF0aCBmaWxsPSIjRkY2NzIzIiBkPSJNMTAuOTkxIDIyaC0yYy0uNTUgMC0xLS40NS0xLTFzLjQ1LTEgMS0xaDJjLjU1IDAgMSAuNDUgMSAxcy0uNDUgMS0xIDEiLz48cGF0aCBmaWxsPSIjMzIxQjQxIiBkPSJNMzAuMDAxIDI3aC0yOHYzaDI4eiIvPjwvZz48L3N2Zz4=","baseball":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJNMTYgMUM3LjcxNiAxIDEgNy43MTYgMSAxNnM2LjcxNiAxNSAxNSAxNXMxNS02LjcxNiAxNS0xNVMyNC4yODQgMSAxNiAxIi8+PHBhdGggZmlsbD0iI0Y0RjRGNCIgZD0iTTE2IDMwYzcuNzMyIDAgMTQtNi4yNjggMTQtMTRTMjMuNzMyIDIgMTYgMlMyIDguMjY4IDIgMTZzNi4yNjggMTQgMTQgMTQiLz48cGF0aCBmaWxsPSIjNjM2MzYzIiBkPSJNMjkuOTczIDE2Ljg4cS0uMDMuNTA0LS4wOTguOTk2Yy04LjI0Mi0uOTctMTQuNzgxLTcuNTA4LTE1Ljc1LTE1Ljc1MXEuNDkyLS4wNjYuOTk1LS4wOThjLjkyMyA3Ljc2OSA3LjA4NCAxMy45MyAxNC44NTMgMTQuODU0TTE2Ljg4IDI5Ljk3NGMtLjkyNC03Ljc2OC03LjA4NS0xMy45My0xNC44NTQtMTQuODUzcS4wMzItLjUwMi4wOTgtLjk5NmM4LjI0My45NyAxNC43ODIgNy41MDkgMTUuNzUxIDE1Ljc1MXEtLjQ5Mi4wNjYtLjk5NS4wOTgiLz48cGF0aCBmaWxsPSIjRjgzMTJGIiBkPSJNMTUuMDk0IDMuMTFhLjUuNSAwIDAgMC0uNTMzLjE1M2wtMS4xNjYgMS4zNzVhLjUuNSAwIDAgMCAuNzYyLjY0N2wuOTUtMS4xMmwxLjQuNDQ2YS41LjUgMCAwIDAgLjMwNS0uOTUzem0uODgyIDQuNjY4YS41LjUgMCAwIDEgLjQ4LS4yNzdsMS44LjExNmEuNS41IDAgMCAxLS4wNjUuOTk4bC0xLjQ2Ni0uMDk1bC0uNjUyIDEuMzE4YS41LjUgMCAwIDEtLjg5Ni0uNDQ0em0yLjU5NSAzLjgxM2EuNS41IDAgMCAxIC4zOTItLjM5MmwxLjc2OC0uMzU0YS41LjUgMCAxIDEgLjE5Ni45ODFsLTEuNDQxLjI4OGwtLjI4OCAxLjQ0MWEuNS41IDAgMSAxLS45ODEtLjE5NnptMy45MTIgMy4zOTJhLjUuNSAwIDAgMSAuMjc3LS40OGwxLjYxNi0uOGEuNS41IDAgMSAxIC40NDMuODk3bC0xLjMxNy42NTFsLjA5NCAxLjQ2N2EuNS41IDAgMCAxLS45OTcuMDY0em00LjYxNiAxLjU5MmEuNS41IDAgMCAwLS4xMTkuNTQybC42NTYgMS42NzlhLjUuNSAwIDAgMCAuOTMyLS4zNjRsLS41MzUtMS4zNjlsMS4wNTctMS4wMmEuNS41IDAgMCAwLS42OTQtLjcyem0tMjMuOTUtMi4wNDdhLjUuNSAwIDAgMC0uMDk3LjU0NmwuNzI1IDEuNjVhLjUuNSAwIDAgMCAuOTE1LS40MDFsLS41OS0xLjM0NmwxLjAxNS0xLjA2MmEuNS41IDAgMSAwLS43MjMtLjY5MXptNC42MDIgMi4wNDdhLjUuNSAwIDAgMSAuMjc3LS40OGwxLjYxNi0uOGEuNS41IDAgMCAxIC40NDMuODk3bC0xLjMxNy42NTFsLjA5NSAxLjQ2N2EuNS41IDAgMCAxLS45OTguMDY0em0zLjgyIDIuNzY2YS41LjUgMCAwIDEgLjM5MS0uMzkybDEuNzY4LS4zNTNhLjUuNSAwIDAgMSAuMTk2Ljk4bC0xLjQ0LjI4OGwtLjI4OSAxLjQ0MWEuNS41IDAgMCAxLS45OC0uMTk2em0zLjAzIDMuNDM4YS41LjUgMCAwIDEgLjQ4LS4yNzhsMS43OTkuMTE2YS41LjUgMCAwIDEtLjA2NC45OThsLTEuNDY3LS4wOTRsLS42NTEgMS4zMTdhLjUuNSAwIDEgMS0uODk2LS40NDR6bTIuNDY5IDQuMTNhLjUuNSAwIDAgMC0uNTM4LjEzN2wtMS4yMDcgMS4zMzhhLjUuNSAwIDEgMCAuNzQzLjY3bC45ODQtMS4wOTFsMS4zODYuNDg4YS41LjUgMCAxIDAgLjMzMi0uOTQzeiIvPjwvZz48L3N2Zz4=","alarm-clock":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRDNEM0QzIiBkPSJNMjMuMjA3IDI0LjU4QzIxIDI1LjUgMTkuMDUgMjYgMTYuNSAyNmMtMi43ODggMC00LjUtLjUtNy4yMDMtMS44NmwtMi41ODYgMi4yMzdDNS4zMTcgMjcuNTg4IDYuMTEgMzAgNy45MDUgMzBIMjQuMDljMS43OTYgMCAyLjU5OS0yLjQxMiAxLjE5NC0zLjYyM3oiLz48cGF0aCBmaWxsPSIjRjgzMTJGIiBkPSJNMTYuNSAyN0MyMi4yOTkgMjcgMjcgMjIuMjk5IDI3IDE2LjVTMjIuMjk5IDYgMTYuNSA2UzYgMTAuNzAxIDYgMTYuNVMxMC43MDEgMjcgMTYuNSAyNyIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xNi41IDI0YTcuNSA3LjUgMCAxIDAgMC0xNWE3LjUgNy41IDAgMCAwIDAgMTUiLz48cGF0aCBmaWxsPSIjRjlDMjNDIiBkPSJNNC4yNzMgOS4yMjhjLS43MzUtMi4yODQuMDM5LTQuODgzIDIuMDMzLTYuMjk0czQuNTg4LTEuMTc4IDYuMzIuMzk2Yy41NDIuNDk3LjQ4NCAxLjQtLjEwNiAxLjgxN2wtNi42MDEgNC42NmMtLjYuNDE2LTEuNDE0LjEzMi0xLjY0Ni0uNTc5bTI0LjQ1NCAwYy43MzUtMi4yODQtLjAzOS00Ljg4My0yLjAzMy02LjI5NHMtNC41ODgtMS4xNzgtNi4zMi4zOTZjLS41NDIuNDk3LS40ODQgMS40LjEwNiAxLjgxN2w2LjYwMSA0LjY2Yy42LjQxNiAxLjQxNC4xMzIgMS42NDYtLjU3OSIvPjxwYXRoIGZpbGw9IiNGODMxMkYiIGQ9Ik0xNS4xNjggMTYuNDQ1YTEgMSAwIDAgMSAxLjM4Ny0uMjc3bDMgMmExIDEgMCAxIDEtMS4xMSAxLjY2NGwtMy0yYTEgMSAwIDAgMS0uMjc3LTEuMzg3Ii8+PHBhdGggZmlsbD0iIzIxMjEyMSIgZD0iTTE2IDExYTEgMSAwIDAgMSAxIDF2NWExIDEgMCAxIDEtMiAwdi01YTEgMSAwIDAgMSAxLTEiLz48L2c+PC9zdmc+","globe-showing-asia-australia":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjMDA3NEJBIiBkPSJNMTYgMzBjNy43MzIgMCAxNC02LjI2OCAxNC0xNFMyMy43MzIgMiAxNiAyUzIgOC4yNjggMiAxNnM2LjI2OCAxNCAxNCAxNCIvPjxwYXRoIGZpbGw9IiMwMEQyNkEiIGQ9Im0zLjk2MSAyMy4xNWwuNTg5LS42NmMuMjgtLjMxLjQ0LS43Mi40NC0xLjE0di0xLjc2YzAtLjMzLjI2LS41OS41OS0uNTljLjIzIDAgLjQxLS4xOC40MS0uNDFWMThjMC0uNTUtLjQ1LTEtMS0xcy0xLS40NS0xLTF2LS41MWMwLS4yNy4yMi0uNDkuNDktLjQ5Yy4yOCAwIC41Mi4yMy41LjUxYzAgLjI3LjIyLjQ5LjQ5LjQ5aC42Yy41MSAwIC45Mi0uNDEuOTItLjkydi0uNThjMC0uMjguMjItLjUuNS0uNXMuNS4yMi41LjV2Ljk1YzAgLjMxLjI1LjU1LjU1LjU1Yy4yNSAwIC40NS4yLjQ1LjQ1di45M2EuNjIzLjYyMyAwIDAgMCAxLjE4LjI4bDEuNjItMy4yNWEuNzYuNzYgMCAwIDEgLjY3LS40MWMuMzIgMCAuNi4yMS43MS41MWwuNyAyLjA5YS41OC41OCAwIDAgMCAxLjEzLS4xOFYxNC41YzAtLjI4LjIyLS41LjUtLjVzLjUtLjIyLjUtLjV2LTEuNDRjMC0uNTguNDctMS4wNiAxLjA2LTEuMDZjLjUyIDAgLjk0LS40Mi45My0uOTR2LS4xMmMwLS41Mi0uNDItLjk0LS45NC0uOTRoLS41NmMtLjI4IDAtLjUtLjIyLS41LS41cy4yMi0uNS41LS41aDEuNjNjLjQ4IDAgLjg3LjM5Ljg3Ljg3di42M2MwIC4yOC4yMi41LjUuNXMuNS0uMjIuNS0uNXYtLjU4YzAtMS4wNi44Ni0xLjkyIDEuOTItMS45MmgxLjU4Yy4yOCAwIC41LS4yMi41LS41cy0uMjItLjUtLjUtLjVoLTIuOWMtLjMzIDAtLjYtLjI3LS42LS42YzAtLjIyLS4xOC0uNC0uNC0uNGgtNC41M2MtLjY5IDAtMS4zNy0uMjEtMS45NC0uNmwtMi4xNy0xLjQ2MkM1LjcxNCA0Ljk2NCAyIDEwLjA0OCAyIDE2YzAgMi42MTIuNzE1IDUuMDU3IDEuOTYxIDcuMTVNMTggMTguNjR2LS45M2MwLS4zOS4zMS0uNzEuNzEtLjczYy4xOSAwIC4zNy4wOC41LjIxbDEuNTkgMS41OWMuMTQuMTMuMjEuMzEuMjEuNWMwIC4zOS0uMzIuNzEtLjcxLjcxaC0uMTRjLS4xIDAtLjItLjAyLS4yOS0uMDZsLTEuNDUtLjY1YS42OS42OSAwIDAgMS0uNDItLjY0TTE1LjQ3IDE4aC0uOTVjLS4yOSAwLS41My4yNC0uNTMuNTN2Ljk1YzAgLjI5LjI0LjUzLjUzLjUzaC45NWMuMjkgMCAuNTMtLjI0LjUzLS41M3YtLjk1YzAtLjI5LS4yNC0uNTMtLjUzLS41M00xMiAxOS41YzAgLjI4LjIyLjUuNS41Yy4yNyAwIC41LS4yMi41LS41di0xYzAtLjI4LS4yMi0uNS0uNS0uNXMtLjUuMjItLjUuNXptNi43OS04LjI5TDE3LjIgMTIuOGMtLjEzLjEzLS4yMS4zMS0uMjEuNWMwIC4zOS4zMi43MS43MS43MWMuMTkgMCAuMzctLjA3LjUtLjIxbDEuNTktMS41OWMuMTMtLjEzLjIxLS4zMS4yMS0uNWMwLS4zOS0uMzItLjcxLS43MS0uNzFjLS4xOSAwLS4zNy4wNy0uNS4yMU0yMi4yIDI1LjhsMS41OS0xLjU5Yy4xMy0uMTQuMzEtLjIxLjUtLjIxYy4zOSAwIC43MS4zMi43MS43MWMwIC4xOS0uMDguMzctLjIxLjVMMjMuMiAyNi44Yy0uMTMuMTQtLjMxLjIxLS41LjIxYy0uMzkgMC0uNzEtLjMyLS43MS0uNzFjMC0uMTkuMDgtLjM3LjIxLS41TTE1IDIyLjc0djEuMjNjMCAuNTcuNDYgMS4wMyAxLjAzIDEuMDNoMS41M2MuMjcgMCAuNTMuMTEuNzIuM2wuNDEuNDFjLjE5LjE5LjQ1LjMuNzIuM2guOTRjLjM5IDAgLjc1LS4yMi45Mi0uNTdsLjYxLTEuMjFjLjA3LS4xNC4xMS0uMy4xMS0uNDZ2LTEuMTJjMC0uMzktLjIyLS43NS0uNTctLjkybC0xLjIxLS42MWMtLjE0LS4wNy0uMy0uMTEtLjQ2LS4xMWgtMS41OWMtLjExIDAtLjIyLjAyLS4zMy4wNWwtMi4xNC43MWMtLjQxLjE0LS42OS41My0uNjkuOTciLz48L2c+PC9zdmc+","paperclip":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48ZyBjbGlwLXBhdGg9InVybCgjZmx1ZW50RW1vamlGbGF0UGFwZXJjbGlwMCkiPjxwYXRoIGZpbGw9IiNCRUJFQkUiIGQ9Ik0xOS4zNzQgNS40MzNhNi4xMTcgNi4xMTcgMCAwIDEgOS4wNzQgOC4yMDZMMTYuODIgMjYuNWwtLjAxNS4wMTZsLS4wMS4wMUE4LjM0NSA4LjM0NSAwIDAgMSA0LjQ0MSAxNS4zMDVsOC41MDItOS40MDJhMS4yNSAxLjI1IDAgMCAxIDEuODUzIDEuNjc2TDYuMjk0IDE2Ljk4YTUuODQ2IDUuODQ2IDAgMSAwIDguNjcyIDcuODQybDExLjYyOS0xMi44NThhMy42MTkgMy42MTkgMCAxIDAtNS4zNjgtNC44NTVsLTkuODczIDEwLjkxN2ExLjM0NiAxLjM0NiAwIDEgMCAxLjk5NiAxLjgwNWw2LjY1NC03LjM1N2ExLjI1IDEuMjUgMCAwIDEgMS44NTMgMS42NzVsLTYuNjU0IDcuMzU4YTMuODQ0IDMuODQ0IDAgMCAxLTUuNzM4LTUuMTE3bC4wMi0uMDIzeiIvPjwvZz48ZGVmcz48Y2xpcFBhdGggaWQ9ImZsdWVudEVtb2ppRmxhdFBhcGVyY2xpcDAiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMzJ2MzJIMHoiLz48L2NsaXBQYXRoPjwvZGVmcz48L2c+PC9zdmc+","house":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRjNDMDdCIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMCA4LjgzNFYzLjUyM0EuNTMuNTMgMCAwIDAgOS40NjcgM0g2LjU0M0EuNTMuNTMgMCAwIDAgNiAzLjUyM3Y4LjY0NmwtMSAuODMzdjE2aDIydi0xNUwxNi4wNyAzLjc3MnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGZpbGw9IiM4QzU1NDMiIGQ9Ik0xNS45MiAyNy4wMDNIOC4wOGMtLjA0IDAtLjA4LS4wNC0uMDgtLjA4di0xMC41M2MwLS43NS42MS0xLjM2IDEuMzYtMS4zNmg1LjI5Yy43NSAwIDEuMzYuNjEgMS4zNiAxLjM2djEwLjUzYy0uMDEuMDQtLjA1LjA4LS4wOS4wOCIvPjxwYXRoIGZpbGw9IiM0MDJBMzIiIGQ9Ik0xNC41IDIxLjAwMmEuNS41IDAgMSAwIDAtMWEuNS41IDAgMCAwIDAgMSIvPjxwYXRoIGZpbGw9IiNEM0QzRDMiIGQ9Ik0xNS45NiAyOC4wMDJIOGMtLjU1IDAtMS0uNDUtMS0xcy40NS0xIDEtMWg3Ljk2Yy41NSAwIDEgLjQ1IDEgMXMtLjQ1IDEtMSAxIi8+PHBhdGggZmlsbD0iIzAwRjM5NyIgZD0iTTMwIDI5LjAwMkgydi0uMDljMC0xLjA2Ljg1LTEuOTEgMS45MS0xLjkxaDI0LjE4YzEuMDUgMCAxLjkxLjg1IDEuOTEgMS45MXoiLz48cGF0aCBmaWxsPSIjRjgzMTJGIiBkPSJtMTYuODggMi4zNTNsMTIuNzYgMTIuNTdjLjQ4LjQ3LjQ4IDEuMjMgMCAxLjY5Yy0uNDcuNDctMS4yNC40Ny0xLjcyIDBsLTExLjktMTEuNzJsLTExLjk0IDExLjc2Yy0uNDcuNDctMS4yNC40Ny0xLjcyIDBzLS40OC0xLjIzIDAtMS43bDEyLjgtMTIuNmMuNDctLjQ3IDEuMjQtLjQ3IDEuNzIgMCIvPjxwYXRoIGZpbGw9IiM4M0NCRkYiIGQ9Ik0yMy4xNCAyMS4wMDJoLTQuMjhjLS40OCAwLS44Ni0uMzgtLjg2LS44NnYtNC4yOGMwLS40Ny4zOC0uODYuODYtLjg2aDQuMjhjLjQ3IDAgLjg2LjM4Ljg2Ljg2djQuMjhjMCAuNDgtLjM4Ljg2LS44Ni44NiIvPjwvZz48L3N2Zz4=","sun":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkY4MjJEIiBkPSJNMTMuNjM4IDMuMjAyYTIuOTM2IDIuOTM2IDAgMCAxIDQuNzI0IDBhMi45NCAyLjk0IDAgMCAwIDMuMjUgMS4wNTVhMi45MzYgMi45MzYgMCAwIDEgMy44MjIgMi43NzhhMi45NCAyLjk0IDAgMCAwIDIuMDA4IDIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxIDEuNDYgNC40OTRhMi45NCAyLjk0IDAgMCAwIDAgMy40MTZhMi45MzYgMi45MzYgMCAwIDEtMS40NiA0LjQ5NGEyLjk0IDIuOTQgMCAwIDAtMi4wMDggMi43NjNhMi45MzYgMi45MzYgMCAwIDEtMy44MjMgMi43NzhhMi45NCAyLjk0IDAgMCAwLTMuMjQ5IDEuMDU1YTIuOTM2IDIuOTM2IDAgMCAxLTQuNzI0IDBhMi45NCAyLjk0IDAgMCAwLTMuMjUtMS4wNTVhMi45MzYgMi45MzYgMCAwIDEtMy44MjItMi43NzhhMi45NCAyLjk0IDAgMCAwLTIuMDA4LTIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxLTEuNDYtNC40OTRhMi45NCAyLjk0IDAgMCAwIDAtMy40MTZhMi45MzYgMi45MzYgMCAwIDEgMS40Ni00LjQ5NGEyLjk0IDIuOTQgMCAwIDAgMi4wMDgtMi43NjNhMi45MzYgMi45MzYgMCAwIDEgMy44MjMtMi43NzhhMi45NCAyLjk0IDAgMCAwIDMuMjQ5LTEuMDU1Ii8+PHBhdGggZmlsbD0iI0ZDRDUzRiIgZD0iTTI1LjA2MiAyMS4yMzJjLTIuODkgNS4wMDUtOS4yOSA2LjcyLTE0LjI5NCAzLjgzcy02LjcyLTkuMjktMy44My0xNC4yOTRzOS4yOS02LjcyIDE0LjI5NC0zLjgzczYuNzIgOS4yOSAzLjgzIDE0LjI5NCIvPjwvZz48L3N2Zz4=","glowing-star":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSIjRkNENTNGIj48cGF0aCBkPSJtMjguOTc5IDE3LjAwM2wtMy4xMDguMjE0Yy0uODM0LjA2LTEuMTc4IDEuMDc5LS41NDIgMS42MDhsMi4zODggMS45NTVjLjUyMS40MjggMS4zMTQuMjA0IDEuNTIzLS40MjhsLjcwOS0yLjEyN2MuMjE5LS42MzItLjI5Mi0xLjI3My0uOTctMS4yMjJNMjEuNzUgMi42OTFsLS43MiAyLjljLS4yLjc4LjY2IDEuNDEgMS4zNC45OGwyLjU0LTEuNThjLjU1LS4zNC41OC0xLjE0LjA1LTEuNTJsLTEuNzgtMS4yOWEuOTEyLjkxMiAwIDAgMC0xLjQzLjUxTTYuNDMgNC45OTVsMi41MyAxLjU4Yy42OC40MyAxLjU0LS4xOSAxLjM1LS45OGwtLjcyLTIuOWEuOTIuOTIgMCAwIDAtMS40My0uNTJsLTEuNzggMS4yOWMtLjUzLjQtLjUgMS4xOS4wNSAxLjUzTTQuMTg1IDIwLjcxM2wyLjI5LTEuOTJjLjYyLS41Mi4yOS0xLjUzLS41MS0xLjU4bC0yLjk4LS4yMWEuOTIuOTIgMCAwIDAtLjk0IDEuMmwuNjggMi4wOWMuMi42Mi45Ny44NCAxLjQ2LjQybTEzLjYxIDcuMjkybC0xLjEyLTIuNzdjLS4zLS43NS0xLjM2LS43NS0xLjY2IDBsLTEuMTIgMi43N2MtLjI0LjYuMiAxLjI2Ljg1IDEuMjZoMi4yYS45Mi45MiAwIDAgMCAuODUtMS4yNiIvPjxwYXRoIGQ9Im0xNy41NjUgMy4zMjRsMS43MjYgMy43MmMuMzI2LjY5NC45NjcgMS4xOCAxLjcxNyAxLjI5bDQuMDU2LjYyNGMxLjgzNS4yNzggMi41NzUgMi41MyAxLjI5MyAzLjg1OUwyMy4yNjggMTZhMi4yOCAyLjI4IDAgMCAwLS42MTIgMS45NjRsLjcxIDQuMzc0Yy4zMDcgMS44ODUtMS42ODcgMy4yOTMtMy4zNTQgMi4zN2wtMy40MDUtMS44OTRhMi4yNSAyLjI1IDAgMCAwLTIuMjEgMGwtMy40MDQgMS44OTVjLTEuNjY4LjkyMi0zLjY2MS0uNDg2LTMuMzU1LTIuMzdsLjcxLTQuMzc1QTIuMjggMi4yOCAwIDAgMCA3LjczNiAxNmwtMy4wODgtMy4xODRjLTEuMjkzLTEuMzQtLjU0My0zLjU4MSAxLjI5My0zLjg1OWw0LjA1NS0uNjI1YTIuMyAyLjMgMCAwIDAgMS43MTctMS4yOWwxLjcyNy0zLjcxOWMuODE5LTEuNzY1IDMuMzA2LTEuNzY1IDQuMTI0IDAiLz48L2c+PC9zdmc+","satellite":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjNjM1OTk0IiBkPSJNMTQuMzY4IDUuODc0TDEwLjY2MiAzLjNhLjg4My44ODMgMCAwIDAtMS4yMi4yMmwtNy42NyAxMS4wNDVhLjg3Ny44NzcgMCAwIDAgLjIxOSAxLjIxOGwzLjcwNiAyLjU3NWEuODc3Ljg3NyAwIDAgMCAxLjIxOS0uMjJsNy42NzEtMTEuMDQ1YS44NzcuODc3IDAgMCAwLS4yMi0xLjIxOW0yLjMxMyAyMC4xMDJsMy43MDYgMi41NzRhLjg3Ljg3IDAgMCAwIDEuMjE0LS4yMTJsNy42NzEtMTEuMDQ1YS44NzcuODc3IDAgMCAwLS4yMi0xLjIxOUwyNS4zNDYgMTMuNWEuODc3Ljg3NyAwIDAgMC0xLjIxOC4yMkwxNi40NiAyNC43NTdhLjg3Ny44NzcgMCAwIDAgLjIyIDEuMjIiLz48cGF0aCBmaWxsPSIjOTk4RUE0IiBkPSJtMjEuNDg3IDEyLjk5NWwtMi4xMTgtMi4zNjNsLTMuMTY2LTEuMzA3bC0xLjAyIDEuNDY4bDIuMzM3IDIuNDM1bDIuOTQ4IDEuMjM1eiIvPjxwYXRoIGZpbGw9IiMxQzFDMUMiIGQ9Im0xMi40NzcgMTMuMjY1bC0xLjQ2OC0xLjAybC0uNTEuNzM0bDEuNDY4IDEuMDJ6bTYuNjEyIDQuNTkybDEuNDY4IDEuMDJsLS41MS43MzNsLTEuNDY4LTEuMDJ6bS01LjUwNCAxLjYyOGwtLjczNC0uNTFsLTEuNTMgMi4yMDJsLjczNS41MXptLTQuMjkgNC42MjVsLjc0Mi41MTVsLTEuNTMgMi4yMDFsLS43NC0uNTE1eiIvPjxwYXRoIGZpbGw9IiNCQ0E0RUIiIGQ9Im0xMi42IDYuODIybC0yLjIwMi0xLjUyOWwtMS41MyAyLjIwMmwyLjIwMiAxLjUyOXptLTQuNzUgMi4xNGwyLjIwMSAxLjUzbC0xLjUzIDIuMjAybC0yLjItMS41M3ptLS4zNDggNS4ybC0yLjIwMS0xLjUzbC0xLjUzIDIuMjAybDIuMjAyIDEuNTI5em0xNy41OCAxLjMzbDIuMjAyIDEuNTNsLTEuNTI5IDIuMjAybC0yLjIwMS0xLjUzem0tMi41NDggMy42N2wyLjIwMiAxLjUzbC0xLjUzIDIuMjAxbC0yLjIwMS0xLjUyOXptLS4zNDcgNS4xOTlsLTIuMjAyLTEuNTNsLTEuNTI5IDIuMjAybDIuMjAyIDEuNTN6Ii8+PHBhdGggZmlsbD0iI0I0QUNCQyIgZD0ibTE2LjEzNyA5LjI4bDUuNDA5IDMuNzU2Yy4zMy4yMy43ODUuMTU0IDEuMDA3LS4xODFsLjY5OC0xLjAwNmEuNzIuNzIgMCAwIDAtLjE4MS0xLjAwN2wtNS40MS0zLjc1N2EuNzIuNzIgMCAwIDAtMS4wMDcuMTgybC0uNjk4IDEuMDA1YS43Mi43MiAwIDAgMCAuMTgxIDEuMDA3bS03LjE1IDE4LjQyM2ExLjM0IDEuMzQgMCAxIDEtMi4yMDItMS41M2ExLjM0IDEuMzQgMCAwIDEgMi4yMDIgMS41M20zLjM2OS0xLjQ2N2wtNS4zOC0zLjczN2ExLjAzOCAxLjAzOCAwIDAgMS0uMDUtMS42NjZhNC40NjggNC40NjggMCAwIDEgNy4wMDIgNC44NjNjLS4yMDYuNjcyLTEgLjkzNy0xLjU3Mi41NG0tMS44MjYtOC44ODRsNS40MDkgMy43NTdjLjMzLjIzLjc4NS4xNTMgMS4wMDctLjE4MmwzLjc1Ny01LjQwOGEuNzIuNzIgMCAwIDAtLjE4Mi0xLjAwOGwtNS40MDgtMy43NTdhLjcyLjcyIDAgMCAwLTEuMDA4LjE4MmwtMy43NTcgNS40MDlhLjcyLjcyIDAgMCAwIC4xODIgMS4wMDciLz48L2c+PC9zdmc+","camera":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRDNEM0QzIiBkPSJNNS41IDExYS41LjUgMCAwIDAtLjUuNVYxM2g0di0xLjVhLjUuNSAwIDAgMC0uNS0uNXptMTYgMGEuNS41IDAgMCAwLS41LjVWMTNoNnYtMS41YS41LjUgMCAwIDAtLjUtLjV6Ii8+PHBhdGggZmlsbD0iI0U2RTZFNiIgZD0iTTIgMTRhMiAyIDAgMCAxIDItMmgyNGEyIDIgMCAwIDEgMiAydjIuNUwyOCAyMmwyIDUuNXYuNWEyIDIgMCAwIDEtMiAySDRhMiAyIDAgMCAxLTItMnYtLjVMMy41IDIyTDIgMTYuNXoiLz48cGF0aCBmaWxsPSIjNTMzNTY2IiBkPSJNMiAxNi41YS41LjUgMCAwIDEgLjUtLjVoMjdhLjUuNSAwIDAgMSAuNS41djExYS41LjUgMCAwIDEtLjUuNWgtMjdhLjUuNSAwIDAgMS0uNS0uNXoiLz48cGF0aCBmaWxsPSIjMzIxQjQxIiBkPSJNMjIgMjJhNiA2IDAgMSAxLTEyIDBhNiA2IDAgMCAxIDEyIDAiLz48cGF0aCBmaWxsPSIjOUI5QjlCIiBkPSJNMTYgMjdhNSA1IDAgMSAwIDAtMTBhNSA1IDAgMCAwIDAgMTBtMCAyYTcgNyAwIDEgMSAwLTE0YTcgNyAwIDAgMSAwIDE0Ii8+PHBhdGggZmlsbD0iIzQzM0I2QiIgZD0iTTE4LjUgMjJhMi41IDIuNSAwIDEgMS01IDBhMi41IDIuNSAwIDAgMSA1IDAiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTkuMDgzIDE5Ljg3NWMuNDE0LjcxNy4zNjIgMS41MjMtLjExNiAxLjc5OWMtLjQ3OS4yNzYtMS4yMDItLjA4Mi0xLjYxNi0uNzk5cy0uMzYzLTEuNTIzLjExNi0xLjhjLjQ3OC0uMjc1IDEuMjAxLjA4MiAxLjYxNi44Ii8+PC9nPjwvc3ZnPg==","mobile-phone":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjNzE2N0E0IiBkPSJNOSAyYTMgMyAwIDAgMC0zIDN2MmgxOVY1YTMgMyAwIDAgMC0zLTN6bTAgMjhhMyAzIDAgMCAxLTMtM3YtMmgxOXYyYTMgMyAwIDAgMS0zIDN6Ii8+PHBhdGggZmlsbD0iIzMyMUI0MSIgZD0iTTYgNmgxOXYyMEg2eiIvPjxwYXRoIGZpbGw9IiMwMEE2RUQiIGQ9Ik0xMy41IDEwYTEgMSAwIDAgMSAxLTFoMmExIDEgMCAwIDEgMSAxdjJhMSAxIDAgMCAxLTEgMWgtMmExIDEgMCAwIDEtMS0xem0tNSA1YTEgMSAwIDAgMSAxLTFoMmExIDEgMCAwIDEgMSAxdjJhMSAxIDAgMCAxLTEgMWgtMmExIDEgMCAwIDEtMS0xem02IDRhMSAxIDAgMCAwLTEgMXYyYTEgMSAwIDAgMCAxIDFoMmExIDEgMCAwIDAgMS0xdi0yYTEgMSAwIDAgMC0xLTF6Ii8+PHBhdGggZmlsbD0iI0ZGODIyRCIgZD0iTTguNSAxMGExIDEgMCAwIDEgMS0xaDJhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAxLTEtMXptMCAxMGExIDEgMCAwIDEgMS0xaDJhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAxLTEtMXptMTEtNmExIDEgMCAwIDAtMSAxdjJhMSAxIDAgMCAwIDEgMWgyYTEgMSAwIDAgMCAxLTF2LTJhMSAxIDAgMCAwLTEtMXoiLz48cGF0aCBmaWxsPSIjRkNENTNGIiBkPSJNMTguNSAxMGExIDEgMCAwIDEgMS0xaDJhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAxLTEtMXptLTUgNWExIDEgMCAwIDEgMS0xaDJhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAxLTEtMXptNiA0YTEgMSAwIDAgMC0xIDF2MmExIDEgMCAwIDAgMSAxaDJhMSAxIDAgMCAwIDEtMXYtMmExIDEgMCAwIDAtMS0xeiIvPjwvZz48L3N2Zz4=","sheaf-of-rice":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjNDQ5MTFCIiBkPSJNMTMuMjYgMzBoLjQ5Yy4xNCAwIC4yNS0uMTEuMjUtLjI2VjExaC0xdjE0aC0ydi03LjAxYzAtMi4wNS0xLjU0LTMuNzQtMy41My0zLjk3YS40MTYuNDE2IDAgMCAwLS40Ny40MXY3LjU1YzAgMi4yMSAxLjc5IDQgNCA0aDJ2My43NmMwIC4xNS4xMS4yNi4yNi4yNk0xNiAxNmgxdjEzaDIuMDN2LTQuMTRjMC0yLjA1IDEuNTQtMy43NCAzLjUzLTMuOTdjLjI1LS4wMy40Ny4xNi40Ny40MVYyNmMwIDIuMjEtMS43OSA0LTQgNGgtMi43Yy0uMTggMC0uMzMtLjE1LS4zMy0uMzN6Ii8+PHBhdGggZmlsbD0iI0Y5QzIzQyIgZD0iTTE4LjIzIDhjLjQxIDAgLjc2LjMyLjc3Ljc0cy0uMzMuNzYtLjc1Ljc2aC0zLjA2Yy0uNTIgMC0uOTQuNDItLjk0Ljk0djEuOGMwIC40Mi0uMzQuNzYtLjc2Ljc1Yy0uNDIgMC0uNzQtLjM2LS43NC0uNzdWNi4wNmMwLTIuMjQgMS44Mi00LjA2IDQuMDYtNC4wNmg0LjQ0Yy40MiAwIC43Ni4zNC43NS43NmMwIC40Mi0uMzYuNzQtLjc3Ljc0aC00LjRjLS40MiAwLS43Ni4zNC0uNzUuNzZzLjM2Ljc0Ljc3Ljc0aDMuNGMuNDIgMCAuNzYuMzQuNzUuNzZjMCAuNDItLjM2Ljc0LS43Ny43NGgtNC40Yy0uNDIgMC0uNzYuMzQtLjc1Ljc2cy4zNi43NC43Ny43NHptMyA5Yy40MSAwIC43Ni4zMi43OC43M2MuMDEuNDItLjMzLjc2LS43NS43NkgxOC4yYy0uNTIgMC0uOTQuNDItLjk0Ljk0djEuODFjMCAuNDItLjM0Ljc2LS43Ni43NWMtLjQyIDAtLjc0LS4zNi0uNzQtLjc3di02LjE2YzAtMi4yNCAxLjgyLTQuMDYgNC4wNi00LjA2aDQuNDNjLjQyIDAgLjc2LjM0Ljc1Ljc2YzAgLjQyLS4zNi43NC0uNzcuNzRoLTQuMjFjLS40MiAwLS43Ni4zNC0uNzUuNzZjMCAuNDIuMzYuNzQuNzcuNzRoMy4yMWMuNDIgMCAuNzYuMzQuNzUuNzZjMCAuNDItLjM2Ljc0LS43Ny43NGgtNC4yMWMtLjQyIDAtLjc2LjM0LS43NS43NmMwIC40Mi4zNi43NC43Ny43NHoiLz48L2c+PC9zdmc+","red-apple":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjMDBEMjZBIiBkPSJNMTAuMjUgMkg0LjIyYTUuOTIgNS45MiAwIDAgMCA1LjkyIDUuOTJoNi4wM0MxNi4xOCA0LjY2IDEzLjUyIDIgMTAuMjUgMiIvPjxwYXRoIGZpbGw9IiNGODMxMkYiIGQ9Ik0xOC4wOSA3LjM4Yy0xLjM0LjU3LTIuODYuNTctNC4yIDBjLTQuMi0xLjc3LTkuMDQuMjYtMTAuNzIgNC41MWExNi43MiAxNi43MiAwIDAgMCAwIDEyLjI5YTkuMjI3IDkuMjI3IDAgMCAwIDExLjA2IDUuNDljMS4xNS0uMzIgMi4zNy0uMzIgMy41MiAwYTkuMjAzIDkuMjAzIDAgMCAwIDExLjA2LTUuNDljMS41Ni0zLjk1IDEuNTYtOC4zNCAwLTEyLjI5Yy0xLjY3LTQuMjUtNi41MS02LjI4LTEwLjcyLTQuNTEiLz48L2c+PC9zdmc+"};
+const EIN = "man-white-hair-light", HANA = "girl-light";
+
+const METHODS = [
+  { id: "comic", name: "만화로 읽기", icon: "open-book" },
+  { id: "lab", name: "직접 실험하기", icon: "test-tube" },
+  { id: "guide", name: "그림으로 보기", icon: "artist-palette" },
+  { id: "quiz", name: "퀴즈 풀기", icon: "red-question-mark" }
+];
+const IDEAS = [
+  { id: "photo", name: "광전효과", icon: "light-bulb", hint: "빛이 금속에서 전자를 튀어나오게 해요.", accent: "#c2410c", tint: "#fff1e6",
+    core: "빛은 에너지 알갱이처럼 움직이기도 해요.",
+    lines: ["금속에 빛을 비추면 금속에서 전자가 튀어나올 수 있어요.", "전자는 금속 안에 처음부터 들어 있는 아주아주 작은 알갱이예요.", "빛은 전자를 가져오는 것이 아니라 전자에게 에너지를 줘요.", "아인슈타인은 빛을 에너지 알갱이로 생각해서 이 현상을 설명했어요.", "빛이 밝으면 빛 알갱이가 많아서 전자도 더 많이 튀어나와요."] },
+  { id: "special", name: "특수상대성이론", icon: "rocket", hint: "아주 빠른 우주선의 시계는 더 느리게 가요.", accent: "#1d4ed8", tint: "#e8f0ff",
+    core: "빛의 속도는 누가 재도 똑같아요.",
+    lines: ["아인슈타인은 빛의 속도가 변하지 않는다는 사실에서 출발했어요.", "빛의 속도가 변하지 않으면, 대신 시간과 길이가 달라져야 해요.", "그래서 아주 빠른 우주선의 시계는 밖에서 재면 더 느리게 가요."] },
+  { id: "energy", name: "E = mc²", icon: "high-voltage", hint: "작은 질량도 큰 에너지와 맞먹어요.", accent: "#be123c", tint: "#ffe9ee",
+    core: "질량과 에너지는 서로 맞먹어요.",
+    lines: ["질량은 물체에 들어 있는 물질의 양이에요.", "아인슈타인은 질량이 에너지로, 에너지가 질량으로 바뀔 수 있다고 밝혔어요.", "E = mc²은 질량이 얼마만큼의 에너지와 맞먹는지 알려 주는 식이에요."] },
+  { id: "general", name: "일반상대성이론", icon: "ringed-planet", hint: "무거운 천체가 공간과 시간을 휘게 해요.", accent: "#0f766e", tint: "#e0f5f2",
+    core: "무거운 천체는 주변의 공간과 시간을 휘게 해요.",
+    lines: ["아인슈타인은 중력을 휘어진 공간과 시간으로 설명했어요.", "지구는 태양이 휘게 한 공간을 따라 태양 둘레를 돌아요.", "빛도 무거운 천체 옆을 지날 때 그 휘어진 길을 따라가요."] }
+];
+const state = { idea: "photo", method: "comic" };
+
+/* ---------- 그림 도구 ---------- */
+const INK = "#1b2340";
+const ic = (n, x, y, s, rot = 0, flip = false) => {
+  const c = `<image href="${ICONS[n]}" x="${x}" y="${y}" width="${s}" height="${s}"/>`;
+  const t = [];
+  if (rot) t.push(`rotate(${rot} ${x + s / 2} ${y + s / 2})`);
+  if (flip) t.push(`translate(${2 * x + s} 0) scale(-1 1)`);
+  return t.length ? `<g transform="${t.join(" ")}">${c}</g>` : c;
+};
+let TS = 1;
+const txt = (x, y, t, size = 14, fill = INK) => `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="Jua, sans-serif">${t}</text>`;
+const tag = (x, y, t, bg = "#ffffff", fill = INK, size = 13) => {
+  const s = size * TS, w = [...t].length * s * .86 + 18;
+  return `<rect x="${x - w / 2}" y="${y - s - 3}" width="${w}" height="${s + 11}" rx="${(s + 11) / 2}" fill="${bg}"/>` + txt(x, y, t, size, fill);
+};
+const svg = (w, h, label, s) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">${s}</svg>`;
+const bg = (w, h, id) => `<rect width="${w}" height="${h}" fill="url(#${id})"/>`;
+const stars = (w, h) => [[.08, .16], [.3, .1], [.52, .2], [.72, .08], [.92, .2], [.16, .84], [.62, .92], [.88, .78], [.42, .72]].map(p => `<circle cx="${p[0] * w}" cy="${p[1] * h}" r="1.6" fill="#fff" opacity=".8"/>`).join("");
+const metal = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="url(#gMetal)"/>`;
+const elec = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#gE)"/>`;
+const beam = (x1, y1, x2, y2a, y2b, c, o = .3) => `<path d="M${x1} ${y1} L${x2} ${y2a} V${y2b}Z" fill="${c}" opacity="${o}"/>`;
+const ball = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#gBall)"/><g fill="#1b1538"><circle cx="${x - r * .12}" cy="${y - r * .42}" r="${r * .1}"/><circle cx="${x + r * .18}" cy="${y - r * .46}" r="${r * .1}"/><circle cx="${x + r * .04}" cy="${y - r * .18}" r="${r * .1}"/></g>`;
+/* 트램펄린: 가운데가 넓고 완만하게 꺼진 천을 격자로 그린다. */
+const sheetXY = (x, y) => { const r2 = x * x + y * y; return [160 + x, 58 + y * .42 + 66 * Math.exp(-r2 / 7200)]; };
+const sheet = () => {
+  const lines = [];
+  for (let a = -130; a <= 130; a += 26) {
+    const u = [], v = [];
+    for (let b = -104; b <= 104; b += 8) u.push(sheetXY(a, b).map(n => n.toFixed(1)).join(","));
+    for (let b = -130; b <= 130; b += 8) v.push(sheetXY(b, a * .8).map(n => n.toFixed(1)).join(","));
+    lines.push(`<polyline points="${u.join(" ")}"/><polyline points="${v.join(" ")}"/>`);
+  }
+  return `<g fill="none" stroke="#2f7fc1" stroke-width="1.3">${lines.join("")}</g>`;
+};
+const ORBIT = "M62 76 A98 41 0 1 0 258 76 A98 41 0 1 0 62 76";
+/* 빛 시계 한 쌍: 빛의 속도의 60%라서 움직이는 시계는 한 번 오가는 데 1.25배 걸린다. */
+const clockPair = () => `<g fill="#dfe7f3"><rect x="24" y="38" width="62" height="7" rx="3"/><rect x="24" y="128" width="62" height="7" rx="3"/></g>
+  <circle cx="55" r="7" fill="#ffd166"><animate attributeName="cy" values="128;45;128" dur="2s" repeatCount="indefinite"/></circle>
+  <path d="M55 128 V45" stroke="#ffd166" stroke-width="2" stroke-dasharray="4 5"/>
+  <path d="M135 128 L202 45 L270 128" fill="none" stroke="#ffd166" stroke-width="2" stroke-dasharray="4 5"/>
+  <g><g fill="#dfe7f3"><rect x="-31" y="38" width="62" height="7" rx="3"/><rect x="-31" y="128" width="62" height="7" rx="3"/></g><animateTransform attributeName="transform" type="translate" from="135 0" to="270 0" dur="2.5s" repeatCount="indefinite"/></g>
+  <circle r="7" fill="#ffd166"><animateMotion dur="2.5s" repeatCount="indefinite" path="M135 128 L202 45 L270 128"/></circle>`;
+/* 일식: 달이 태양을 가리면 하늘이 어두워지고 별과 코로나가 보인다. */
+const eclipse = (cx, cy, r, w, h) => {
+  const kt = "0;.3;.42;.6;.72;1", dur = "9s";
+  return `<defs><radialGradient id="gCorona"><stop offset=".42" stop-color="#ffffff"/><stop offset=".55" stop-color="#e6eeff" stop-opacity=".85"/><stop offset=".78" stop-color="#b9cbff" stop-opacity=".25"/><stop offset="1" stop-color="#b9cbff" stop-opacity="0"/></radialGradient></defs>
+  <rect width="${w}" height="${h}" fill="#090d24"/>
+  <rect width="${w}" height="${h}" fill="#7cc4f5"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="${kt}" dur="${dur}" repeatCount="indefinite"/></rect>
+  <circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff4b8"/>
+  <circle cx="${cx}" cy="${cy}" r="${r * 2.5}" fill="url(#gCorona)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="${kt}" dur="${dur}" repeatCount="indefinite"/></circle>
+  <circle cy="${cy}" r="${r * 1.02}" fill="#05070f"><animate attributeName="cx" values="${cx - r * 3.4};${cx - r * .7};${cx};${cx};${cx + r * .7};${cx + r * 3.4}" keyTimes="${kt}" dur="${dur}" repeatCount="indefinite"/></circle>`;
+};
+const afterFusion = (inner) => `<g opacity="0">${inner}<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></g>`;
+const nightOnly = (inner) => `<g opacity="0">${inner}<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.3;.42;.6;.72;1" dur="9s" repeatCount="indefinite"/></g>`;
+/* GPS: 위로 갈수록 중력이 약해지는 모습과 시간 차이를 함께 그린다. 차이는 크게 과장했다. */
+const gpsScene = () => `${bg(480, 255, "gNight")}${stars(480, 255)}
+  <circle cx="120" cy="330" r="130" fill="#3b82f6"/>
+  <g fill="none" stroke="#ffd166"><circle cx="120" cy="330" r="165" stroke-width="5" opacity=".75"/><circle cx="120" cy="330" r="205" stroke-width="3.5" opacity=".5"/><circle cx="120" cy="330" r="255" stroke-width="2" opacity=".3"/></g>
+  <circle cx="120" cy="330" r="315" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="4 6"/>
+  ${ic("mobile-phone", 100, 165, 40)}
+  <g>${ic("satellite", -24, -24, 48)}<animateMotion dur="10s" repeatCount="indefinite" path="M30 28 A315 315 0 0 1 345 110 A315 315 0 0 0 30 28"/></g>
+  ${tag(48, 140, "땅: 중력 강함", "#ffd166", INK, 13)}
+  ${tag(400, 30, "약 2만 km 높이", "#ffffff", INK, 13)}${tag(400, 60, "중력 약함", "#ffd166", INK, 13)}
+  <rect x="196" y="122" width="274" height="124" rx="12" fill="#0f1738" opacity=".95"/>
+  ${txt(333, 144, "시간이 흐르는 빠르기 (크게 과장)", 13, "#fff")}
+  <rect x="208" y="170" width="250" height="13" rx="6" fill="#2a3566"/><rect x="208" y="170" height="13" rx="6" fill="#7fd0ff" width="0"><animate attributeName="width" values="0;250;250" keyTimes="0;.92;1" dur="5.5s" repeatCount="indefinite"/></rect>
+  <rect x="208" y="214" width="250" height="13" rx="6" fill="#2a3566"/><rect x="208" y="214" height="13" rx="6" fill="#ffd166" width="0"><animate attributeName="width" values="0;250;250" keyTimes="0;.68;1" dur="5.5s" repeatCount="indefinite"/></rect>
+  ${txt(245, 164, "땅의 시계", 13, "#7fd0ff")}${txt(250, 208, "위성의 시계", 13, "#ffd166")}`;
+const COMPARE_TABLE = `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>움직이는 것</th><th>빠르기</th><th>지구의 시계로 1년 동안 덜 가는 시간</th></tr></thead><tbody>
+  <tr><td>자동차</td><td>시속 100km</td><td>약 0.00000014초</td></tr>
+  <tr><td>여객기</td><td>시속 900km</td><td>약 0.00001초</td></tr>
+  <tr><td>GPS 위성</td><td>시속 약 1만 4천 km</td><td>약 0.0026초</td></tr>
+  <tr><td>우주선 (상상)</td><td>빛의 속도의 90%</td><td>약 206일</td></tr>
+  <tr><td>우주선 (상상)</td><td>빛의 속도의 99%</td><td>약 314일</td></tr>
+</tbody></table></div><p class="note">특수상대성이론의 식으로 계산한 값이고, 속도의 효과만 따졌어요. 빛의 속도는 시속 약 10억 8천만 km예요.</p>`;
+const NAME_TABLE = `<h3>두 이론은 무엇이 다를까요?</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th></th><th>특수상대성이론</th><th>일반상대성이론</th></tr></thead><tbody>
+  <tr><td>발표</td><td>1905년</td><td>1915~1916년</td></tr>
+  <tr><td>다루는 것</td><td>중력이 없고 일정하게 움직이는 경우</td><td>중력까지 포함한 더 넓은 경우</td></tr>
+  <tr><td>이름의 뜻</td><td>"특수"는 범위가 좁은 특별한 경우라는 뜻이에요.</td><td>"일반"은 더 넓게 두루 적용된다는 뜻이에요.</td></tr>
+  <tr><td>핵심 내용</td><td>빛의 속도는 같고, 시간과 길이가 달라져요.</td><td>무거운 천체가 공간과 시간을 휘게 해요.</td></tr>
+</tbody></table></div><p class="note">"상대성"은 시간과 길이를 재는 값이 누가 어떻게 움직이며 재는지에 따라 달라진다는 뜻이에요.</p>`;
+
+const RED = "#ef4444", BLUE = "#2563eb", GREEN = "#10b981";
+
+const COMIC = {
+  photo: [
+    { who: "하나", say: ["제가 금속판에 빨간빛을 아주 세게 비췄어요.", "그런데 금속판에서 전자가 하나도 나오지 않아요!"],
+      art: svg(320, 170, "전구가 금속판에 빨간빛을 비추지만 전자가 나오지 않는 그림", bg(320, 170, "gWarm") + ic("light-bulb", 22, 52, 66) + beam(84, 85, 214, 30, 140, RED, .4) + metal(214, 24, 18, 122) + tag(270, 92, "전자 0개")) },
+    { who: "아인슈타인", say: ["하나야, 이번에는 금속판에 파란빛을 약하게 비춰 보렴.", "그러면 금속판 안에 있던 전자가 튀어나올 거야."],
+      art: svg(320, 170, "전구가 파란빛을 약하게 비추자 금속판에서 전자가 튀어나오는 그림", bg(320, 170, "gSky") + ic("light-bulb", 22, 52, 66) + beam(84, 85, 214, 50, 120, BLUE, .25) + metal(214, 18, 18, 112) + elec(188, 28) + elec(150, 36) + elec(188, 140) + elec(150, 132) + tag(275, 80, "전자 나와요")) },
+    { who: "아인슈타인", say: ["빛은 에너지 알갱이처럼 움직인단다.", "파란빛 알갱이 하나는 빨간빛 알갱이 하나보다 에너지가 더 커."],
+      art: svg(320, 170, "작은 빨간빛 알갱이와 큰 파란빛 알갱이를 비교한 그림", bg(320, 170, "gSky") + `<circle cx="90" cy="82" r="20" fill="${RED}"/><circle cx="225" cy="82" r="44" fill="${BLUE}"/>` + tag(90, 34, "에너지가 작아요") + tag(225, 28, "에너지가 커요") + txt(90, 130, "빨간빛 알갱이", 15) + txt(225, 150, "파란빛 알갱이", 15)) },
+    { who: "하나", say: ["파란빛을 더 밝게 비췄더니 금속판에서 전자가 더 많이 튀어나와요!"],
+      art: svg(320, 170, "밝은 파란빛을 비추자 금속판의 빛을 받은 쪽에서 전자가 많이 튀어나오는 그림", bg(320, 170, "gSky") + ic("light-bulb", 22, 52, 66) + beam(84, 85, 214, 18, 130, BLUE, .5) + metal(214, 18, 18, 112) + elec(192, 34) + elec(164, 58) + elec(196, 74) + elec(150, 92) + elec(186, 108) + elec(160, 124) + tag(275, 80, "전자 많아요")) },
+    { who: "아인슈타인", say: ["밝은 빛에는 빛 알갱이가 더 많이 들어 있단다.", "빛 알갱이가 많으면 튀어나오는 전자도 많아져."],
+      art: svg(320, 170, "어두운 빛은 빛 알갱이와 전자가 적고 밝은 빛은 빛 알갱이와 전자가 많은 것을 비교한 그림", bg(320, 170, "gWarm") + tag(82, 28, "어두운 빛") + tag(238, 28, "밝은 빛") + [[56, 62], [108, 88], [62, 112]].map(c => `<circle cx="${c[0]}" cy="${c[1]}" r="9" fill="${BLUE}"/>`).join("") + [[184, 58], [214, 52], [244, 60], [276, 54], [194, 86], [228, 84], [262, 88], [184, 114], [216, 112], [250, 116], [282, 112]].map(c => `<circle cx="${c[0]}" cy="${c[1]}" r="9" fill="${BLUE}"/>`).join("") + elec(86, 146) + elec(196, 146) + elec(238, 146) + elec(280, 146)) },
+    { who: "하나", say: ["아, 뽑기 기계와 비슷하네요!", "500원을 넣어야 움직이는 기계는 10원짜리 동전을 아무리 많이 넣어도 움직이지 않으니까요."],
+      art: svg(320, 170, "10원 동전 여러 개로는 500원 뽑기 기계가 움직이지 않는 비유 그림", bg(320, 170, "gWarm") + ic("coin", 30, 42, 44) + ic("coin", 72, 66, 44) + ic("coin", 26, 92, 44) + txt(62, 156, "10원 동전 여러 개", 13) + `<path d="M130 85 H165" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M158 77 L168 85 L158 93" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><rect x="185" y="18" width="104" height="136" rx="16" fill="#f43f5e"/><circle cx="237" cy="66" r="36" fill="#fff"/><circle cx="224" cy="62" r="10" fill="#ffd166"/><circle cx="248" cy="74" r="10" fill="#60a5fa"/><circle cx="244" cy="50" r="10" fill="#34d399"/>` + tag(237, 134, "500원만 돼요"))
+    },
+    { who: "하나", say: ["그런데 전자를 내보내지 못한 빨간빛 알갱이는 어디로 가요?"],
+      art: svg(320, 170, "빨간빛 알갱이가 금속판을 향해 가는 그림", bg(320, 170, "gWarm") + ic("light-bulb", 22, 52, 66) + [100, 136, 172].map(x => `<circle cx="${x}" cy="85" r="9" fill="${RED}"/>`).join("") + metal(214, 24, 18, 122) + ic("red-question-mark", 250, 58, 54)) },
+    { who: "아인슈타인", say: ["일부는 금속판에서 튕겨 나가고, 일부는 금속판에 흡수된단다.", "금속 안의 전자가 그 에너지를 받아서 금속의 원자에 나눠 준단다.", "그러면 원자가 더 활발하게 떨리면서 금속판이 아주 조금 따뜻해져."],
+      art: svg(320, 170, "빨간빛 알갱이의 일부는 금속판에서 튕겨 나가고 일부는 흡수되어 금속판을 따뜻하게 하는 그림", bg(320, 170, "gWarm") + metal(214, 24, 18, 122) + `<rect x="214" y="92" width="18" height="54" rx="5" fill="#f97316" opacity=".8"/><path d="M40 34 L205 58" stroke="${RED}" stroke-width="3"/><path d="M205 58 L60 76" stroke="${RED}" stroke-width="3" stroke-dasharray="6 6"/><path d="M40 118 L205 118" stroke="${RED}" stroke-width="3"/><path d="M246 104 q8 -8 0 -16 q-8 -8 0 -16M262 118 q8 -8 0 -16 q-8 -8 0 -16" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>` + `<circle cx="40" cy="34" r="8" fill="${RED}"/><circle cx="60" cy="76" r="8" fill="${RED}"/><circle cx="40" cy="118" r="8" fill="${RED}"/>` + tag(112, 26, "튕겨 나가요") + tag(110, 150, "흡수되어 열이 돼요")) }
+  ],
+  special: [
+    { who: "아인슈타인", say: ["달리는 기차 안에서 누군가 공을 앞으로 던진다고 생각해 보렴.", "밖에 있는 사람이 재면 공의 속도에 기차의 속도가 더해진단다."],
+      art: svg(320, 170, "달리는 기차 앞으로 공이 날아가는 움직이는 그림", bg(320, 170, "gSky") + `<rect y="134" width="320" height="36" fill="#c9e7b8"/><path d="M0 150 H320" stroke="#7fa768" stroke-width="5" stroke-dasharray="22 18"><animate attributeName="stroke-dashoffset" from="0" to="40" dur=".35s" repeatCount="indefinite"/></path><g stroke="#7a8fb5" stroke-width="3" stroke-linecap="round"><path d="M4 60 H30"/><path d="M0 84 H22"/><path d="M6 108 H34"/><animate attributeName="opacity" values="1;.3;1" dur=".5s" repeatCount="indefinite"/></g>` + ic("bullet-train", 28, 40, 100, 0, true) + `<g>${ic("baseball", -15, -15, 30)}<animateMotion dur="1.3s" repeatCount="indefinite" path="M140 84 H300"/></g>` + tag(210, 34, "공의 속도 + 기차의 속도")) },
+    { who: "아인슈타인", say: ["그런데 빛은 달라.", "우주선이 앞으로 빛을 쏘아도, 밖에 있는 사람이 재는 빛의 속도는 똑같아.", "빛의 속도는 1초에 약 30만 km란다."],
+      art: svg(320, 170, "우주선이 날아가며 앞으로 빛을 쏘는 움직이는 그림", bg(320, 170, "gNight") + `<g><g fill="#fff"><circle cx="30" cy="30" r="1.8"/><circle cx="110" cy="130" r="1.8"/><circle cx="210" cy="30" r="1.8"/><circle cx="290" cy="140" r="1.8"/><circle cx="350" cy="30" r="1.8"/><circle cx="430" cy="130" r="1.8"/><circle cx="530" cy="30" r="1.8"/><circle cx="610" cy="140" r="1.8"/></g><animateTransform attributeName="transform" type="translate" from="0 0" to="-320 0" dur="2.5s" repeatCount="indefinite"/></g><path d="M118 90 H300" stroke="#ffd166" stroke-width="6" stroke-dasharray="26 14"><animate attributeName="stroke-dashoffset" from="40" to="0" dur=".3s" repeatCount="indefinite"/></path>` + ic("rocket", 26, 48, 84, 45) + tag(208, 50, "빛의 속도는 똑같아요")) },
+    { who: "하나", say: ["빛의 속도가 변하지 않는다면, 무엇이 달라지는 거예요?"],
+      art: svg(320, 170, "멈춘 빛 시계와 움직이는 빛 시계를 비교하는 움직이는 그림", bg(320, 170, "gNight") + clockPair() + txt(55, 26, "멈춘 시계", 13, "#fff") + txt(205, 26, "움직이는 시계 →", 13, "#fff") + txt(55, 156, "빛의 길이 짧아요", 12, "#fff") + txt(205, 156, "빛의 길이 더 길어요", 12, "#fff")) },
+    { who: "아인슈타인", say: ["이 빛 시계를 보렴. 빛이 거울 사이를 한 번 오가면 시계가 한 번 째깍해.", "움직이는 시계의 빛은 더 먼 길을 가야 하니 한 번 오가는 데 시간이 더 걸린단다.", "그래서 지구에서 재면 빠른 우주선의 시계는 더 느리게 가."],
+      art: svg(320, 170, "빛의 속도의 90%로 나는 우주선의 시간이 지구보다 느리게 흐르는 막대 그림", bg(320, 170, "gNight") + stars(320, 170) + txt(160, 26, "빛의 속도의 90%로 날 때", 14, "#fff") + ic("globe-showing-asia-australia", 14, 40, 34) + `<rect x="58" y="50" width="244" height="14" rx="7" fill="#2a3566"/><rect x="58" y="50" height="14" rx="7" fill="#7fd0ff" width="0"><animate attributeName="width" values="0;244;244" keyTimes="0;.9;1" dur="6s" repeatCount="indefinite"/></rect>` + txt(180, 84, "지구의 시계: 10년", 13, "#7fd0ff") + `${ic("rocket", 14, 100, 34, 45)}<rect x="58" y="110" width="244" height="14" rx="7" fill="#2a3566"/><rect x="58" y="110" height="14" rx="7" fill="#ffd166" width="0"><animate attributeName="width" values="0;107;107" keyTimes="0;.9;1" dur="6s" repeatCount="indefinite"/></rect>` + txt(180, 144, "우주선의 시계: 약 4.4년", 13, "#ffd166")) }
+  ],
+  energy: [
+    { who: "하나", say: ["이 종이 클립의 무게는 1g쯤이에요.", "이렇게 작은 클립도 큰 에너지와 맞먹나요?"],
+      art: svg(320, 170, "1그램쯤 되는 종이 클립", bg(320, 170, "gWarm") + ic("paperclip", 112, 24, 96) + tag(160, 148, "종이 클립 약 1g") + ic("red-question-mark", 226, 26, 44)) },
+    { who: "아인슈타인", say: ["이 식을 보렴.", "E는 에너지, m은 질량, c는 빛의 속도란다."],
+      art: svg(320, 170, "E는 m 곱하기 c 곱하기 c라는 식", bg(320, 170, "gSky") + txt(160, 74, "E = m × c × c", 36, "#be123c") + txt(160, 118, "에너지 = 질량 × 빛의 속도 × 빛의 속도", 14)) },
+    { who: "아인슈타인", say: ["빛의 속도는 아주 큰 수이고, 이 식은 그 수를 두 번 곱한단다.", "그래서 1g의 질량은 집 한 채가 약 7천 년 동안 쓸 전기와 맞먹어."],
+      art: svg(320, 170, "1그램의 질량이 집 한 채가 약 7천 년 동안 쓸 전기와 맞먹는다는 그림", bg(320, 170, "gWarm") + ic("paperclip", 22, 38, 72) + txt(58, 130, "1g", 18) + txt(118, 84, "=", 30) + ic("high-voltage", 140, 34, 54) + ic("house", 196, 34, 54) + ic("house", 250, 34, 54) + tag(222, 118, "약 2,500만 kWh", "#be123c", "#ffffff", 15) + txt(222, 148, "집 한 채가 약 7천 년 쓸 전기", 13)) },
+    { who: "하나", say: ["그러면 질량이 빛으로 쪼개져서 에너지가 되는 거예요?", "빛의 속도는 왜 식에 들어 있어요?"],
+      art: svg(320, 170, "질량과 에너지 사이의 빛의 속도를 궁금해하는 그림", bg(320, 170, "gSky") + ic("paperclip", 30, 50, 70) + txt(130, 92, "→", 30) + ic("high-voltage", 160, 50, 70) + ic("red-question-mark", 240, 50, 60)) },
+    { who: "아인슈타인", say: ["질량이 빛으로 쪼개지는 것은 아니란다. 원자핵이 합쳐지거나 쪼개지면 결과물이 처음보다 조금 가벼워져. 줄어든 질량만큼 에너지가 나오지.", "빛의 속도가 에너지를 만드는 것도 아니야. c²은 질량을 에너지로 바꿔 계산해 주는 환율과 비슷하단다."],
+      art: svg(320, 170, "질량을 에너지로 계산하는 c 제곱을 환율에 빗댄 그림", bg(320, 170, "gWarm") + tag(70, 50, "질량", "#a7d8ff", INK, 16) + tag(250, 50, "에너지", "#ffd166", INK, 16) + `<path d="M108 45 H200" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M192 37 L204 45 L192 53" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` + tag(154, 90, "× c²", "#ffffff", "#be123c", 20) + txt(160, 132, "돈을 바꿀 때 쓰는 환율과 비슷해요", 14) + txt(160, 152, "(이해를 돕는 비유예요)", 12)) },
+    { who: "아인슈타인", say: ["태양의 중심에서는 수소 원자핵 4개가 합쳐져 헬륨 원자핵 1개가 돼. 이것이 핵융합이란다.", "헬륨은 처음 수소 4개보다 약 0.7% 가벼워. 그 줄어든 질량이 빛과 열의 에너지가 되지.", "태양은 1초에 수소 약 6억 톤을 헬륨으로 바꾸고, 이때 약 400만 톤의 질량이 줄어든단다."],
+      art: svg(320, 170, "수소 원자핵 네 개가 합쳐져 헬륨 원자핵이 되고 에너지가 나오는 움직이는 핵융합 그림", bg(320, 170, "gNight") + stars(320, 170) + [[60, 40], [260, 40], [60, 130], [260, 130]].map(c => `<circle r="12" fill="#7fd0ff"><animate attributeName="cx" values="${c[0]};160;160" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="cy" values="${c[1]};85;85" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>`).join("") + `<circle cx="160" cy="85" r="20" fill="#ffd166" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle><g stroke="#fff4b8" stroke-width="3" stroke-linecap="round" opacity="0"><path d="M160 50 V24M160 120 V146M125 85 H96M195 85 H224M136 60 L116 40M184 60 L204 40M136 110 L116 130M184 110 L204 130"/><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;.46;.6;1" dur="4s" repeatCount="indefinite"/></g>` + afterFusion(txt(160, 90, "헬륨", 13)) + txt(60, 72, "수소", 12, "#7fd0ff") + txt(260, 72, "수소", 12, "#7fd0ff") + txt(160, 164, "빛과 열이 나와요", 13, "#fff")) }
+  ],
+  general: [
+    { who: "아인슈타인", say: ["트램펄린에 볼링공을 올리면 천이 움푹 들어가지?", "태양 주변의 공간도 이렇게 휘어진단다.", "트램펄린은 이해를 돕기 위한 비유야."],
+      art: svg(320, 170, "트램펄린 격자가 볼링공 무게로 넓고 깊게 휘어진 비유 그림", bg(320, 170, "gSky") + sheet() + ball(160, 106, 24) + tag(160, 160, "볼링공 = 태양")) },
+    { who: "하나", say: ["구슬을 굴리면 구슬이 휘어진 천을 따라 볼링공 둘레를 돌아요.", "지구도 이렇게 태양 둘레를 도는 거예요?"],
+      art: svg(320, 170, "구슬 지구가 휘어진 천을 따라 볼링공 둘레를 도는 움직이는 그림", bg(320, 170, "gSky") + sheet() + `<path d="${ORBIT}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="5 6"/>` + ball(160, 106, 24) + `<g>${ic("globe-showing-asia-australia", -13, -13, 26)}<animateMotion dur="5s" repeatCount="indefinite" path="${ORBIT}"/></g>` + tag(160, 160, "구슬 = 지구")) },
+    { who: "아인슈타인", say: ["평소에는 햇빛이 너무 밝아서 태양 근처의 별이 보이지 않아.", "일식 때는 달이 태양을 가려서 하늘이 어두워지고 별이 보인단다.", "과학자들은 1919년 일식 때 태양 근처의 별을 찍어서 별빛이 휘는지 시험했어."],
+      art: svg(320, 170, "달이 태양을 가리자 하늘이 어두워지고 코로나와 별이 보이는 움직이는 일식 그림", eclipse(160, 72, 24, 320, 170) + nightOnly(ic("glowing-star", 44, 26, 20) + ic("glowing-star", 250, 40, 16) + ic("glowing-star", 90, 112, 14) + `<path d="M54 36 Q110 34 150 40 L300 74" fill="none" stroke="#fff" stroke-width="1.5" opacity=".85"/>` + txt(160, 160, "일식", 11, "#fff"))) },
+    { who: "아인슈타인", say: ["중력은 시간에도 영향을 준단다. 높은 곳일수록 지구의 중력이 약해.", "그래서 약 2만 km 높이에 있는 GPS 위성의 시계는 땅의 시계보다 조금 빠르게 가.", "GPS는 이 차이를 바로잡아서 위치를 정확하게 알려 줘."],
+      art: svg(480, 255, "지구에서 멀어질수록 중력이 약해지고 위성의 시계가 땅의 시계보다 빠르게 가는 움직이는 그림", gpsScene()) }
+  ]
+};
+
+/* ---------- 그림 설명서 ---------- */
+const photon = (x, y, r, c) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const row = (y, c, name, r, xs = [80, 118, 156, 194, 232, 270]) => ic("light-bulb", 14, y - 26, 48) + txt(TS > 1 ? 54 : 38, y + 38, name, 14) + xs.map(x => photon(x, y, r, c)).join("");
+const leap = (y, x) => elec(x, y - 28, 9) + `<path d="M298 ${y - 6} L${x + 11} ${y - 25}" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`;
+/* 휴대폰에서는 그림 전체가 줄어들므로, 그림 설명서의 글자를 키워 그린다. */
+TS = window.innerWidth <= 620 ? 1.35 : 1;
+const GUIDE = {
+  photo: {
+    title: "빛의 색에 따라 결과가 달라요",
+    art: svg(480, 370, "빨간빛에서는 전자가 나오지 않고, 초록빛에서는 느린 전자가, 파란빛에서는 빠른 전자가, 밝은 파란빛에서는 더 많은 전자가 빛을 받은 쪽에서 튀어나오는 그림", `<rect width="480" height="370" fill="#fff8ec"/>` + metal(300, 14, 18, 342) +
+      row(52, RED, "빨간빛", 6) + tag(400, 58, "전자가 안 나와요", "#fde4e4", INK, 14) +
+      row(138, GREEN, "초록빛", 9) + leap(138, 262) + tag(400, 144, "느린 전자", "#ffffff", INK, 14) +
+      row(224, BLUE, "파란빛", 12) + leap(224, 208) + tag(400, 230, "빠른 전자", "#ffffff", INK, 14) +
+      row(310, BLUE, "밝은 파란빛", 8, [80, 104, 128, 152, 176, 200, 224, 248, 272]) + elec(268, 256, 9) + elec(214, 272, 9) + elec(160, 288, 9) + `<path d="M298 282 L279 259M298 290 L225 274M298 298 L171 289" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` + tag(400, 316, "전자가 더 많이", "#d9f5e6", INK, 14)),
+    steps: [
+      ["빛은 알갱이처럼 움직여요", ["빛의 에너지는 알갱이 단위로 전달돼요.", "과학자들은 이 빛 알갱이를 광자라고 불러요."]],
+      ["전자가 나오려면 문턱을 넘어야 해요", ["전자가 금속 밖으로 나오려면 정해진 양 이상의 에너지가 필요해요.", "이 양을 문턱이라고 불러요.", "빛 알갱이 하나의 에너지가 문턱보다 작으면 전자는 나오지 않아요."]],
+      ["밝기와 색은 하는 일이 달라요", ["전자는 빛을 받은 쪽 표면에서 튀어나와요.", "빛이 밝아지면 빛 알갱이가 많아져서 튀어나오는 전자의 수가 늘어요.", "빛이 파란색 쪽으로 갈수록 전자가 더 빠르게 나와요."]]
+    ],
+    cases: `<h3>빛의 떨림과 에너지</h3><div class="lines"><p>빛은 아주 빠르게 떨리면서 나아가요.</p><p>빛이 빠르게 떨릴수록 빛 알갱이 하나의 에너지가 커요.</p><p>빛의 밝기는 떨리는 빠르기가 아니라 빛 알갱이의 수와 관련이 있어요.</p></div><div class="stats"><div class="stat"><span>빨간빛이 1초에 떨리는 횟수</span><b>약 460조 번</b></div><div class="stat"><span>파란빛이 1초에 떨리는 횟수</span><b>약 670조 번</b></div><div class="stat"><span>더 큰 에너지를 가진 알갱이</span><b>파란빛</b></div></div><p class="note">떨림 자체가 에너지는 아니에요. 흡수된 에너지가 열이 되면 금속의 원자가 더 활발하게 떨리는데, 이 떨림은 빛의 떨림과 다른 현상이에요.</p><h3>빛 알갱이가 금속판에 닿으면 어떻게 될까요?</h3><div class="cases">
+      <div class="case">${svg(160, 90, "빛 알갱이가 금속판에서 튕겨 나가는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(122, 8, 14, 74) + `<path d="M20 18 L118 45" stroke="${RED}" stroke-width="3"/><path d="M118 45 L20 72" stroke="${RED}" stroke-width="3" stroke-dasharray="5 5"/>` + photon(20, 18, 7, RED) + photon(20, 72, 7, RED))}<b>튕겨 나가요</b><p>빛 알갱이가 금속 표면에서 반사돼요. 그래서 금속이 반짝여 보여요.</p></div>
+      <div class="case">${svg(160, 90, "빛 알갱이가 흡수되어 금속판이 따뜻해지는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(100, 8, 14, 74) + `<rect x="100" y="8" width="14" height="74" rx="5" fill="#f97316" opacity=".75"/><path d="M20 45 L96 45" stroke="${RED}" stroke-width="3"/><path d="M126 60 q7 -7 0 -14 q-7 -7 0 -14M142 66 q7 -7 0 -14 q-7 -7 0 -14" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>` + photon(20, 45, 7, RED))}<b>흡수되어 열이 돼요</b><p>금속 안의 전자가 빛 알갱이의 에너지를 받아요.</p><p>전자는 문턱을 넘지 못해서 금속 안에 남아요.</p><p>전자가 금속의 원자에 에너지를 나눠 줘요.</p><p>원자가 더 활발하게 떨리면서 금속판이 아주 조금 따뜻해져요.</p></div>
+      <div class="case">${svg(160, 90, "에너지가 충분한 빛 알갱이가 흡수되어 전자가 튀어나오는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(122, 8, 14, 74) + `<path d="M20 62 L118 62" stroke="${BLUE}" stroke-width="3"/><path d="M118 42 L70 22" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` + photon(20, 62, 8, BLUE) + elec(60, 18, 9))}<b>전자가 튀어나와요</b><p>금속 안의 전자가 빛 알갱이의 에너지를 받아요.</p><p>에너지가 문턱보다 크면 전자가 금속 밖으로 튀어나올 수 있어요.</p></div>
+    </div><p class="note">금속에서 튀어나오는 것은 전자이고, 금속 표면에서 튕겨 나가는 것은 빛 알갱이예요.</p>`,
+    life: { icon: "camera", text: ["디지털카메라의 센서와 태양전지에서도 빛 알갱이가 전자를 움직여요."] },
+    note: "그림은 나트륨처럼 초록빛부터 전자가 나오는 금속을 예로 들었어요. 금속마다 문턱은 달라요."
+  },
+  special: {
+    title: "빛 시계로 시간이 느려지는 까닭을 볼까요?",
+    art: svg(320, 170, "멈춘 빛 시계와 움직이는 빛 시계를 비교하는 움직이는 그림", bg(320, 170, "gNight") + clockPair() + txt(55, 26, "멈춘 시계", 13, "#fff") + txt(205, 26, "움직이는 시계 →", 13, "#fff") + txt(55, 156, "빛의 길이 짧아요", 12, "#fff") + txt(205, 156, "빛의 길이 더 길어요", 12, "#fff")),
+    steps: [
+      ["빛의 속도는 똑같아요", ["빛은 진공에서 1초에 약 30만 km를 가요.", "빛의 속도는 누가 재도 똑같아요."]],
+      ["움직이는 시계의 빛은 더 먼 길을 가요", ["빛 시계는 거울 두 장 사이를 빛이 오가며 시간을 재는 상상 속 시계예요.", "속도가 같은 빛이 더 먼 길을 가면 시간이 더 걸려요.", "그래서 움직이는 시계는 밖에서 재면 더 느리게 가요."]],
+      ["물체의 길이도 달라져요", ["빠르게 움직이는 물체는 밖에서 재면 움직이는 방향으로 더 짧아져요.", "하지만 우주선 안의 사람에게는 모든 것이 평소와 같아요."]]
+    ],
+    cases: `<h3>빠르기에 따라 시간이 얼마나 차이 날까요?</h3>${COMPARE_TABLE}${NAME_TABLE}`,
+    life: { icon: "satellite", text: ["GPS 위성은 아주 빠르게 움직여요.", "속도의 효과만 따지면 위성의 시계는 하루에 약 7마이크로초 느려져요.", "1마이크로초는 100만분의 1초예요."] }
+  },
+  energy: {
+    title: "E = mc²을 하나씩 뜯어 볼까요?",
+    art: svg(480, 236, "E는 m 곱하기 c 곱하기 c이고, 1그램은 약 2500만 킬로와트시와 맞먹는다는 그림", `<rect width="480" height="236" fill="#fff8ec"/>` +
+      [[58, "E", "에너지", "#ffd166"], [176, "m", "질량", "#a7d8ff"], [294, "c", "빛의 속도", "#ffc9d1"], [412, "c", "빛의 속도", "#ffc9d1"]].map(b => `<rect x="${b[0] - 48}" y="20" width="96" height="84" rx="14" fill="${b[3]}"/>` + txt(b[0], 62, b[1], 34) + txt(b[0], 90, b[2], 13)).join("") +
+      txt(117, 70, "=", 26) + txt(235, 70, "×", 26) + txt(353, 70, "×", 26) +
+      ic("paperclip", 22, 122, 60) + txt(TS > 1 ? 40 : 52, 204, "질량 1g", 15) + txt(104, 160, "=", 28) + ic("high-voltage", 136, 122, 60) + txt(166, 204, "약 2,500만 kWh", 15) + txt(232, 160, "=", 28) + ic("house", 250, 122, 60) + txt(382, 142, "집 한 채가", 15) + txt(382, 164, "약 7천 년 동안", 15) + txt(382, 186, "쓸 전기", 15)),
+    steps: [
+      ["c는 아주 큰 수예요", ["빛의 속도는 1초에 약 3억 m예요.", "이 수를 두 번 곱하면 9 뒤에 0이 16개 붙는 수가 돼요."]],
+      ["그래서 작은 질량도 큰 에너지와 맞먹어요", ["질량이 아주 작아도 이 큰 수를 곱하면 에너지가 엄청나게 커져요."]],
+      ["질량을 전부 바꾸기는 어려워요", ["보통은 물질의 아주 작은 일부만 에너지로 바뀌어요.", "원자력 발전에서 우라늄이 쪼개질 때도 약 0.1%의 질량만 에너지로 바뀌어요."]]
+    ],
+    cases: `<h3>질량이 빛으로 쪼개지는 건가요?</h3><div class="lines"><p>아니에요. 질량이 그대로 빛으로 쪼개지는 것은 아니에요.</p><p>원자핵이 합쳐지거나 쪼개지면 결과물이 처음보다 조금 가벼워져요.</p><p>줄어든 질량만큼 에너지가 빛과 열로 나와요.</p></div>
+    <h3>왜 빛의 속도가 식에 들어 있나요?</h3><div class="lines"><p>빛이 에너지 변환에 쓰이는 것은 아니에요.</p><p>c는 우주에서 정해진 빠르기이고, c²은 질량을 에너지로 바꿔 계산해 주는 수예요.</p><p>돈을 바꿀 때 쓰는 환율과 비슷해요. (이해를 돕는 비유예요.)</p></div>
+    <h3>핵융합이 무엇인가요?</h3>${svg(320, 150, "수소 원자핵 네 개가 합쳐져 헬륨 원자핵이 되는 움직이는 그림", bg(320, 150, "gNight") + stars(320, 150) + [[50, 34], [270, 34], [50, 116], [270, 116]].map(c => `<circle r="11" fill="#7fd0ff"><animate attributeName="cx" values="${c[0]};160;160" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="cy" values="${c[1]};75;75" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>`).join("") + `<circle cx="160" cy="75" r="18" fill="#ffd166" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>` + afterFusion(txt(160, 80, "헬륨", 13)) + txt(50, 62, "수소", 12, "#7fd0ff") + txt(270, 62, "수소", 12, "#7fd0ff"))}
+    <div class="lines"><p>핵융합은 가벼운 원자핵들이 합쳐져 더 무거운 원자핵이 되는 현상이에요.</p><p>태양의 중심은 1,500만 도가 넘어서 수소 원자핵들이 합쳐질 수 있어요.</p><p>수소 원자핵 4개가 헬륨 원자핵 1개가 되면 질량이 약 0.7% 줄어들어요.</p></div>`,
+    life: { icon: "sun", text: ["태양은 1초에 수소 약 6억 톤을 헬륨으로 바꿔요.", "이때 약 400만 톤의 질량이 줄어들고, 그만큼이 빛과 열의 에너지가 돼요."] },
+    note: "kWh는 전기의 양을 재는 단위예요. 집 한 채는 한 달에 전기 300kWh를 쓴다고 어림했어요."
+  },
+  general: {
+    title: "일식 때 별의 자리가 달라 보여요",
+    art: svg(480, 300, "일식 때 코로나가 보이고 별빛이 태양 옆을 지나며 휘어 지구에서 다른 자리에 보이는 움직이는 그림", `<rect width="480" height="300" fill="#090d24"/><defs><radialGradient id="gCorona2"><stop offset=".4" stop-color="#ffffff"/><stop offset=".55" stop-color="#e6eeff" stop-opacity=".85"/><stop offset=".78" stop-color="#b9cbff" stop-opacity=".25"/><stop offset="1" stop-color="#b9cbff" stop-opacity="0"/></radialGradient></defs>` + stars(480, 300) + `<circle cx="240" cy="170" r="90" fill="url(#gCorona2)"/><circle cx="240" cy="170" r="36" fill="#05070f"/><path d="M22 90 H188 Q240 90 277 97 L447 125" fill="none" stroke="#fff" stroke-width="3.5"/><path d="M447 125 L22 56" stroke="#7fd0ff" stroke-width="2.5" stroke-dasharray="7 7"/><g><circle r="6" fill="#ffd166"/><animateMotion dur="4s" repeatCount="indefinite" path="M22 90 H188 Q240 90 277 97 L447 125"/></g>` + ic("glowing-star", 6, 74, 32) + `<circle cx="22" cy="56" r="10" fill="none" stroke="#7fd0ff" stroke-width="2.5"/>` + ic("globe-showing-asia-australia", 438, 106, 36) + tag(100, 116, "실제 별의 자리", "#ffffff", INK, 13) + tag(140, 40, "지구에서 보이는 자리", "#7fd0ff", INK, 13) + tag(442, 164, "지구", "#ffffff", INK, 13) + txt(240, 272, "일식", 12, "#fff") + txt(240, 292, "휘는 정도를 아주 크게 그린 그림이에요.", 12, "#fff")),
+    steps: [
+      ["무거운 천체가 공간을 휘게 해요", ["태양 같은 천체는 주변의 공간과 시간을 휘게 해요.", "지구는 그 휘어진 곳을 따라 태양 둘레를 돌아요."]],
+      ["빛도 휘어진 길을 따라가요", ["별빛은 태양 바로 옆을 지날 때 약 0.0005도 휘어요.", "아인슈타인은 1915년에 완성한 이론으로 이 값을 계산했어요."]],
+      ["일식 때 별의 자리를 재 보았어요", ["일식은 달이 태양을 가리는 현상이에요. 지구가 가리는 것이 아니에요.", "일식 때는 하늘이 어두워져서 태양 근처의 별이 보여요.", "과학자들은 1919년 일식 때 별 사진을 찍어 별의 자리를 비교했어요."]]
+    ],
+    cases: `<h3>GPS 위성과 땅의 시간은 왜 다를까요?</h3>${svg(480, 255, "지구에서 멀어질수록 중력이 약해지고 위성의 시계가 땅의 시계보다 빠르게 가는 움직이는 그림", gpsScene())}<div class="lines"><p>높은 곳에서는 중력이 더 커지는 것이 아니라 더 약해져요.</p><p>중력이 약한 곳일수록 시간이 조금 더 빠르게 흘러요.</p><p>GPS 위성은 약 2만 km 높이에 있어서 땅보다 중력이 약해요.</p></div>${NAME_TABLE}`,
+    life: { icon: "mobile-phone", text: ["중력의 효과만 따지면 위성의 시계는 하루에 약 45마이크로초 빨라져요.", "속도의 효과까지 합치면 위성의 시계는 하루에 약 38마이크로초 빨라요.", "이 차이를 그대로 두면 위치가 하루에 약 11km나 틀어질 수 있어요. 그래서 GPS는 이 차이를 바로잡아요."] }
+  }
+};
+TS = 1;
+
+/* ---------- 퀴즈 ---------- */
+const QUIZ = {
+  photo: [
+    { q: "하나가 금속판에 빨간빛을 아주 세게 비췄지만 전자가 나오지 않았어요. 하나는 어떻게 해야 할까요?", o: ["빨간빛을 더 세게 비춘다.", "파란빛으로 바꿔서 비춘다.", "빨간빛을 더 오래 비춘다."], a: 1, why: ["파란빛 알갱이는 빨간빛 알갱이보다 에너지가 더 커요.", "그래서 파란빛 알갱이는 전자가 나오는 문턱을 넘을 수 있어요."] },
+    { q: "금속판에서 전자가 나오고 있어요. 같은 색의 빛을 더 밝게 하면 어떻게 될까요?", o: ["나오는 전자의 수가 늘어난다.", "전자 하나하나가 더 빨라진다.", "아무 변화도 없다."], a: 0, why: ["밝은 빛에는 빛 알갱이가 더 많이 들어 있어요.", "그래서 나오는 전자의 수가 늘어나요.", "빛의 색이 같으면 전자의 최대 빠르기는 그대로예요."] },
+    { q: "금속판에서 튀어나오는 전자는 어디에 있던 것일까요?", o: ["빛 알갱이 안에 있었다.", "금속판 안에 있었다.", "전구 안에 있었다."], a: 1, why: ["전자는 처음부터 금속판 안에 있었어요.", "빛은 전자를 가져오는 것이 아니라 전자에게 에너지를 줘요."] },
+    { q: "전자를 내보내지 못한 빨간빛 알갱이는 어떻게 될까요?", o: ["모두 금속판을 뚫고 지나간다.", "일부는 튕겨 나가고, 일부는 흡수되어 열이 된다.", "아무 일도 없이 그 자리에서 사라진다."], a: 1, why: ["빛 알갱이의 일부는 금속 표면에서 반사돼요.", "나머지는 금속판에 흡수되어 열이 되고, 금속판을 아주 조금 따뜻하게 해요."] },
+    { q: "아인슈타인은 광전효과 법칙을 밝힌 공로 등으로 어떤 상을 받았을까요?", o: ["1921년 노벨 물리학상", "1905년 특허상", "1919년 일식상"], a: 0, why: ["아인슈타인은 1921년 노벨 물리학상을 받았어요.", "수상 이유에는 광전효과 법칙의 발견이 특히 강조되어 있어요."] }
+  ],
+  special: [
+    { q: "달리는 기차에서 누군가 앞으로 손전등을 켰어요. 밖에 있는 사람이 재는 빛의 속도는 어떻게 될까요?", o: ["기차의 속도만큼 더 빨라진다.", "빛의 속도 그대로다.", "기차의 속도만큼 더 느려진다."], a: 1, why: ["공의 속도와 달리 빛의 속도는 누가 재도 똑같아요.", "이 사실이 특수상대성이론의 출발점이에요."] },
+    { q: "우주선이 빛에 가까운 빠르기로 날고 있어요. 지구에서 재면 우주선의 시계는 어떻게 갈까요?", o: ["지구의 시계보다 빠르게 간다.", "지구의 시계와 똑같이 간다.", "지구의 시계보다 느리게 간다."], a: 2, why: ["우주선의 속도가 빛의 속도에 가까울수록 시계는 더 느리게 가요.", "우주선이 빛의 속도의 90%로 날면 우주선의 시계는 약 2.3배 느리게 가요."] },
+    { q: "특수상대성이론에 왜 '특수'라는 이름이 붙었을까요?", o: ["특별히 어려운 이론이어서", "중력이 없고 일정하게 움직이는 좁은 경우를 다루어서", "특수한 시계로 실험해서"], a: 1, why: ["특수상대성이론은 중력이 없고 일정하게 움직이는 경우를 다뤄요.", "뒤에 나온 일반상대성이론은 중력까지 포함해 더 넓게 적용돼요."] },
+    { q: "그 우주선 안에 있는 사람은 자기의 시간을 어떻게 느낄까요?", o: ["평소와 똑같이 느낀다.", "슬로모션처럼 느낀다.", "시간이 멈춘 것처럼 느낀다."], a: 0, why: ["우주선 안의 사람은 시계와 함께 움직여요.", "그래서 그 사람에게는 모든 것이 평소처럼 느껴져요."] }
+  ],
+  energy: [
+    { q: "E = mc²에서 c는 무엇을 나타낼까요?", o: ["물의 양", "빛의 속도", "온도"], a: 1, why: ["E는 에너지, m은 질량, c는 빛의 속도를 나타내요.", "c²은 c × c를 뜻해요."] },
+    { q: "작은 질량이 어마어마한 에너지와 맞먹는 까닭은 무엇일까요?", o: ["c × c가 아주 큰 수이기 때문이다.", "작은 물체일수록 더 무겁기 때문이다.", "에너지는 잴 수 없기 때문이다."], a: 0, why: ["빛의 속도는 1초에 약 3억 m예요.", "이 식은 그 큰 수를 두 번 곱하므로 에너지가 아주 커져요."] },
+    { q: "태양의 중심에서 일어나는 핵융합은 무엇일까요?", o: ["수소 원자핵들이 합쳐져 헬륨 원자핵이 된다.", "헬륨이 쪼개져 수소가 된다.", "수소가 불에 타서 재가 된다."], a: 0, why: ["수소 원자핵 4개가 합쳐지면 헬륨 원자핵 1개가 돼요.", "헬륨은 처음보다 약 0.7% 가벼워지고, 줄어든 질량이 에너지가 돼요."] },
+    { q: "태양이 빛과 열을 내보내는 동안 태양의 질량은 어떻게 될까요?", o: ["조금씩 늘어난다.", "변하지 않는다.", "조금씩 줄어든다."], a: 2, why: ["태양은 1초에 약 400만 톤의 질량을 에너지로 바꿔요.", "태양이 워낙 커서 이 양은 태양 전체에 비하면 아주 적어요."] }
+  ],
+  general: [
+    { q: "일반상대성이론은 중력을 어떻게 설명할까요?", o: ["무거운 천체가 공간과 시간을 휘게 한다.", "지구 안의 큰 자석이 물체를 끌어당긴다.", "공기가 물체를 아래로 누른다."], a: 0, why: ["아인슈타인은 무거운 천체가 주변의 공간과 시간을 휘게 한다고 설명했어요.", "지구는 그 휘어진 곳을 따라 태양 둘레를 돌아요."] },
+    { q: "과학자들이 1919년 일식 때 별 사진을 찍은 까닭은 무엇일까요?", o: ["달의 크기를 재기 위해서", "햇빛이 가려져서 태양 근처의 별이 보이기 때문에", "일식 때는 별의 수가 늘어나기 때문에"], a: 1, why: ["평소에는 햇빛이 너무 밝아서 태양 근처의 별이 보이지 않아요.", "일식 때는 달이 태양을 가려서 별의 자리를 잴 수 있어요."] },
+    { q: "높은 곳으로 올라가면 지구의 중력은 어떻게 될까요?", o: ["더 강해진다.", "더 약해진다.", "그대로다."], a: 1, why: ["지구에서 멀어질수록 중력은 약해져요.", "그래서 약 2만 km 높이의 GPS 위성은 땅보다 중력이 약한 곳에 있어요."] },
+    { q: "속도와 중력의 효과를 합치면, GPS 위성의 시계는 땅의 시계와 비교해 어떻게 갈까요?", o: ["하루에 약 38마이크로초 빠르게 간다.", "하루에 약 38초 느리게 간다.", "완전히 똑같이 간다."], a: 0, why: ["위성의 시계는 하루에 약 38마이크로초 빠르게 가요.", "빛은 38마이크로초 동안 약 11km를 가요.", "그래서 GPS는 이 차이를 꼭 바로잡아야 해요."] }
+  ]
+};
+const quizState = {};
+
+/* ---------- 화면 ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const icon = (n, alt = "") => `<img src="${ICONS[n]}" alt="${alt}">`;
+const paras = (a) => a.map(t => `<p>${t}</p>`).join("");
+let frame = null;
+const stopLoop = () => { if (frame) cancelAnimationFrame(frame); frame = null; };
+function loop(draw) { stopLoop(); const run = () => { draw(); frame = requestAnimationFrame(run); }; run(); }
+function setupCanvas(id, w, h) {
+  const c = $(id); c.width = w * 2; c.height = h * 2;
+  const ctx = c.getContext("2d"); ctx.scale(2, 2);
+  return ctx;
+}
+const IMG = {};
+const imgOf = (n) => { if (!IMG[n]) { IMG[n] = new Image(); IMG[n].src = ICONS[n]; } return IMG[n]; };
+function drawIcon(ctx, n, x, y, s, rot = 0, sx = 1) {
+  const im = imgOf(n);
+  if (!im.complete) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sx, 1); ctx.drawImage(im, -s / 2, -s / 2, s, s); ctx.restore();
+}
+function nightBg(ctx, w, h) {
+  const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, "#15204a"); g.addColorStop(1, "#2d3c86");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "rgba(255,255,255,.75)";
+  [[.06, .12], [.22, .85], [.37, .08], [.56, .9], [.74, .1], [.93, .8], [.47, .5]].forEach(p => { ctx.beginPath(); ctx.arc(p[0] * w, p[1] * h, 1.5, 0, 7); ctx.fill(); });
+}
+/* 캔버스가 작게 보이면 글자를 키워 그린다. */
+const textScale = (ctx) => Math.min(1.7, Math.max(1, 640 / (ctx.canvas.clientWidth || 640)));
+const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => { ctx.fillStyle = c; ctx.font = `${size * textScale(ctx)}px Jua, sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); };
+
+function renderNav() {
+  const idea = IDEAS.find(i => i.id === state.idea);
+  document.documentElement.style.setProperty("--accent", idea.accent);
+  document.documentElement.style.setProperty("--tint", idea.tint);
+  $("#ideas").innerHTML = IDEAS.map(i => `<button class="idea" type="button" data-i="${i.id}" aria-pressed="${state.idea === i.id}">${icon(i.icon)}<b>${i.name}</b><small>${i.hint}</small></button>`).join("");
+  $("#methods").innerHTML = METHODS.map(m => `<button class="method" type="button" data-m="${m.id}" aria-pressed="${state.method === m.id}">${icon(m.icon)}<span>${m.name}</span></button>`).join("");
+  $("#core").innerHTML = `<h2>${idea.core}</h2><div class="lines">${paras(idea.lines)}</div>`;
+}
+function nextButton() {
+  const k = METHODS.findIndex(m => m.id === state.method);
+  if (k < METHODS.length - 1) return `<button class="next" type="button" data-next="method">다음: ${METHODS[k + 1].name} →</button>`;
+  const n = IDEAS[(IDEAS.findIndex(i => i.id === state.idea) + 1) % IDEAS.length];
+  return `<button class="next" type="button" data-next="idea">다음 생각: ${n.name} →</button>`;
+}
+function renderComic() {
+  $("#stage").innerHTML = `<div class="panels">` + COMIC[state.idea].map(p => `<article class="panel">${p.art}<div class="talk">${icon(p.who === "하나" ? HANA : EIN)}<div><span class="who">${p.who}</span>${paras(p.say)}</div></div></article>`).join("") + `</div><p class="note">하나와 아인슈타인의 대화는 이해를 돕기 위해 꾸민 이야기예요. 아인슈타인이 실제로 한 말이 아니에요.</p>` + nextButton();
+}
+function renderGuide() {
+  const g = GUIDE[state.idea];
+  $("#stage").innerHTML = `<div class="sheet"><h3>${g.title}</h3>${g.art}<ol class="steps">${g.steps.map(s => `<li><b>${s[0]}</b>${paras(s[1])}</li>`).join("")}</ol>${g.cases || ""}<div class="life">${icon(g.life.icon)}<div><b>우리 생활에서</b>${paras(g.life.text)}</div></div>${g.note ? `<p class="note">${g.note}</p>` : ""}</div>` + nextButton();
+}
+function renderQuiz() {
+  const list = QUIZ[state.idea];
+  const answers = quizState[state.idea] || (quizState[state.idea] = {});
+  const done = Object.keys(answers).length;
+  const right = list.filter((q, n) => answers[n] === q.a).length;
+  const finished = done === list.length;
+  $("#stage").innerHTML = list.map((q, n) => {
+    const picked = answers[n];
+    const opts = q.o.map((o, k) => {
+      let cls = "opt";
+      if (picked !== undefined && k === q.a) cls += " right";
+      if (picked === k && k !== q.a) cls += " wrong";
+      return `<button class="${cls}" type="button" data-q="${n}" data-k="${k}"${picked !== undefined ? " disabled" : ""}>${o}</button>`;
+    }).join("");
+    const verdict = picked === undefined ? "" : `<div class="why"><b>${picked === q.a ? "맞았어요!" : "정답을 함께 볼까요?"}</b>${paras(q.why)}</div>`;
+    return `<article class="q"><h3>${n + 1}. ${q.q}</h3><div class="opts">${opts}</div>${verdict}</article>`;
+  }).join("") + `<div class="score"><span>${finished ? `${list.length}문제 중 ${right}문제를 맞혔어요.` : `${list.length}문제 중 ${done}문제를 풀었어요.`}</span>${done ? `<button class="retry" type="button" data-retry="1">다시 풀기</button>` : ""}</div>` + nextButton();
+}
+
+/* ---------- 실험실 ---------- */
+const wlColor = (wl) => {
+  const stops = [[400, 275], [450, 230], [495, 160], [570, 60], [590, 35], [620, 5], [700, 0]];
+  const k = stops.findIndex(s => wl <= s[0]);
+  const [a, b] = k <= 0 ? [stops[0], stops[0]] : [stops[k - 1], stops[k]];
+  const hue = a === b ? a[1] : a[1] + (b[1] - a[1]) * (wl - a[0]) / (b[0] - a[0]);
+  return `hsl(${hue} 95% 62%)`;
+};
+const wlName = (wl) => wl < 450 ? "보라색" : wl < 495 ? "파란색" : wl < 570 ? "초록색" : wl < 590 ? "노란색" : wl < 620 ? "주황색" : "빨간색";
+const THRESHOLD = 2.3;
+
+function labPhoto() {
+  $("#stage").innerHTML = `<div class="sheet">
+    <p class="mission"><b>해 보기</b>먼저 밝기를 올려 보세요. 전자가 나오지 않으면 빛의 색 막대를 오른쪽의 파란색 쪽으로 옮겨 보세요. 전자가 나오면 밝기를 바꿔서 전자의 수를 비교해 보세요.</p>
+    <canvas id="c1" aria-label="빛 알갱이가 금속판에 부딪혀 전자가 튀어나오는 실험"></canvas>
+    <canvas id="c1h" aria-label="전자가 문턱을 뛰어넘으려는 모습"></canvas>
+    <div class="controls">
+      <div class="control"><label for="wl">빛의 색<output id="wlOut"></output></label><input id="wl" type="range" min="400" max="700" value="450"><div class="ends"><span>빨간색: 에너지가 작아요</span><span>보라색: 에너지가 커요</span></div></div>
+      <div class="control"><label for="br">빛의 밝기<output id="brOut"></output></label><input id="br" type="range" min="10" max="100" value="80"></div>
+    </div>
+    <div class="stats"><div class="stat"><span>빛 알갱이 하나의 에너지</span><b id="sE"></b></div><div class="stat"><span>전자가 나오는 문턱</span><b>약 ${THRESHOLD}eV</b></div><div class="stat"><span>튀어나오는 전자의 양</span><b id="sN"></b></div></div>
+    <p id="vib"></p>
+    <p class="result" id="res"></p>
+    <p class="note">문턱은 전자가 금속 밖으로 나오는 데 필요한 에너지예요. 광택이 있는 금속은 눈에 보이는 빛을 많이 반사해요. 그래서 빛 알갱이가 많이 튕겨 나가게 그렸어요. 실제 비율은 금속과 빛의 색에 따라 달라요. 금속판의 주황색은 따뜻해지는 것을 보여 주려고 과장한 색이에요. 이 실험은 나트륨 금속을 예로 들었어요. eV(전자볼트)는 아주 작은 에너지를 재는 단위예요. 알갱이의 크기와 움직임은 보기 쉽게 그렸어요.</p></div>` + nextButton();
+  const ctx = setupCanvas("#c1", 640, 300), hctx = setupCanvas("#c1h", 640, 130);
+  let hop = 0;
+  let photons = [], electrons = [], bounced = [], heat = 0, count = 0;
+  const wlInput = $("#wl"), br = $("#br");
+  /* 막대는 오른쪽으로 갈수록 에너지가 커지도록 파장을 거꾸로 읽는다. */
+  const wl = { get value() { return 1100 - +wlInput.value; } };
+  function update() {
+    const E = 1240 / +wl.value;
+    $("#wlOut").textContent = wlName(+wl.value);
+    $("#vib").textContent = `이 빛은 1초에 약 ${Math.round(3e5 / +wl.value / 10) * 10}조 번 떨려요. 빛이 빠르게 떨릴수록 빛 알갱이 하나의 에너지가 커요.`;
+    $("#brOut").textContent = `${br.value}%`;
+    $("#sE").textContent = `약 ${E.toFixed(1)}eV`;
+    const level = +br.value >= 67 ? 2 : +br.value >= 34 ? 1 : 0;
+    hop = 0;
+    $("#sN").textContent = E > THRESHOLD ? ["적어요", "보통이에요", "많아요"][level] : "없어요";
+    $("#res").textContent = E > THRESHOLD ? "빛 알갱이 하나의 에너지가 문턱보다 커서 금속 안의 전자가 튀어나와요. " + ["빛이 어두우면 빛 알갱이가 적어서 전자도 적게 나와요.", "빛을 더 밝게 하면 전자가 더 많이 나와요.", "빛이 밝으면 빛 알갱이가 많아서 전자도 많이 나와요."][level] : "빛 알갱이 하나의 에너지가 문턱보다 작아요. 그래서 빛을 밝게 해도 전자가 나오지 않아요. 빛 알갱이의 일부는 튕겨 나가고, 일부는 금속판에 흡수되어 금속판을 아주 조금 따뜻하게 해요.";
+    photons = []; electrons = []; bounced = []; heat = 0; count = 0;
+  }
+  function step() {
+    const E = 1240 / +wl.value;
+    if (Math.random() < +br.value / 100 * .4) photons.push({ ty: 45 + Math.random() * 210, t: 0 });
+    photons = photons.filter(p => {
+      p.t += .025;
+      if (p.t >= 1) {
+        if (Math.random() < .7) bounced.push({ x: 556, y: p.ty, vx: -4, vy: (Math.random() - .5) * 4, life: 1 });
+        else if (E > THRESHOLD) { const v = 1 + 5 * Math.sqrt(E - THRESHOLD); const a = Math.PI + (Math.random() - .5) * 2.2; electrons.push({ x: 556, y: p.ty, vx: Math.cos(a) * v, vy: Math.sin(a) * v }); count++; }
+        else heat = Math.min(1, heat + .12);
+        return false;
+      }
+      return true;
+    });
+    heat *= .985;
+    bounced = bounced.filter(b => { b.x += b.vx; b.y += b.vy; b.life -= .012; return b.life > 0; });
+    electrons = electrons.filter(e => { e.x += e.vx; e.y += e.vy; return e.x > -10 && e.x < 560 && e.y > -10 && e.y < 310; });
+  }
+  function paint() {
+    const color = wlColor(+wl.value), E = 1240 / +wl.value;
+    nightBg(ctx, 640, 300);
+    ctx.globalAlpha = .18 + +br.value / 100 * .22; ctx.fillStyle = color;
+    ctx.beginPath(); ctx.moveTo(100, 120); ctx.lineTo(560, 30); ctx.lineTo(560, 270); ctx.lineTo(100, 150); ctx.fill(); ctx.globalAlpha = 1;
+    drawIcon(ctx, "light-bulb", 66, 135, 86);
+    const m = ctx.createLinearGradient(560, 0, 580, 0); m.addColorStop(0, "#c3cedf"); m.addColorStop(1, "#8f9db5");
+    ctx.fillStyle = m; ctx.fillRect(560, 26, 20, 248);
+    ctx.fillStyle = `rgba(249, 115, 22, ${heat * .85})`; ctx.fillRect(560, 26, 20, 248);
+    ctx.fillStyle = color;
+    photons.forEach(p => { ctx.beginPath(); ctx.arc(100 + 460 * p.t, 135 + (p.ty - 135) * p.t, 1.5 + E * 1.5, 0, 7); ctx.fill(); });
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+    bounced.forEach(b => { ctx.globalAlpha = b.life; ctx.beginPath(); ctx.arc(b.x, b.y, 1.5 + E * 1.5, 0, 7); ctx.stroke(); });
+    ctx.globalAlpha = 1;
+    electrons.forEach(e => { const g = ctx.createRadialGradient(e.x, e.y, 1, e.x, e.y, 8); g.addColorStop(0, "#fff3bf"); g.addColorStop(1, "#f59f00"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(e.x, e.y, 8, 0, 7); ctx.fill(); });
+    label(ctx, "금속판", 570, 292);
+    const k = textScale(ctx), y0 = k > 1.2 ? 196 : 24, gap = 26 * k, dot = 7 * k, tx = 24 + 14 * k;
+    ctx.fillStyle = color; ctx.beginPath(); ctx.arc(24, y0, dot, 0, 7); ctx.fill(); label(ctx, "빛 알갱이", tx, y0 + 5 * k, 15, "#fff", "left");
+    ctx.fillStyle = "#ffc533"; ctx.beginPath(); ctx.arc(24, y0 + gap, dot, 0, 7); ctx.fill(); label(ctx, "전자", tx, y0 + gap + 5 * k, 15, "#fff", "left");
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(24, y0 + gap * 2, dot - 1, 0, 7); ctx.stroke(); label(ctx, "튕겨 나가는 빛 알갱이", tx, y0 + gap * 2 + 5 * k, 15, "#fff", "left");
+    if (heat > .2) label(ctx, "따뜻해져요", 560, 24, 15, "#ffb27a");
+  }
+  function paintHurdle() {
+    const E = 1240 / +wl.value, peak = 100 * E / 3.1, wall = 100 * THRESHOLD / 3.1, ground = 118, t = reduced ? .5 : (hop += .012) % 1;
+    hctx.fillStyle = "#eef3fb"; hctx.fillRect(0, 0, 640, 130);
+    hctx.fillStyle = "#c9d6ea"; hctx.fillRect(0, ground, 640, 12);
+    hctx.fillStyle = "#8f9db5"; hctx.fillRect(310, ground - wall, 20, wall);
+    label(hctx, "문턱", 320, ground - wall - 6, 14, "#1b2340");
+    const x = E > THRESHOLD ? 170 + 300 * t : 170 + 120 * Math.sin(Math.PI * t), y = ground - 10 - (E > THRESHOLD ? 4 * peak * t * (1 - t) : peak * Math.sin(Math.PI * t));
+    const g = hctx.createRadialGradient(x, y, 1, x, y, 10); g.addColorStop(0, "#fff3bf"); g.addColorStop(1, "#f59f00");
+    hctx.fillStyle = g; hctx.beginPath(); hctx.arc(x, y, 10, 0, 7); hctx.fill();
+    label(hctx, E > THRESHOLD ? "전자가 문턱을 넘어요" : "전자가 문턱을 못 넘어요", 20, 26, 15, "#1b2340", "left");
+  }
+  const onChange = () => { update(); if (reduced) { for (let n = 0; n < 240; n++) step(); paint(); paintHurdle(); } };
+  wlInput.addEventListener("input", onChange); br.addEventListener("input", onChange);
+  onChange();
+  if (!reduced) loop(() => { step(); paint(); paintHurdle(); });
+}
+
+function labSpecial() {
+  $("#stage").innerHTML = `<div class="sheet">
+    <p class="mission"><b>해 보기</b>우주선의 속도를 바꿔 보세요. 두 시계에서 빛이 거울 사이를 오가는 횟수를 비교해 보세요.</p>
+    <canvas id="c2" aria-label="멈춘 빛 시계와 움직이는 빛 시계를 비교하는 실험"></canvas>
+    <div class="control"><label for="v">우주선의 속도<output id="vOut"></output></label><input id="v" type="range" min="0" max="99.5" step="0.5" value="90"></div>
+    <div class="stats"><div class="stat"><span>우주선의 시계가 느려지는 정도</span><b id="sG"></b></div><div class="stat"><span>지구에서 10년이 지날 때 우주선 시계의 시간</span><b id="sY"></b></div><div class="stat"><span>멈춰 있을 때 100m인 우주선의 길이</span><b id="sL"></b></div></div>
+    <p class="result" id="res"></p>
+    <h3>실제 물체는 얼마나 차이 날까요?</h3>${COMPARE_TABLE}
+    <p class="note">모든 값은 지구에서 잰 값이에요. 우주선은 일정한 속도로 날고 있다고 생각했어요.</p></div>` + nextButton();
+  const ctx = setupCanvas("#c2", 640, 300);
+  const v = $("#v");
+  const top = 62, bottom = 172, oneWay = 55;
+  let b = .9, g = 1, p1 = 0, p2 = 0, sx = 200, trail = [];
+  const yOf = (p) => { const k = p % 2; return bottom - (bottom - top) * (k < 1 ? k : 2 - k); };
+  const mirrors = (x) => { ctx.fillStyle = "#dfe7f3"; ctx.fillRect(x - 40, top - 8, 80, 8); ctx.fillRect(x - 40, bottom, 80, 8); };
+  const dot = (x, y) => { ctx.fillStyle = "#ffd166"; ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.fill(); };
+  function step() {
+    p1 += 1 / oneWay; p2 += 1 / (oneWay * g); sx += 2 * b;
+    if (sx > 640) { sx = 200; trail = []; }
+    trail.push([sx, yOf(p2)]);
+    if (trail.length > 900) trail.shift();
+  }
+  function paint() {
+    nightBg(ctx, 640, 300);
+    ctx.fillStyle = "rgba(255,255,255,.2)"; ctx.fillRect(170, 0, 2, 300);
+    label(ctx, "멈춘 시계", 85, 32);
+    mirrors(85); dot(85, yOf(p1));
+    label(ctx, `왕복 ${Math.floor(p1 / 2)}번`, 85, 215, 16, "#7fd0ff");
+    drawIcon(ctx, "globe-showing-asia-australia", 85, 258, 50);
+    label(ctx, "움직이는 시계", 405, 32);
+    ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 2; ctx.beginPath(); trail.forEach((q, n) => n ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.stroke();
+    mirrors(sx); dot(sx, yOf(p2));
+    label(ctx, `왕복 ${Math.floor(p2 / 2)}번`, 405, 215, 16, "#ffd166");
+    const im = imgOf("rocket");
+    if (im.complete) { ctx.save(); ctx.translate(sx, 258); ctx.scale(1 / g, 1); ctx.rotate(Math.PI / 4); ctx.drawImage(im, -36, -36, 72, 72); ctx.restore(); }
+  }
+  function update() {
+    b = +v.value / 100; g = 1 / Math.sqrt(1 - b * b);
+    p1 = 0; p2 = 0; sx = 200; trail = [];
+    $("#vOut").textContent = `빛의 속도의 ${v.value}%`;
+    $("#sG").textContent = `약 ${g.toFixed(2)}배`;
+    $("#sY").textContent = `약 ${(10 / g).toFixed(1)}년`;
+    $("#sL").textContent = `약 ${(100 / g).toFixed(1)}m`;
+    $("#res").textContent = g < 1.05 ? "지금은 두 시계의 차이가 아주 작아요. 우주선의 속도를 더 올려 보세요." : "움직이는 시계의 빛은 비스듬히 더 먼 길을 가요. 그래서 왕복 횟수가 더 적고, 시계가 더 느리게 가요.";
+    if (reduced) { for (let n = 0; n < 240; n++) step(); paint(); }
+  }
+  v.addEventListener("input", update);
+  update();
+  if (!reduced) loop(() => { step(); paint(); });
+}
+
+const koNum = (n) => {
+  if (n >= 1e8) return `${(n / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}억`;
+  if (n >= 1e4) return `${(n / 1e4).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}만`;
+  return n.toLocaleString("ko-KR", { maximumFractionDigits: 0 });
+};
+function labEnergy() {
+  const things = [["쌀 한 톨", .02, "sheaf-of-rice"], ["종이 클립", 1, "paperclip"], ["100원 동전", 5.42, "coin"], ["사과 한 개", 200, "red-apple"]];
+  $("#stage").innerHTML = `<div class="sheet">
+    <p class="mission"><b>해 보기</b>물건을 고르거나 막대를 움직여서 질량을 바꿔 보세요. 그 질량 전부와 맞먹는 전기의 양을 알 수 있어요.</p>
+    <div class="things" id="things">${things.map(t => `<button class="thing" type="button" data-g="${t[1]}">${icon(t[2])}${t[0]} (${t[1]}g)</button>`).join("")}</div>
+    <div class="control"><label for="m">질량<output id="mOut"></output></label><input id="m" type="range" min="-2" max="3" step="0.01" value="0"></div>
+    <p id="houseCap" class="result"></p><div id="houses"></div>
+    <div class="stats"><div class="stat"><span>질량 전부와 맞먹는 전기</span><b id="sK"></b></div><div class="stat"><span>집 한 채가 그 전기를 쓸 수 있는 기간</span><b id="sH"></b></div><div class="stat"><span>계산에 쓴 식</span><b>E = mc²</b></div></div>
+    <p class="result">질량이 작아도 빛의 속도를 두 번 곱하기 때문에 에너지가 아주 커져요.</p>
+    <p class="note">집 한 채는 한 달에 전기 300kWh를 쓴다고 어림했고, 물건의 무게도 대략적인 값이에요. 사람은 아직 물건의 질량 전부를 전기로 바꾸지 못해요.</p></div>` + nextButton();
+  const m = $("#m");
+  function show(g) {
+    const kWh = g * 2.5e7, years = kWh / 3600;
+    $("#mOut").textContent = `${g.toLocaleString("ko-KR", { maximumSignificantDigits: 3 })}g`;
+    $("#sK").textContent = `약 ${koNum(kWh)} kWh`;
+    $("#sH").textContent = `약 ${koNum(Number(years.toPrecision(2)))}년`;
+    const unit = 10 ** Math.max(0, Math.ceil(Math.log10(years)) - 1), count = years / unit, whole = Math.floor(count);
+    $("#houseCap").textContent = `집 그림 1개는 ${koNum(unit)}년 동안 쓸 전기예요.`;
+    $("#houses").innerHTML = Array.from({ length: whole }, () => icon("house")).join("") + (count > whole ? icon("house").replace("<img", `<img style="opacity:${Math.max(.2, count - whole).toFixed(2)}"`) : "");
+    document.querySelectorAll("#things .thing").forEach(b => b.setAttribute("aria-pressed", String(Math.abs(+b.dataset.g - g) < 1e-6)));
+  }
+  m.addEventListener("input", () => show(Number((10 ** +m.value).toPrecision(3))));
+  $("#things").addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b) return; const g = +b.dataset.g; m.value = Math.log10(g); show(g); });
+  show(1);
+}
+
+function labGeneral() {
+  $("#stage").innerHTML = `<div class="sheet">
+    <p class="mission"><b>해 보기</b>별의 질량을 늘려 보세요. 그다음 빛이 별 가까이 지나가게 바꿔 보세요. 흰 선이 빛의 길이에요.</p>
+    <canvas id="c4" aria-label="별 주변의 격자가 완만하게 휘고 빛의 길이 휘는 모습"></canvas>
+    <div class="controls">
+      <div class="control"><label for="mass">별의 질량<output id="massOut"></output></label><input id="mass" type="range" min="0" max="100" value="70"></div>
+      <div class="control"><label for="gap">별과 빛 사이의 거리<output id="gapOut"></output></label><input id="gap" type="range" min="60" max="170" value="100"></div>
+    </div>
+    <p class="result" id="res"></p>
+    <p class="note">휘는 정도를 아주 크게 그렸어요. 공간의 휘어짐은 별에서 멀어질수록 서서히 약해져서 넓고 완만하게 그렸어요. 실제 공간은 평평한 천이 아니라 입체예요. 별빛은 태양 바로 옆을 지날 때도 약 0.0005도만 휘어요.</p></div>` + nextButton();
+  const ctx = setupCanvas("#c4", 640, 340);
+  const mass = $("#mass"), gap = $("#gap");
+  const cx = 320, cy = 225, wide = 125;
+  let path = [], t = 0;
+  function warp(x, y, M) {
+    const dx = cx - x, dy = cy - y, r = Math.hypot(dx, dy) || 1;
+    const d = Math.min(r * .75, M * .95 * (r / wide) * Math.exp(-r * r / (2 * wide * wide)));
+    return [x + dx / r * d, y + dy / r * d];
+  }
+  function compute() {
+    const M = +mass.value, b = +gap.value, R = 12 + M * .16;
+    let x = 0, y = cy - b, vx = 3, vy = 0;
+    path = [[x, y]];
+    while (x < 650 && x > -10 && y > -20 && y < 360) {
+      const dx = cx - x, dy = cy - y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2), soft = Math.pow(r2 + 4900, 1.5);
+      if (r < R) break;
+      vx += 2 * M * dx / soft; vy += 2 * M * dy / soft;
+      const s = Math.hypot(vx, vy); vx = vx / s * 3; vy = vy / s * 3;
+      x += vx; y += vy; path.push([x, y]);
+    }
+    const hit = Math.hypot(cx - x, cy - y) < R;
+    $("#massOut").textContent = `${M}`;
+    $("#gapOut").textContent = `${b}`;
+    $("#res").textContent = M === 0 ? "별의 질량이 0이면 빛은 곧게 지나가요." : hit ? "빛이 별에 닿았어요. 별과 빛 사이의 거리를 늘려 보세요." : "별의 질량이 클수록, 빛이 별에 가까이 지날수록 빛의 길이 더 많이 휘어요.";
+    t = 0;
+  }
+  function paint() {
+    const M = +mass.value, b = +gap.value, R = 12 + M * .16;
+    nightBg(ctx, 640, 340);
+    const well = ctx.createRadialGradient(cx, cy, R, cx, cy, wide * 2);
+    well.addColorStop(0, `rgba(5, 8, 25, ${.75 * M / 100})`); well.addColorStop(1, "rgba(5, 8, 25, 0)");
+    ctx.fillStyle = well; ctx.fillRect(0, 0, 640, 340);
+    ctx.strokeStyle = "#6476bd"; ctx.lineWidth = 1.2; ctx.lineCap = "butt";
+    for (let a = 0; a <= 640; a += 40) { ctx.beginPath(); for (let s = 0; s <= 340; s += 8) { const p = warp(a, s, M); s ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke(); }
+    for (let a = 5; a <= 340; a += 40) { ctx.beginPath(); for (let s = 0; s <= 640; s += 8) { const p = warp(s, a, M); s ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke(); }
+    ctx.setLineDash([6, 7]); ctx.strokeStyle = "#7fd0ff"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, cy - b); ctx.lineTo(640, cy - b); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 3;
+    ctx.beginPath(); path.forEach((p, n) => n ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+    drawIcon(ctx, "sun", cx, cy, R * 2.6);
+    if (path.length) { const p = path[Math.min(Math.floor(t), path.length - 1)]; ctx.fillStyle = "#ffd166"; ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill(); }
+    label(ctx, "별이 없을 때 빛이 가는 길", 12, Math.max(26, cy - b - 8), 14, "#7fd0ff", "left");
+    t = t >= path.length ? 0 : t + 2;
+  }
+  const onChange = () => { compute(); if (reduced) { t = path.length - 1; paint(); } };
+  mass.addEventListener("input", onChange); gap.addEventListener("input", onChange);
+  onChange();
+  if (!reduced) loop(paint);
+}
+
+function render() {
+  stopLoop();
+  renderNav();
+  if (state.method === "comic") renderComic();
+  else if (state.method === "guide") renderGuide();
+  else if (state.method === "quiz") renderQuiz();
+  else ({ photo: labPhoto, special: labSpecial, energy: labEnergy, general: labGeneral })[state.idea]();
+  if (reduced) document.querySelectorAll("#stage svg").forEach(g => { if (g.pauseAnimations) { g.setCurrentTime(4.5); g.pauseAnimations(); } });
+  try { history.replaceState(null, "", `#${state.idea}-${state.method}`); } catch (e) {}
+}
+function readHash() {
+  const [i, m] = location.hash.slice(1).split("-");
+  if (IDEAS.some(x => x.id === i)) state.idea = i;
+  if (METHODS.some(x => x.id === m)) state.method = m;
+}
+
+$("#ideas").addEventListener("click", e => { const b = e.target.closest("[data-i]"); if (b) { state.idea = b.dataset.i; render(); } });
+$("#methods").addEventListener("click", e => { const b = e.target.closest("[data-m]"); if (b) { state.method = b.dataset.m; render(); } });
+$("#stage").addEventListener("click", e => {
+  const q = e.target.closest("[data-q]");
+  if (q) { quizState[state.idea][q.dataset.q] = +q.dataset.k; renderQuiz(); return; }
+  if (e.target.closest("[data-retry]")) { quizState[state.idea] = {}; renderQuiz(); return; }
+  const n = e.target.closest("[data-next]");
+  if (!n) return;
+  if (n.dataset.next === "method") state.method = METHODS[METHODS.findIndex(m => m.id === state.method) + 1].id;
+  else { state.idea = IDEAS[(IDEAS.findIndex(i => i.id === state.idea) + 1) % IDEAS.length].id; state.method = "comic"; }
+  render();
+  $("#core").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+});
+readHash();
+render();
+/* 실험실 캔버스는 그림을 쓰므로, 그림을 모두 불러온 뒤 다시 그린다. */
+Promise.all(Object.keys(ICONS).map(n => new Promise(res => {
+  const im = imgOf(n);
+  if (im.complete) res(); else im.onload = im.onerror = res;
+}))).then(() => { if (state.method === "lab") render(); });
+
+/* ---------- 전체 이야기 ---------- */
+document.querySelector(".jump").addEventListener("click", e => {
+  const b = e.target.closest("[data-go]");
+  if (b) document.getElementById(b.dataset.go).scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+});
+let compassTurn = 0;
+document.getElementById("spin").addEventListener("click", () => {
+  compassTurn += 90 + Math.floor(Math.random() * 180);
+  document.getElementById("compassBody").style.transform = `rotate(${compassTurn}deg)`;
+});
+</script>
