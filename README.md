@@ -79,7 +79,7 @@
 
 | 방법 | 내용 |
 | --- | --- |
-| 만화로 읽기 | 하나와 아인슈타인의 대화로 읽는 네 컷 만화 (꾸민 대화임을 페이지에 표시) |
+| 만화로 읽기 | 하나와 아인슈타인의 대화로 읽는 만화 (꾸민 대화임을 페이지에 표시) |
 | 직접 실험하기 | 빛의 색, 우주선의 속도, 질량, 별의 질량을 바꿔 보는 도구 |
 | 그림으로 보기 | 원리 그림과 세 단계 설명, 우리 생활 속 예 |
 | 퀴즈 풀기 | 생각마다 3문제를 풀고 이유 확인 |
@@ -88,7 +88,11 @@
 
 - 금속에 빛을 비추면 금속에서 전자가 튀어나올 수 있어요. 전자는 원자 안에 있는 아주아주 작은 알갱이예요.
 - 전자가 금속 밖으로 나오려면 일정한 에너지가 필요해요. 빛 알갱이 하나의 에너지가 그보다 작으면 전자는 나오지 않아요.
-- 빛이 밝아지면 나오는 전자의 수가 늘어요. 빛이 파란색 쪽으로 갈수록 전자가 더 빠르게 나와요.
+- 전자는 빛을 받은 쪽 표면에서 튀어나와요.
+- 금속판에 닿은 빛 알갱이의 일부는 튕겨 나가고(반사), 일부는 흡수돼요. 광택이 있는 금속은 눈에 보이는 빛을 많이 반사해요. 흡수된 에너지가 충분하면 전자가 튀어나올 수 있고, 그렇지 않으면 열이 되어 금속판을 아주 조금 따뜻하게 해요.
+- 빛이 밝아지면 빛 알갱이가 많아져서 튀어나오는 전자의 수가 늘어요. 빛이 파란색 쪽으로 갈수록 전자가 더 빠르게 나와요.
+- 빛은 아주 빠르게 떨리면서 나아가요. 빛이 빠르게 떨릴수록 빛 알갱이 하나의 에너지가 커요. 빨간빛(650nm)은 1초에 약 460조 번, 파란빛(450nm)은 약 670조 번 떨려요.
+- 떨림 자체가 에너지는 아니에요. 빛의 밝기는 떨리는 빠르기가 아니라 빛 알갱이의 수와 관련이 있어요. 금속의 원자가 열로 떨리는 것은 빛의 떨림과 다른 현상이에요.
 - **비유:** 500원을 넣어야 움직이는 뽑기 기계는 10원짜리 동전을 아무리 많이 넣어도 움직이지 않아요.
 - **예로 든 금속:** 나트륨 (문턱 약 2.3eV, 초록빛부터 전자가 나옴)
 - **우리 생활에서:** 디지털카메라의 센서와 태양전지에서도 빛 알갱이가 전자를 움직여요.
@@ -158,8 +162,16 @@
 - 태양의 질량 변화는 약 400만 톤으로 적는 자료가 많지만, 약 550만 톤으로 적은 자료도 있습니다.
 - 우라늄(약 0.1%)과 나트륨(약 2.3eV) 수치의 출처는 주로 시험 대비 사이트와 과학 포럼입니다. 나트륨은 다른 값을 적은 자료도 있습니다.
 
+**반사와 흡수 확인 결과**
+
+- 광택이 있는 금속이 눈에 보이는 빛을 대부분 반사하고 나머지를 흡수한다는 내용, 흡수된 에너지가 전자를 거쳐 금속의 열이 된다는 내용은 자료와 맞습니다.
+- 자료는 레이저 가공 논문과 재료 광학 강의 자료, 과학 해설 페이지입니다. 전자를 내보내지 못한 빛만 따로 다룬 자료는 찾지 못했고, 금속의 일반적인 반사와 흡수 설명을 적용했습니다.
+- "튕겨 나가요"는 쉽게 풀어 쓴 표현입니다. 자료에 따르면 빛의 반사는 금속의 자유 전자가 빛에 흔들리며 같은 진동수의 빛을 다시 내보내는 현상입니다.
+- 실험 도구의 반사 비율(70%)과 금속판의 주황색은 보기 쉽게 정한 값이고 실제 측정값이 아닙니다. 페이지에도 이 점을 적었습니다.
+
 **직접 계산했거나 어림한 값**
 
+- 빛이 1초에 떨리는 횟수는 빛의 속도를 파장으로 나눠 계산했습니다. 빛 알갱이의 에너지가 진동수에 비례한다는 관계(E = hf)는 자료로 확인했습니다. 이 식은 플랑크의 관계를 아인슈타인이 빛에 적용한 것입니다.
 - 1g = 약 2,500만 kWh는 E = mc²으로 계산했고, 약 7천 년은 한 달 300kWh를 쓰는 집을 기준으로 어림했습니다.
 - 빛의 속도의 90%일 때 약 2.3배는 특수상대성이론의 식으로 계산했습니다.
 - 약 0.0005도는 자료의 약 1.75각초를 도 단위로 바꾼 값입니다.
@@ -190,6 +202,14 @@
 - [Is the Sun Losing Mass? (Brian Koberlein)](https://briankoberlein.com/blog/is-the-sun-losing-mass/)
 - [Mass converted to energy in fission of U-235 (Physics Forums)](https://www.physicsforums.com/threads/mass-converted-to-energy-in-fission-of-u-235.59850)
 - [The work function of sodium is 2.3 eV (Vedantu)](https://www.vedantu.com/jee-main/the-work-function-of-sodium-is-23-ev-the-physics-question-answer)
+
+- [Light in Slices: How to Enable Precise Laser Processing? (arXiv)](https://arxiv.org/pdf/2509.22665)
+- [Laser Material Processing 강의 자료 (University of Diyala)](https://engineering.uodiyala.edu.iq/uploads/Departments2021/Material%20Engineerings/Lectures/4/Laser%20Material%20Processing/pdf1%20(3).pdf)
+- [The Science Behind Metal-Laser Absorption (MachineMFG)](https://machinemfg.com/metal-laser-absorption)
+- [Optical Constants of Metals (SciencePedia)](https://www.bohrium.com/en/sciencepedia/feynman/keyword/optical_constants_of_metals)
+- [The photoelectric effect (Britannica)](https://www.britannica.com/science/radiation/The-photoelectric-effect)
+
+- [Photoelectric effect 전문가 답변 (PhysLink)](https://www.physlink.com/education/askexperts/ae24.cfm)
 
 ## 그림 출처
 
