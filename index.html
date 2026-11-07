@@ -6,7 +6,7 @@
 <title>아인슈타인 이야기</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;700&display=swap">
 <style>
 /* Layout: 밤하늘 띠 위에 네 가지 생각을 큰 카드로 먼저 보여 주고, 그 아래에서 설명 방법을 고른다. 한 가지 그림책 같은 밝은 테마로 고정한다. 휴대폰과 PC 모두 폭 600px 안의 한 단으로 보여 준다. */
 :root {
@@ -14,8 +14,8 @@
   --night: #15204a; --night2: #26357a; --paper: #f5f7fc; --sheet: #ffffff;
   --ink: #1b2340; --soft: #545e7d; --line: #d9e0ef; --gold: #ffd166;
   --accent: #c2410c; --tint: #fff1e6;
-  --display: "Jua", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --display: "Do Hyeon", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -231,7 +231,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="lines"><h3>나침반</h3><p>아인슈타인이 아파서 누워 있을 때 아버지가 나침반을 주었어요.</p><p>나침반을 아무리 돌려도 바늘은 늘 같은 쪽을 가리켰어요.</p><p>아인슈타인은 이 일을 무척 신기해했어요.</p><p>아인슈타인은 나중에 이 일을 물리학에 관심을 갖게 된 계기로 꼽았어요.</p></div>
       <div class="compass-try">
         <svg viewBox="0 0 120 120" role="img" aria-label="돌려도 바늘이 같은 쪽을 가리키는 나침반">
-        <g id="compassBody"><circle cx="60" cy="60" r="56" fill="#fff4cf" stroke="#c2410c" stroke-width="5"/><g font-family="Jua, sans-serif" font-size="15" fill="#1b2340" text-anchor="middle"><text x="60" y="24">북</text><text x="60" y="108">남</text><text x="100" y="65">동</text><text x="20" y="65">서</text></g></g>
+        <g id="compassBody"><circle cx="60" cy="60" r="56" fill="#fff4cf" stroke="#c2410c" stroke-width="5"/><g font-family="'Do Hyeon', sans-serif" font-size="15" fill="#1b2340" text-anchor="middle"><text x="60" y="24">북</text><text x="60" y="108">남</text><text x="100" y="65">동</text><text x="20" y="65">서</text></g></g>
         <path d="M60 18 L68 60 H52Z" fill="#e8434b"/><path d="M60 102 L68 60 H52Z" fill="#9aa6bd"/><circle cx="60" cy="60" r="6" fill="#1b2340"/>
       </svg>
         <div class="lines"><p>나침반의 몸체를 돌려도 빨간 바늘은 같은 쪽을 가리켜요.</p><p class="note">이 그림에서 바늘의 방향은 고정해 두었어요.</p><button class="next left" type="button" id="spin">나침반 돌리기</button></div>
@@ -333,7 +333,7 @@ const ic = (n, x, y, s, rot = 0, flip = false) => {
   return t.length ? `<g transform="${t.join(" ")}">${c}</g>` : c;
 };
 let TS = 1;
-const txt = (x, y, t, size = 14, fill = INK) => `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="Jua, sans-serif">${t}</text>`;
+const txt = (x, y, t, size = 14, fill = INK) => `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="'Do Hyeon', sans-serif">${t}</text>`;
 const tag = (x, y, t, bg = "#ffffff", fill = INK, size = 13) => {
   const s = size * TS, w = [...t].length * s * .86 + 18;
   return `<rect x="${x - w / 2}" y="${y - s - 3}" width="${w}" height="${s + 11}" rx="${(s + 11) / 2}" fill="${bg}"/>` + txt(x, y, t, size, fill);
@@ -589,7 +589,7 @@ function nightBg(ctx, w, h) {
 }
 /* 캔버스가 작게 보이면 글자를 키워 그린다. */
 const textScale = (ctx) => Math.min(1.7, Math.max(1, 640 / (ctx.canvas.clientWidth || 640)));
-const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => { ctx.fillStyle = c; ctx.font = `${size * textScale(ctx)}px Jua, sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); };
+const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => { ctx.fillStyle = c; ctx.font = `${size * textScale(ctx)}px "Do Hyeon", sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); };
 
 function renderNav() {
   const idea = IDEAS.find(i => i.id === state.idea);
