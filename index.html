@@ -1,9 +1,14 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>아인슈타인 이야기</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
 <style>
-/* Layout: 밤하늘 띠 위에 네 가지 생각을 큰 카드로 먼저 보여 주고, 그 아래에서 설명 방법을 고른다. 한 가지 그림책 같은 밝은 테마로 고정한다. */
+/* Layout: 밤하늘 띠 위에 네 가지 생각을 큰 카드로 먼저 보여 주고, 그 아래에서 설명 방법을 고른다. 한 가지 그림책 같은 밝은 테마로 고정한다. 휴대폰과 PC 모두 폭 600px 안의 한 단으로 보여 준다. */
 :root {
   color-scheme: light;
   --night: #15204a; --night2: #26357a; --paper: #f5f7fc; --sheet: #ffffff;
@@ -13,32 +18,31 @@
   --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 * { box-sizing: border-box; }
-body { background: var(--paper); color: var(--ink); font: 18px/1.75 var(--body); word-break: keep-all; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 18px/1.75 var(--body); word-break: keep-all; }
 h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.3; margin: 0; text-wrap: balance; }
 p { margin: 0; }
-.inner { max-width: 1000px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 632px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .hero { background: linear-gradient(180deg, var(--night), var(--night2)); color: #fff; }
 .hero .inner { padding-block: 36px 40px; display: grid; gap: 24px; }
-.hero h2 { font-size: clamp(1.9rem, 6vw, 3rem); }
+.hero h2 { font-size: clamp(1.9rem, 6vw, 2.4rem); }
 .hero p { color: #dfe6ff; max-width: 40em; }
-.ideas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.ideas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .idea { font: inherit; color: var(--ink); background: #fff; border: 0; border-radius: 18px; padding: 16px 14px; text-align: left; cursor: pointer; display: grid; gap: 6px; align-content: start; min-width: 0; transition: transform .15s; }
-.idea:hover { transform: translateY(-3px); }
 .idea img { width: 58px; height: 58px; }
 .idea b { font: 400 1.32rem/1.25 var(--display); }
 .idea small { font-size: .9rem; line-height: 1.45; color: var(--soft); }
 .idea[aria-pressed="true"] { background: var(--gold); box-shadow: 0 0 0 4px #fff; }
 .idea[aria-pressed="true"] small { color: var(--ink); }
 main.inner { padding-block: 28px 56px; display: grid; gap: 24px; }
-.core { background: var(--tint); border-radius: 18px; padding: 22px 24px; display: grid; gap: 12px; }
-.core h2 { font-size: clamp(1.55rem, 4.5vw, 2.15rem); color: var(--accent); }
+.core { background: var(--tint); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.core h2 { font-size: clamp(1.55rem, 4.5vw, 1.9rem); color: var(--accent); }
 .lines { display: grid; gap: 4px; }
 .pick { display: grid; gap: 10px; }
 .pick h3 { font-size: 1.05rem; color: var(--soft); }
-.methods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.method { font: 400 1.04rem/1.25 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; min-width: 0; }
+.methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.method { font: 400 1.04rem/1.25 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 8px 12px; min-height: 48px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; min-width: 0; }
 .method img { width: 26px; height: 26px; flex: none; }
-.method:hover { border-color: var(--accent); }
 .method[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
 .method[aria-pressed="true"] img { background: #fff; border-radius: 50%; padding: 2px; }
 button:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
@@ -46,7 +50,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-
 .note { font-size: .92rem; color: var(--soft); line-height: 1.6; }
 .next { justify-self: end; font: 400 1.08rem/1.3 var(--display); color: #fff; background: var(--accent); border: 0; border-radius: 999px; padding: 12px 22px; cursor: pointer; }
 /* 만화 */
-.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .panel { background: var(--sheet); border-radius: 18px; overflow: hidden; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); display: flex; flex-direction: column; min-width: 0; }
 .panel svg { display: block; width: 100%; height: auto; }
 .talk { display: flex; gap: 10px; padding: 14px; align-items: flex-start; flex: 1; }
@@ -55,32 +59,37 @@ button:focus-visible, input:focus-visible { outline: 3px solid #2563eb; outline-
 .who { font: 400 .92rem/1.3 var(--display); color: var(--accent); display: block; margin-bottom: 2px; }
 .talk p + p { margin-top: 3px; }
 /* 그림과 실험 */
-.sheet { background: var(--sheet); border-radius: 18px; padding: 20px; display: grid; gap: 16px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); min-width: 0; }
+.sheet { background: var(--sheet); border-radius: 18px; padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); min-width: 0; }
 .sheet h3 { font-size: 1.32rem; }
 .sheet svg, .sheet canvas { display: block; width: 100%; height: auto; border-radius: 12px; }
 .mission { background: var(--tint); border-radius: 12px; padding: 10px 14px; }
-.mission b { font-family: var(--display); font-weight: 400; color: var(--accent); margin-right: 6px; }
-.controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.mission b { font-family: var(--display); font-weight: 400; color: var(--accent); display: block; }
+.mission ol { margin: 2px 0 0; padding-left: 1.3em; display: grid; gap: 2px; }
+.controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
 .control { display: grid; gap: 2px; min-width: 0; }
 .control label { font-family: var(--display); }
 .ends { display: flex; justify-content: space-between; gap: 12px; font-size: .84rem; line-height: 1.4; color: var(--soft); }
 .control output { color: var(--accent); margin-left: 8px; }
-input[type="range"] { width: 100%; accent-color: var(--accent); height: 28px; }
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; margin: 0; background: transparent; cursor: pointer; }
+input[type="range"]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: var(--line); }
+input[type="range"]::-moz-range-track { height: 8px; border-radius: 999px; background: var(--line); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 1px 4px rgba(27, 35, 64, .4); }
+input[type="range"]::-moz-range-thumb { box-sizing: border-box; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 1px 4px rgba(27, 35, 64, .4); }
+.stats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .stat { background: var(--paper); border-radius: 12px; padding: 10px 12px; min-width: 0; }
 .stat span { display: block; font-size: .88rem; line-height: 1.4; color: var(--soft); }
 .stat b { display: block; font: 400 1.4rem/1.3 var(--display); overflow-wrap: anywhere; margin-top: 4px; }
 .result { font-weight: 700; }
 .things { display: flex; flex-wrap: wrap; gap: 8px; }
-.thing { font: inherit; font-size: .96rem; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 999px; padding: 4px 13px 4px 7px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.thing { font: inherit; font-size: .96rem; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 999px; padding: 4px 13px 4px 7px; min-height: 44px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
 .thing img { width: 26px; height: 26px; }
 .thing[aria-pressed="true"] { border-color: var(--accent); background: var(--tint); }
-.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
+.steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
 .steps li { min-width: 0; background: var(--paper); border-radius: 12px; padding: 12px 14px; counter-increment: s; }
 .steps b { font-family: var(--display); font-weight: 400; font-size: 1.08rem; display: block; margin-bottom: 4px; }
 .steps b::before { content: counter(s) ". "; color: var(--accent); }
 .steps p + p { margin-top: 4px; }
-.cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cases { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .case { background: var(--paper); border-radius: 12px; padding: 12px; display: grid; gap: 6px; align-content: start; min-width: 0; }
 .case b { font-family: var(--display); font-weight: 400; font-size: 1.08rem; }
 .tbl-wrap { overflow-x: auto; }
@@ -97,27 +106,29 @@ input[type="range"] { width: 100%; accent-color: var(--accent); height: 28px; }
 .q { background: var(--sheet); border-radius: 18px; padding: 18px; display: grid; gap: 12px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
 .q h3 { font-size: 1.18rem; line-height: 1.45; }
 .opts { display: grid; gap: 8px; }
-.opt { font: inherit; text-align: left; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 9px 14px; cursor: pointer; }
-.opt:hover:enabled { border-color: var(--accent); }
+.opt { font: inherit; text-align: left; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 9px 14px; min-height: 48px; cursor: pointer; }
 .opt:disabled { cursor: default; color: var(--ink); }
 .opt.right { background: #d9f5e6; border-color: #15803d; font-weight: 700; }
 .opt.wrong { background: #fde4e4; border-color: #dc2626; }
 .why { background: var(--tint); border-radius: 12px; padding: 10px 14px; display: grid; gap: 3px; }
 .why b { font-family: var(--display); font-weight: 400; color: var(--accent); }
 .score { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-family: var(--display); font-size: 1.14rem; }
-.retry { font: 400 1rem/1.3 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 7px 15px; cursor: pointer; }
+.retry { font: 400 1rem/1.3 var(--display); color: var(--ink); background: var(--sheet); border: 2px solid var(--line); border-radius: 999px; padding: 7px 15px; min-height: 44px; cursor: pointer; }
+/* 더 알아보기 */
+.more { background: var(--paper); border-radius: 12px; padding: 0 14px; min-width: 0; }
+.more > summary { font-family: var(--display); font-size: 1.04rem; line-height: 1.4; padding: 11px 0; cursor: pointer; list-style: none; display: flex; gap: 8px; }
+.more > summary::-webkit-details-marker { display: none; }
+.more > summary::before { content: "+"; color: var(--accent); flex: none; width: 1em; text-align: center; }
+.more[open] > summary::before { content: "−"; }
+.more-in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding-bottom: 14px; }
+.more .stat, .more .case { background: var(--sheet); }
+.life .more { background: var(--sheet); margin-top: 8px; }
+summary:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 footer { color: var(--soft); font-size: .84rem; line-height: 1.6; }
 footer a { color: inherit; }
-@media (max-width: 760px) {
-  .ideas, .methods { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .steps { grid-template-columns: minmax(0, 1fr); }
-}
-@media (max-width: 620px) {
-  .cases { grid-template-columns: minmax(0, 1fr); }
-  .panels, .controls { grid-template-columns: minmax(0, 1fr); }
-  .stats { grid-template-columns: minmax(0, 1fr); }
-  .sheet { padding: 14px; }
-  .core { padding: 18px; }
+@media (hover: hover) {
+  .idea:hover { transform: translateY(-3px); }
+  .method:hover, .opt:hover:enabled { border-color: var(--accent); }
 }
 @media (prefers-reduced-motion: reduce) { .idea { transition: none; } .idea:hover { transform: none; } }
 
@@ -127,22 +138,30 @@ footer a { color: inherit; }
 .top-head { display: flex; align-items: center; gap: 18px; }
 .top-head img { width: 92px; height: 92px; flex: none; }
 .top-head > div { display: grid; gap: 6px; min-width: 0; }
-.top h1 { font-size: clamp(2.1rem, 7vw, 3.5rem); }
+.top h1 { font-size: clamp(2.1rem, 7vw, 2.6rem); }
 .top p { color: #dfe6ff; }
-.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .facts .stat { color: var(--ink); background: #fff; }
 .facts .stat b { font-size: 1.14rem; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sheet); }
 .jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--sheet); border-bottom: 1px solid var(--line); }
-.jump-in { display: flex; gap: 4px; max-width: 1000px; margin: 0 auto; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
-.jump button { font: 400 .98rem/1.3 var(--display); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
-.jump button:hover { background: var(--paper); }
+.jump-in { display: flex; gap: 4px; max-width: 632px; scrollbar-width: none; margin: 0 auto; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
+.part, #sec-ideas, #core { scroll-margin-top: 64px; }
+.jump-in::-webkit-scrollbar { display: none; }
+.jump::after { content: ""; position: absolute; inset: 0 0 0 auto; width: 36px; background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--sheet)); pointer-events: none; transition: opacity .15s; }
+.jump.at-end::after { opacity: 0; }
+.jump button { font: 400 .98rem/1.3 var(--display); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 7px 12px; min-height: 44px; cursor: pointer; white-space: nowrap; flex: none; }
+/* 마우스로는 옆으로 밀기 어려우므로 PC에서는 메뉴를 한 줄에 모두 보여 준다. */
+@media (hover: hover) and (pointer: fine) {
+  .jump-in { flex-wrap: wrap; justify-content: space-between; }
+  .jump::after { display: none; }
+  .jump button { font-size: .94rem; padding-inline: 8px; }
+  .jump button:hover { background: var(--paper); }
+}
 .story { padding-block: 32px; display: grid; gap: 40px; }
 .part { display: grid; gap: 16px; min-width: 0; }
-.part h2 { font-size: clamp(1.55rem, 4.5vw, 2.15rem); }
-.part, #sec-ideas, #core { scroll-margin-top: 64px; }
-.infos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.infos.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.part h2 { font-size: clamp(1.55rem, 4.5vw, 1.9rem); }
+.infos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .info { background: var(--sheet); border-radius: 18px; padding: 18px; display: grid; gap: 6px; align-content: start; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); min-width: 0; }
 .info img { width: 54px; height: 54px; }
 .tongue { display: flex; gap: 18px; align-items: flex-start; background: var(--tint); border-radius: 18px; padding: 18px; }
@@ -150,25 +169,28 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tongue > div { display: grid; gap: 4px; min-width: 0; }
 .timeline { list-style: none; margin: 0; padding: 0; display: grid; }
 .timeline li { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.timeline li.extra { display: none; }
+.timeline.all li.extra { display: grid; }
 .timeline b { font-family: var(--display); font-weight: 400; color: #c2410c; }
 .compass-box { display: flex; gap: 22px; align-items: center; background: var(--sheet); border-radius: 18px; padding: 18px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
 .compass-box svg { width: 150px; height: 150px; flex: none; }
 #compassBody { transform-box: fill-box; transform-origin: center; transition: transform 1s ease; }
 .next.left { justify-self: start; }
 .myths { display: grid; gap: 10px; }
-.myth { background: var(--sheet); border-radius: 14px; padding: 14px 18px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
-.myth summary { font-family: var(--display); font-size: 1.1rem; cursor: pointer; }
-.myth .lines { margin-top: 10px; }
+.myth { background: var(--sheet); border-radius: 14px; padding: 0 18px; box-shadow: 0 2px 10px rgba(27, 35, 64, .1); }
+.myth summary { font-family: var(--display); font-size: 1.1rem; padding: 11px 0; cursor: pointer; }
+.myth .lines { padding-bottom: 14px; }
 .myth b { color: #c2410c; }
 .letter { margin: 0; background: #fff8e7; border: 1px solid #e8d9b5; border-radius: 6px; padding: 22px; display: grid; gap: 10px; }
 .letter img { width: 54px; height: 54px; }
-.letter .ko { font: 400 clamp(1.25rem, 4vw, 1.6rem)/1.5 var(--display); }
+.letter .ko { font: 400 1.3rem/1.5 var(--display); }
 .letter .en { color: var(--soft); font-style: italic; }
-summary:focus-visible, .jump button:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
-@media (max-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .infos, .infos.two { grid-template-columns: minmax(0, 1fr); } }
+.jump button:focus-visible { outline: 3px solid #2563eb; outline-offset: -3px; }
 @media (max-width: 480px) { .tongue, .compass-box { flex-direction: column; align-items: flex-start; } .timeline li { grid-template-columns: minmax(0, 1fr); gap: 0; } }
 @media (prefers-reduced-motion: reduce) { #compassBody { transition: none; } }
 </style>
+</head>
+<body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7ecff"/><stop offset="1" stop-color="#f4faff"/></linearGradient>
@@ -196,7 +218,8 @@ summary:focus-visible, .jump button:focus-visible { outline: 3px solid #2563eb; 
     <div class="lines"><p>아인슈타인은 이론물리학자예요.</p><p>이론물리학자는 생각과 계산으로 자연의 규칙을 찾는 과학자예요.</p><p>아인슈타인은 독일에서 태어났어요.</p><p>아인슈타인은 1933년에 미국으로 건너갔어요. 그해는 나치가 독일에서 권력을 잡은 해예요.</p></div>
     <article class="tongue"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJNMTUuOTk5IDI5Ljk5OGM5LjMzNCAwIDEzLjk5OS02LjI2OCAxMy45OTktMTRjMC03LjczLTQuNjY1LTEzLjk5OC0xNC0xMy45OThDNi42NjUgMiAyIDguMjY4IDIgMTUuOTk5czQuNjY0IDEzLjk5OSAxMy45OTkgMTMuOTk5Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEwLjQyIDE2LjIyNGE0LjIwNiA0LjIwNiAwIDEgMCAwLTguNDExYTQuMjA2IDQuMjA2IDAgMCAwIDAgOC40MTFtMTEuMTQ4LjA3N2E0LjI0NCA0LjI0NCAwIDEgMCAwLTguNDg5YTQuMjQ0IDQuMjQ0IDAgMCAwIDAgOC40OSIvPjxwYXRoIGZpbGw9IiM0MDJBMzIiIGQ9Ik0xMSAxNWEzIDMgMCAxIDAgMC02YTMgMyAwIDAgMCAwIDZtMTAgMGEzIDMgMCAxIDAgMC02YTMgMyAwIDAgMCAwIDYiLz48cGF0aCBmaWxsPSIjQkIxRDgwIiBkPSJNMTUuOTk5IDI2Yy03IDAtNy03LTctN2gxNHMwIDctNyA3Ii8+PHBhdGggZmlsbD0iI0Y3MEE4RCIgZD0iTTE2LjAxNiAyOWM0LjIgMCA0Ljg3LTQuMiA1LTUuMjVjLjEtLjg1LS4zNS0xLjI4LS44NC0xLjU3cy0xLjk2LS41Ni00LjE2LS41NnMtMy42Ni4yNy00LjE2LjU2cy0uOTUuNzItLjg0IDEuNTdjLjEzIDEuMDUuOCA1LjI1IDUgNS4yNSIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yMi44NTkgMjAuNDNjLjA5LS40Ni4xNC0uOTQuMTQtMS40M2gtMTRjMCAuNDkuMDUuOTYuMTQgMS40M3oiLz48L2c+PC9zdmc+" alt="혀를 내민 얼굴 일러스트"><div><h3>혀를 내민 사진 이야기</h3><p>아인슈타인이 혀를 쏙 내민 사진을 본 적 있나요?</p><p>이 사진은 1951년 3월 14일, 아인슈타인의 72번째 생일에 찍혔어요.</p><p>사진기자들이 저녁 내내 아인슈타인에게 포즈를 부탁했어요.</p><p>아인슈타인은 차에 탄 뒤 장난스럽게 혀를 내밀었어요.</p><p>이 사진을 찍은 사람은 아서 사스예요.</p><p class="note">이 그림은 실제 사진이 아니라 일러스트예요.</p></div></article>
     <h3>아인슈타인의 삶</h3>
-    <ol class="timeline"><li><b>1879년</b><span>아인슈타인이 독일 울름에서 태어났어요.</span></li><li><b>4~6세 무렵</b><span>아버지가 아인슈타인에게 나침반을 주었어요.</span></li><li><b>6세 무렵</b><span>아인슈타인이 어머니의 권유로 바이올린을 시작했어요.</span></li><li><b>13세 무렵</b><span>아인슈타인이 모차르트의 곡을 만나 음악을 좋아하게 되었어요.</span></li><li><b>16세 무렵</b><span>아인슈타인이 취리히 공과대학 입학시험에 떨어졌어요.</span></li><li><b>1905년</b><span>아인슈타인이 특허청에서 일하며 중요한 논문들을 발표했어요.</span></li><li><b>1915년</b><span>아인슈타인이 일반상대성이론을 완성했어요.</span></li><li><b>1919년</b><span>일식 관측 결과가 발표되어 아인슈타인이 세계적으로 유명해졌어요.</span></li><li><b>1921년</b><span>아인슈타인이 노벨 물리학상 수상자가 되었어요.</span></li><li><b>1933년</b><span>아인슈타인이 미국으로 건너갔어요.</span></li><li><b>1951년</b><span>아인슈타인이 혀를 내민 사진이 찍혔어요.</span></li><li><b>1955년</b><span>아인슈타인이 미국 프린스턴에서 세상을 떠났어요.</span></li></ol>
+    <ol class="timeline" id="years"><li><b>1879년</b><span>아인슈타인이 독일 울름에서 태어났어요.</span></li><li><b>4~6세 무렵</b><span>아버지가 아인슈타인에게 나침반을 주었어요.</span></li><li class="extra"><b>6세 무렵</b><span>아인슈타인이 어머니의 권유로 바이올린을 시작했어요.</span></li><li class="extra"><b>13세 무렵</b><span>아인슈타인이 모차르트의 곡을 만나 음악을 좋아하게 되었어요.</span></li><li><b>16세 무렵</b><span>아인슈타인이 취리히 공과대학 입학시험에 떨어졌어요.</span></li><li><b>1905년</b><span>아인슈타인이 특허청에서 일하며 중요한 논문들을 발표했어요.</span></li><li class="extra"><b>1915년</b><span>아인슈타인이 일반상대성이론을 완성했어요.</span></li><li><b>1919년</b><span>일식 관측 결과가 발표되어 아인슈타인이 세계적으로 유명해졌어요.</span></li><li><b>1921년</b><span>아인슈타인이 노벨 물리학상 수상자가 되었어요.</span></li><li class="extra"><b>1933년</b><span>아인슈타인이 미국으로 건너갔어요.</span></li><li class="extra"><b>1951년</b><span>아인슈타인이 혀를 내민 사진이 찍혔어요.</span></li><li><b>1955년</b><span>아인슈타인이 미국 프린스턴에서 세상을 떠났어요.</span></li></ol>
+    <button class="next left" type="button" id="allYears" aria-expanded="false">삶 이야기 전부 보기</button>
     <p class="note">어릴 때의 나이는 자료마다 조금씩 달라요.</p>
   </section>
 
@@ -247,7 +270,7 @@ summary:focus-visible, .jump button:focus-visible { outline: 3px solid #2563eb; 
 <div class="inner story">
   <section id="sec-famous" class="part">
     <h2>세계적인 과학자가 되다</h2>
-    <div class="infos two">
+    <div class="infos">
       <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRkY4MjJEIiBkPSJNMTMuNjM4IDMuMjAyYTIuOTM2IDIuOTM2IDAgMCAxIDQuNzI0IDBhMi45NCAyLjk0IDAgMCAwIDMuMjUgMS4wNTVhMi45MzYgMi45MzYgMCAwIDEgMy44MjIgMi43NzhhMi45NCAyLjk0IDAgMCAwIDIuMDA4IDIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxIDEuNDYgNC40OTRhMi45NCAyLjk0IDAgMCAwIDAgMy40MTZhMi45MzYgMi45MzYgMCAwIDEtMS40NiA0LjQ5NGEyLjk0IDIuOTQgMCAwIDAtMi4wMDggMi43NjNhMi45MzYgMi45MzYgMCAwIDEtMy44MjMgMi43NzhhMi45NCAyLjk0IDAgMCAwLTMuMjQ5IDEuMDU1YTIuOTM2IDIuOTM2IDAgMCAxLTQuNzI0IDBhMi45NCAyLjk0IDAgMCAwLTMuMjUtMS4wNTVhMi45MzYgMi45MzYgMCAwIDEtMy44MjItMi43NzhhMi45NCAyLjk0IDAgMCAwLTIuMDA4LTIuNzYzYTIuOTM2IDIuOTM2IDAgMCAxLTEuNDYtNC40OTRhMi45NCAyLjk0IDAgMCAwIDAtMy40MTZhMi45MzYgMi45MzYgMCAwIDEgMS40Ni00LjQ5NGEyLjk0IDIuOTQgMCAwIDAgMi4wMDgtMi43NjNhMi45MzYgMi45MzYgMCAwIDEgMy44MjMtMi43NzhhMi45NCAyLjk0IDAgMCAwIDMuMjQ5LTEuMDU1Ii8+PHBhdGggZmlsbD0iI0ZDRDUzRiIgZD0iTTI1LjA2MiAyMS4yMzJjLTIuODkgNS4wMDUtOS4yOSA2LjcyLTE0LjI5NCAzLjgzcy02LjcyLTkuMjktMy44My0xNC4yOTRzOS4yOS02LjcyIDE0LjI5NC0zLjgzczYuNzIgOS4yOSAzLjgzIDE0LjI5NCIvPjwvZz48L3N2Zz4=" alt=""><h3>1919년 일식 관측</h3><p>아인슈타인은 태양 옆을 지나는 별빛이 살짝 휜다고 예측했어요.</p><p>낮에는 햇빛이 너무 밝아서 태양 근처의 별을 볼 수 없어요.</p><p>그래서 과학자들은 달이 태양을 가리는 일식을 기다렸어요.</p><p>1919년 5월 29일, 영국 과학자들이 아프리카 근처의 프린시페섬과 브라질 소브라우에서 사진을 찍었어요.</p><p>관측 결과는 아인슈타인의 예측을 뒷받침했어요.</p><p>아인슈타인은 곧 세계에서 가장 유명한 과학자가 되었어요.</p></article>
       <article class="info"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjRDM4ODNFIiBkPSJNMTAuNTIgNy41MjFhMy40MzUgMy40MzUgMCAwIDAtNC4yMTMtMi4zNjlhMiAyIDAgMCAwLS4xNjMuMDQ2Yy0yLjQ5My44MzEtMi42OTEgNC4yMTQtLjQ1NSA1LjQ1bDQuOTcgMi43NWEuODY2Ljg2NiAwIDEgMCAuODM4LTEuNTE2bC00Ljk3LTIuNzVjLS45ODItLjU0My0uODIzLTEuOTU2LjE2LTIuMjg4bC4wMDUtLjAwMmwuMDctLjAxOGMuODk5LS4yNSAxLjgzNC4yNyAyLjA5MyAxLjE3NWEuODY2Ljg2NiAwIDEgMCAxLjY2Ni0uNDc4bTExLjkzOS40NzhhMS43IDEuNyAwIDAgMSAyLjExOC0xLjE2OGwuMDQ1LjAxMWwuMDA3LjAwMmMuOTgxLjMzMiAxLjE0IDEuNzQ1LjE1OCAyLjI4OGwtNC45NyAyLjc1YS44NjYuODY2IDAgMSAwIC44NCAxLjUxNmw0Ljk3LTIuNzVjMi4yMzUtMS4yMzYgMi4wMzctNC42MTktLjQ1Ni01LjQ1YTIgMiAwIDAgMC0uMTY0LS4wNDZhMy40MzUgMy40MzUgMCAwIDAtNC4yMTMgMi4zN2EuODY2Ljg2NiAwIDEgMCAxLjY2Ni40NzdtLTUuMTMzIDkuNTExdi00LjIyaC0zLjM0djQuMjJjMCAuNzQtLjMzIDEuNDUtLjkgMS45MmwtMS45MiAxLjZoOC45OGwtMS45Mi0xLjZhMi41MSAyLjUxIDAgMCAxLS45LTEuOTIiLz48cGF0aCBmaWxsPSIjRkZCMDJFIiBkPSJNMTUuNjU4IDE2LjU0YTYuOTcgNi45NyAwIDAgMS02Ljk3LTYuOTdWMi43MWMwLS4zOS4zMi0uNzEuNzEtLjcxaDEyLjUzYy4zOSAwIC43MS4zMi43MS43MXY2Ljg2YzAgMy44NS0zLjEyIDYuOTctNi45OCA2Ljk3Ii8+PHBhdGggZmlsbD0iIzZENDUzNCIgZD0iTTIyLjc5MiAyMS4wM0g4LjE5N2MtLjc3IDAtMS40MjMuNTEtMS41NzEgMS4yMmwtMS42MTQgNy4wOWMtLjA3My4zMy4xOS42NC41NDkuNjRoMTkuODc4Yy4zNTkgMCAuNjIyLS4zMS41NDktLjY0bC0xLjYxNC03LjA5Yy0uMTU4LS43MS0uODEyLTEuMjItMS41ODItMS4yMiIvPjxwYXRoIGZpbGw9IiNGRkIwMkUiIGQ9Ik0xOC4zODMgMjMuOTZoLTUuNzY2YS42MjUuNjI1IDAgMCAwLS42MTMuNjR2MS44MWMwIC4zNS4yNjguNjQuNjEzLjY0aDUuNzY2Yy4zMzUgMCAuNjEzLS4yOC42MTMtLjY0VjI0LjZjMC0uMzUtLjI2OC0uNjQtLjYxMy0uNjQiLz48L2c+PC9zdmc+" alt=""><h3>1921년 노벨 물리학상</h3><p>아인슈타인은 1921년 노벨 물리학상을 받았어요.</p><p>수상 이유는 유명한 상대성이론이 아니에요.</p><p>수상 이유는 이론물리학에 기여한 공로와, 특히 광전효과 법칙의 발견이에요.</p></article>
     </div>
@@ -295,6 +318,8 @@ const IDEAS = [
 const state = { idea: "photo", method: "comic" };
 
 /* ---------- 그림 도구 ---------- */
+const more = (title, body) => `<details class="more"><summary>${title}</summary><div class="more-in">${body}</div></details>`;
+const mission = (steps) => `<div class="mission"><b>해 보기</b><ol>${steps.map(t => `<li>${t}</li>`).join("")}</ol></div>`;
 const INK = "#1b2340";
 const ic = (n, x, y, s, rot = 0, flip = false) => {
   const c = `<image href="${ICONS[n]}" x="${x}" y="${y}" width="${s}" height="${s}"/>`;
@@ -369,12 +394,12 @@ const COMPARE_TABLE = `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>�
   <tr><td>우주선 (상상)</td><td>빛의 속도의 90%</td><td>약 206일</td></tr>
   <tr><td>우주선 (상상)</td><td>빛의 속도의 99%</td><td>약 314일</td></tr>
 </tbody></table></div><p class="note">특수상대성이론의 식으로 계산한 값이고, 속도의 효과만 따졌어요. 빛의 속도는 시속 약 10억 8천만 km예요.</p>`;
-const NAME_TABLE = `<h3>두 이론은 무엇이 다를까요?</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th></th><th>특수상대성이론</th><th>일반상대성이론</th></tr></thead><tbody>
+const NAME_TABLE = more("두 이론은 무엇이 다를까요?", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th></th><th>특수상대성이론</th><th>일반상대성이론</th></tr></thead><tbody>
   <tr><td>발표</td><td>1905년</td><td>1915~1916년</td></tr>
   <tr><td>다루는 것</td><td>중력이 없고 일정하게 움직이는 경우</td><td>중력까지 포함한 더 넓은 경우</td></tr>
   <tr><td>이름의 뜻</td><td>"특수"는 범위가 좁은 특별한 경우라는 뜻이에요.</td><td>"일반"은 더 넓게 두루 적용된다는 뜻이에요.</td></tr>
   <tr><td>핵심 내용</td><td>빛의 속도는 같고, 시간과 길이가 달라져요.</td><td>무거운 천체가 공간과 시간을 휘게 해요.</td></tr>
-</tbody></table></div><p class="note">"상대성"은 시간과 길이를 재는 값이 누가 어떻게 움직이며 재는지에 따라 달라진다는 뜻이에요.</p>`;
+</tbody></table></div><p class="note">"상대성"은 시간과 길이를 재는 값이 누가 어떻게 움직이며 재는지에 따라 달라진다는 뜻이에요.</p>`);
 
 const RED = "#ef4444", BLUE = "#2563eb", GREEN = "#10b981";
 
@@ -453,11 +478,11 @@ const GUIDE = {
       ["전자가 나오려면 문턱을 넘어야 해요", ["전자가 금속 밖으로 나오려면 정해진 양 이상의 에너지가 필요해요.", "이 양을 문턱이라고 불러요.", "빛 알갱이 하나의 에너지가 문턱보다 작으면 전자는 나오지 않아요."]],
       ["밝기와 색은 하는 일이 달라요", ["전자는 빛을 받은 쪽 표면에서 튀어나와요.", "빛이 밝아지면 빛 알갱이가 많아져서 튀어나오는 전자의 수가 늘어요.", "빛이 파란색 쪽으로 갈수록 전자가 더 빠르게 나와요."]]
     ],
-    cases: `<h3>빛의 떨림과 에너지</h3><div class="lines"><p>빛은 아주 빠르게 떨리면서 나아가요.</p><p>빛이 빠르게 떨릴수록 빛 알갱이 하나의 에너지가 커요.</p><p>빛의 밝기는 떨리는 빠르기가 아니라 빛 알갱이의 수와 관련이 있어요.</p></div><div class="stats"><div class="stat"><span>빨간빛이 1초에 떨리는 횟수</span><b>약 460조 번</b></div><div class="stat"><span>파란빛이 1초에 떨리는 횟수</span><b>약 670조 번</b></div><div class="stat"><span>더 큰 에너지를 가진 알갱이</span><b>파란빛</b></div></div><p class="note">떨림 자체가 에너지는 아니에요. 흡수된 에너지가 열이 되면 금속의 원자가 더 활발하게 떨리는데, 이 떨림은 빛의 떨림과 다른 현상이에요.</p><h3>빛 알갱이가 금속판에 닿으면 어떻게 될까요?</h3><div class="cases">
+    cases: more("빛의 떨림과 에너지", `<div class="lines"><p>빛은 아주 빠르게 떨리면서 나아가요.</p><p>빛이 빠르게 떨릴수록 빛 알갱이 하나의 에너지가 커요.</p><p>빛의 밝기는 떨리는 빠르기가 아니라 빛 알갱이의 수와 관련이 있어요.</p></div><div class="stats"><div class="stat"><span>빨간빛이 1초에 떨리는 횟수</span><b>약 460조 번</b></div><div class="stat"><span>파란빛이 1초에 떨리는 횟수</span><b>약 670조 번</b></div><div class="stat"><span>더 큰 에너지를 가진 알갱이</span><b>파란빛</b></div></div><p class="note">떨림 자체가 에너지는 아니에요. 흡수된 에너지가 열이 되면 금속의 원자가 더 활발하게 떨리는데, 이 떨림은 빛의 떨림과 다른 현상이에요.</p>`) + more("빛 알갱이가 금속판에 닿으면 어떻게 될까요?", `<div class="cases">
       <div class="case">${svg(160, 90, "빛 알갱이가 금속판에서 튕겨 나가는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(122, 8, 14, 74) + `<path d="M20 18 L118 45" stroke="${RED}" stroke-width="3"/><path d="M118 45 L20 72" stroke="${RED}" stroke-width="3" stroke-dasharray="5 5"/>` + photon(20, 18, 7, RED) + photon(20, 72, 7, RED))}<b>튕겨 나가요</b><p>빛 알갱이가 금속 표면에서 반사돼요. 그래서 금속이 반짝여 보여요.</p></div>
       <div class="case">${svg(160, 90, "빛 알갱이가 흡수되어 금속판이 따뜻해지는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(100, 8, 14, 74) + `<rect x="100" y="8" width="14" height="74" rx="5" fill="#f97316" opacity=".75"/><path d="M20 45 L96 45" stroke="${RED}" stroke-width="3"/><path d="M126 60 q7 -7 0 -14 q-7 -7 0 -14M142 66 q7 -7 0 -14 q-7 -7 0 -14" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>` + photon(20, 45, 7, RED))}<b>흡수되어 열이 돼요</b><p>금속 안의 전자가 빛 알갱이의 에너지를 받아요.</p><p>전자는 문턱을 넘지 못해서 금속 안에 남아요.</p><p>전자가 금속의 원자에 에너지를 나눠 줘요.</p><p>원자가 더 활발하게 떨리면서 금속판이 아주 조금 따뜻해져요.</p></div>
       <div class="case">${svg(160, 90, "에너지가 충분한 빛 알갱이가 흡수되어 전자가 튀어나오는 그림", `<rect width="160" height="90" fill="#fff8ec"/>` + metal(122, 8, 14, 74) + `<path d="M20 62 L118 62" stroke="${BLUE}" stroke-width="3"/><path d="M118 42 L70 22" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` + photon(20, 62, 8, BLUE) + elec(60, 18, 9))}<b>전자가 튀어나와요</b><p>금속 안의 전자가 빛 알갱이의 에너지를 받아요.</p><p>에너지가 문턱보다 크면 전자가 금속 밖으로 튀어나올 수 있어요.</p></div>
-    </div><p class="note">금속에서 튀어나오는 것은 전자이고, 금속 표면에서 튕겨 나가는 것은 빛 알갱이예요.</p>`,
+    </div><p class="note">금속에서 튀어나오는 것은 전자이고, 금속 표면에서 튕겨 나가는 것은 빛 알갱이예요.</p>`),
     life: { icon: "camera", text: ["디지털카메라의 센서와 태양전지에서도 빛 알갱이가 전자를 움직여요."] },
     note: "그림은 나트륨처럼 초록빛부터 전자가 나오는 금속을 예로 들었어요. 금속마다 문턱은 달라요."
   },
@@ -469,8 +494,8 @@ const GUIDE = {
       ["움직이는 시계의 빛은 더 먼 길을 가요", ["빛 시계는 거울 두 장 사이를 빛이 오가며 시간을 재는 상상 속 시계예요.", "속도가 같은 빛이 더 먼 길을 가면 시간이 더 걸려요.", "그래서 움직이는 시계는 밖에서 재면 더 느리게 가요."]],
       ["물체의 길이도 달라져요", ["빠르게 움직이는 물체는 밖에서 재면 움직이는 방향으로 더 짧아져요.", "하지만 우주선 안의 사람에게는 모든 것이 평소와 같아요."]]
     ],
-    cases: `<h3>빠르기에 따라 시간이 얼마나 차이 날까요?</h3>${COMPARE_TABLE}${NAME_TABLE}`,
-    life: { icon: "satellite", text: ["GPS 위성은 아주 빠르게 움직여요.", "속도의 효과만 따지면 위성의 시계는 하루에 약 7마이크로초 느려져요.", "1마이크로초는 100만분의 1초예요."] }
+    cases: more("빠르기에 따라 시간이 얼마나 차이 날까요?", COMPARE_TABLE) + NAME_TABLE,
+    life: { icon: "satellite", text: ["GPS 위성은 아주 빠르게 움직여요.", "속도의 효과만 따지면 위성의 시계는 땅의 시계보다 아주 조금 느려져요."], more: ["속도의 효과만 따지면 위성의 시계는 하루에 약 7마이크로초 느려져요.", "1마이크로초는 100만분의 1초예요."] }
   },
   energy: {
     title: "E = mc²을 하나씩 뜯어 볼까요?",
@@ -483,10 +508,8 @@ const GUIDE = {
       ["그래서 작은 질량도 큰 에너지와 맞먹어요", ["질량이 아주 작아도 이 큰 수를 곱하면 에너지가 엄청나게 커져요."]],
       ["질량을 전부 바꾸기는 어려워요", ["보통은 물질의 아주 작은 일부만 에너지로 바뀌어요.", "원자력 발전에서 우라늄이 쪼개질 때도 약 0.1%의 질량만 에너지로 바뀌어요."]]
     ],
-    cases: `<h3>질량이 빛으로 쪼개지는 건가요?</h3><div class="lines"><p>아니에요. 질량이 그대로 빛으로 쪼개지는 것은 아니에요.</p><p>원자핵이 합쳐지거나 쪼개지면 결과물이 처음보다 조금 가벼워져요.</p><p>줄어든 질량만큼 에너지가 빛과 열로 나와요.</p></div>
-    <h3>왜 빛의 속도가 식에 들어 있나요?</h3><div class="lines"><p>빛이 에너지 변환에 쓰이는 것은 아니에요.</p><p>c는 우주에서 정해진 빠르기이고, c²은 질량을 에너지로 바꿔 계산해 주는 수예요.</p><p>돈을 바꿀 때 쓰는 환율과 비슷해요. (이해를 돕는 비유예요.)</p></div>
-    <h3>핵융합이 무엇인가요?</h3>${svg(320, 150, "수소 원자핵 네 개가 합쳐져 헬륨 원자핵이 되는 움직이는 그림", bg(320, 150, "gNight") + stars(320, 150) + [[50, 34], [270, 34], [50, 116], [270, 116]].map(c => `<circle r="11" fill="#7fd0ff"><animate attributeName="cx" values="${c[0]};160;160" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="cy" values="${c[1]};75;75" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>`).join("") + `<circle cx="160" cy="75" r="18" fill="#ffd166" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>` + afterFusion(txt(160, 80, "헬륨", 13)) + txt(50, 62, "수소", 12, "#7fd0ff") + txt(270, 62, "수소", 12, "#7fd0ff"))}
-    <div class="lines"><p>핵융합은 가벼운 원자핵들이 합쳐져 더 무거운 원자핵이 되는 현상이에요.</p><p>태양의 중심은 1,500만 도가 넘어서 수소 원자핵들이 합쳐질 수 있어요.</p><p>수소 원자핵 4개가 헬륨 원자핵 1개가 되면 질량이 약 0.7% 줄어들어요.</p></div>`,
+    cases: more("질량이 빛으로 쪼개지는 건가요?", `<div class="lines"><p>아니에요. 질량이 그대로 빛으로 쪼개지는 것은 아니에요.</p><p>원자핵이 합쳐지거나 쪼개지면 결과물이 처음보다 조금 가벼워져요.</p><p>줄어든 질량만큼 에너지가 빛과 열로 나와요.</p></div>`) + more("왜 빛의 속도가 식에 들어 있나요?", `<div class="lines"><p>빛이 에너지 변환에 쓰이는 것은 아니에요.</p><p>c는 우주에서 정해진 빠르기이고, c²은 질량을 에너지로 바꿔 계산해 주는 수예요.</p><p>돈을 바꿀 때 쓰는 환율과 비슷해요. (이해를 돕는 비유예요.)</p></div>`) + more("핵융합이 무엇인가요?", `${svg(320, 150, "수소 원자핵 네 개가 합쳐져 헬륨 원자핵이 되는 움직이는 그림", bg(320, 150, "gNight") + stars(320, 150) + [[50, 34], [270, 34], [50, 116], [270, 116]].map(c => `<circle r="11" fill="#7fd0ff"><animate attributeName="cx" values="${c[0]};160;160" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="cy" values="${c[1]};75;75" keyTimes="0;.45;1" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>`).join("") + `<circle cx="160" cy="75" r="18" fill="#ffd166" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.44;.46;1" dur="4s" repeatCount="indefinite"/></circle>` + afterFusion(txt(160, 80, "헬륨", 13)) + txt(50, 62, "수소", 12, "#7fd0ff") + txt(270, 62, "수소", 12, "#7fd0ff"))}
+    <div class="lines"><p>핵융합은 가벼운 원자핵들이 합쳐져 더 무거운 원자핵이 되는 현상이에요.</p><p>태양의 중심은 1,500만 도가 넘어서 수소 원자핵들이 합쳐질 수 있어요.</p><p>수소 원자핵 4개가 헬륨 원자핵 1개가 되면 질량이 약 0.7% 줄어들어요.</p></div>`),
     life: { icon: "sun", text: ["태양은 1초에 수소 약 6억 톤을 헬륨으로 바꿔요.", "이때 약 400만 톤의 질량이 줄어들고, 그만큼이 빛과 열의 에너지가 돼요."] },
     note: "kWh는 전기의 양을 재는 단위예요. 집 한 채는 한 달에 전기 300kWh를 쓴다고 어림했어요."
   },
@@ -498,8 +521,8 @@ const GUIDE = {
       ["빛도 휘어진 길을 따라가요", ["별빛은 태양 바로 옆을 지날 때 약 0.0005도 휘어요.", "아인슈타인은 1915년에 완성한 이론으로 이 값을 계산했어요."]],
       ["일식 때 별의 자리를 재 보았어요", ["일식은 달이 태양을 가리는 현상이에요. 지구가 가리는 것이 아니에요.", "일식 때는 하늘이 어두워져서 태양 근처의 별이 보여요.", "과학자들은 1919년 일식 때 별 사진을 찍어 별의 자리를 비교했어요."]]
     ],
-    cases: `<h3>GPS 위성과 땅의 시간은 왜 다를까요?</h3>${svg(480, 255, "지구에서 멀어질수록 중력이 약해지고 위성의 시계가 땅의 시계보다 빠르게 가는 움직이는 그림", gpsScene())}<div class="lines"><p>높은 곳에서는 중력이 더 커지는 것이 아니라 더 약해져요.</p><p>중력이 약한 곳일수록 시간이 조금 더 빠르게 흘러요.</p><p>GPS 위성은 약 2만 km 높이에 있어서 땅보다 중력이 약해요.</p></div>${NAME_TABLE}`,
-    life: { icon: "mobile-phone", text: ["중력의 효과만 따지면 위성의 시계는 하루에 약 45마이크로초 빨라져요.", "속도의 효과까지 합치면 위성의 시계는 하루에 약 38마이크로초 빨라요.", "이 차이를 그대로 두면 위치가 하루에 약 11km나 틀어질 수 있어요. 그래서 GPS는 이 차이를 바로잡아요."] }
+    cases: more("GPS 위성과 땅의 시간은 왜 다를까요?", `${svg(480, 255, "지구에서 멀어질수록 중력이 약해지고 위성의 시계가 땅의 시계보다 빠르게 가는 움직이는 그림", gpsScene())}<div class="lines"><p>높은 곳에서는 중력이 더 커지는 것이 아니라 더 약해져요.</p><p>중력이 약한 곳일수록 시간이 조금 더 빠르게 흘러요.</p><p>GPS 위성은 약 2만 km 높이에 있어서 땅보다 중력이 약해요.</p></div>`) + NAME_TABLE,
+    life: { icon: "mobile-phone", text: ["GPS 위성의 시계는 땅의 시계보다 아주 조금 빠르게 가요.", "이 차이를 그대로 두면 위치가 하루에 약 11km나 틀어질 수 있어요.", "그래서 GPS는 이 차이를 바로잡아요."], more: ["중력의 효과만 따지면 위성의 시계는 하루에 약 45마이크로초 빨라져요.", "속도의 효과까지 합치면 위성의 시계는 하루에 약 38마이크로초 빨라요.", "1마이크로초는 100만분의 1초예요."] }
   }
 };
 TS = 1;
@@ -583,7 +606,7 @@ function renderComic() {
 }
 function renderGuide() {
   const g = GUIDE[state.idea];
-  $("#stage").innerHTML = `<div class="sheet"><h3>${g.title}</h3>${g.art}<ol class="steps">${g.steps.map(s => `<li><b>${s[0]}</b>${paras(s[1])}</li>`).join("")}</ol>${g.cases || ""}<div class="life">${icon(g.life.icon)}<div><b>우리 생활에서</b>${paras(g.life.text)}</div></div>${g.note ? `<p class="note">${g.note}</p>` : ""}</div>` + nextButton();
+  $("#stage").innerHTML = `<div class="sheet"><h3>${g.title}</h3>${g.art}<ol class="steps">${g.steps.map(s => `<li><b>${s[0]}</b>${paras(s[1])}</li>`).join("")}</ol>${g.cases || ""}<div class="life">${icon(g.life.icon)}<div><b>우리 생활에서</b>${paras(g.life.text)}${g.life.more ? more("숫자로 보기", paras(g.life.more)) : ""}</div></div>${g.note ? more("그림 설명 더 보기", `<p class="note">${g.note}</p>`) : ""}</div>` + nextButton();
 }
 function renderQuiz() {
   const list = QUIZ[state.idea];
@@ -617,17 +640,17 @@ const THRESHOLD = 2.3;
 
 function labPhoto() {
   $("#stage").innerHTML = `<div class="sheet">
-    <p class="mission"><b>해 보기</b>먼저 밝기를 올려 보세요. 전자가 나오지 않으면 빛의 색 막대를 오른쪽의 파란색 쪽으로 옮겨 보세요. 전자가 나오면 밝기를 바꿔서 전자의 수를 비교해 보세요.</p>
+    ${mission(["먼저 밝기를 올려 보세요.", "전자가 나오지 않으면 빛의 색 막대를 오른쪽의 파란색 쪽으로 옮겨 보세요.", "전자가 나오면 밝기를 바꿔서 전자의 수를 비교해 보세요."])}
     <canvas id="c1" aria-label="빛 알갱이가 금속판에 부딪혀 전자가 튀어나오는 실험"></canvas>
     <canvas id="c1h" aria-label="전자가 문턱을 뛰어넘으려는 모습"></canvas>
     <div class="controls">
       <div class="control"><label for="wl">빛의 색<output id="wlOut"></output></label><input id="wl" type="range" min="400" max="700" value="450"><div class="ends"><span>빨간색: 에너지가 작아요</span><span>보라색: 에너지가 커요</span></div></div>
       <div class="control"><label for="br">빛의 밝기<output id="brOut"></output></label><input id="br" type="range" min="10" max="100" value="80"></div>
     </div>
-    <div class="stats"><div class="stat"><span>빛 알갱이 하나의 에너지</span><b id="sE"></b></div><div class="stat"><span>전자가 나오는 문턱</span><b>약 ${THRESHOLD}eV</b></div><div class="stat"><span>튀어나오는 전자의 양</span><b id="sN"></b></div></div>
-    <p id="vib"></p>
     <p class="result" id="res"></p>
-    <p class="note">문턱은 전자가 금속 밖으로 나오는 데 필요한 에너지예요. 광택이 있는 금속은 눈에 보이는 빛을 많이 반사해요. 그래서 빛 알갱이가 많이 튕겨 나가게 그렸어요. 실제 비율은 금속과 빛의 색에 따라 달라요. 금속판의 주황색은 따뜻해지는 것을 보여 주려고 과장한 색이에요. 이 실험은 나트륨 금속을 예로 들었어요. eV(전자볼트)는 아주 작은 에너지를 재는 단위예요. 알갱이의 크기와 움직임은 보기 쉽게 그렸어요.</p></div>` + nextButton();
+    <p>문턱은 전자가 금속 밖으로 나오는 데 필요한 에너지예요.</p>
+    ${more("숫자로 보기", `<div class="stats"><div class="stat"><span>빛 알갱이 하나의 에너지</span><b id="sE"></b></div><div class="stat"><span>전자가 나오는 문턱</span><b>약 ${THRESHOLD}eV</b></div><div class="stat"><span>튀어나오는 전자의 양</span><b id="sN"></b></div></div><p id="vib"></p>`)}
+    ${more("더 알아보기", `<p class="note">광택이 있는 금속은 눈에 보이는 빛을 많이 반사해요. 그래서 빛 알갱이가 많이 튕겨 나가게 그렸어요. 실제 비율은 금속과 빛의 색에 따라 달라요. 금속판의 주황색은 따뜻해지는 것을 보여 주려고 과장한 색이에요. 이 실험은 나트륨 금속을 예로 들었어요. eV(전자볼트)는 아주 작은 에너지를 재는 단위예요. 알갱이의 크기와 움직임은 보기 쉽게 그렸어요.</p>`)}</div>` + nextButton();
   const ctx = setupCanvas("#c1", 640, 300), hctx = setupCanvas("#c1h", 640, 130);
   let hop = 0;
   let photons = [], electrons = [], bounced = [], heat = 0, count = 0;
@@ -704,12 +727,12 @@ function labPhoto() {
 
 function labSpecial() {
   $("#stage").innerHTML = `<div class="sheet">
-    <p class="mission"><b>해 보기</b>우주선의 속도를 바꿔 보세요. 두 시계에서 빛이 거울 사이를 오가는 횟수를 비교해 보세요.</p>
+    ${mission(["우주선의 속도를 바꿔 보세요.", "두 시계에서 빛이 거울 사이를 오가는 횟수를 비교해 보세요."])}
     <canvas id="c2" aria-label="멈춘 빛 시계와 움직이는 빛 시계를 비교하는 실험"></canvas>
     <div class="control"><label for="v">우주선의 속도<output id="vOut"></output></label><input id="v" type="range" min="0" max="99.5" step="0.5" value="90"></div>
     <div class="stats"><div class="stat"><span>우주선의 시계가 느려지는 정도</span><b id="sG"></b></div><div class="stat"><span>지구에서 10년이 지날 때 우주선 시계의 시간</span><b id="sY"></b></div><div class="stat"><span>멈춰 있을 때 100m인 우주선의 길이</span><b id="sL"></b></div></div>
     <p class="result" id="res"></p>
-    <h3>실제 물체는 얼마나 차이 날까요?</h3>${COMPARE_TABLE}
+    ${more("실제 물체는 얼마나 차이 날까요?", COMPARE_TABLE)}
     <p class="note">모든 값은 지구에서 잰 값이에요. 우주선은 일정한 속도로 날고 있다고 생각했어요.</p></div>` + nextButton();
   const ctx = setupCanvas("#c2", 640, 300);
   const v = $("#v");
@@ -761,13 +784,13 @@ const koNum = (n) => {
 function labEnergy() {
   const things = [["쌀 한 톨", .02, "sheaf-of-rice"], ["종이 클립", 1, "paperclip"], ["100원 동전", 5.42, "coin"], ["사과 한 개", 200, "red-apple"]];
   $("#stage").innerHTML = `<div class="sheet">
-    <p class="mission"><b>해 보기</b>물건을 고르거나 막대를 움직여서 질량을 바꿔 보세요. 그 질량 전부와 맞먹는 전기의 양을 알 수 있어요.</p>
+    ${mission(["물건을 고르거나 막대를 움직여서 질량을 바꿔 보세요.", "그 질량 전부와 맞먹는 전기의 양을 집 그림으로 볼 수 있어요."])}
     <div class="things" id="things">${things.map(t => `<button class="thing" type="button" data-g="${t[1]}">${icon(t[2])}${t[0]} (${t[1]}g)</button>`).join("")}</div>
     <div class="control"><label for="m">질량<output id="mOut"></output></label><input id="m" type="range" min="-2" max="3" step="0.01" value="0"></div>
     <p id="houseCap" class="result"></p><div id="houses"></div>
-    <div class="stats"><div class="stat"><span>질량 전부와 맞먹는 전기</span><b id="sK"></b></div><div class="stat"><span>집 한 채가 그 전기를 쓸 수 있는 기간</span><b id="sH"></b></div><div class="stat"><span>계산에 쓴 식</span><b>E = mc²</b></div></div>
     <p class="result">질량이 작아도 빛의 속도를 두 번 곱하기 때문에 에너지가 아주 커져요.</p>
-    <p class="note">집 한 채는 한 달에 전기 300kWh를 쓴다고 어림했고, 물건의 무게도 대략적인 값이에요. 사람은 아직 물건의 질량 전부를 전기로 바꾸지 못해요.</p></div>` + nextButton();
+    ${more("숫자로 보기", `<div class="stats"><div class="stat"><span>질량 전부와 맞먹는 전기</span><b id="sK"></b></div><div class="stat"><span>집 한 채가 그 전기를 쓸 수 있는 기간</span><b id="sH"></b></div><div class="stat"><span>계산에 쓴 식</span><b>E = mc²</b></div></div>`)}
+    ${more("더 알아보기", `<p class="note">집 한 채는 한 달에 전기 300kWh를 쓴다고 어림했고, 물건의 무게도 대략적인 값이에요. 사람은 아직 물건의 질량 전부를 전기로 바꾸지 못해요.</p>`)}</div>` + nextButton();
   const m = $("#m");
   function show(g) {
     const kWh = g * 2.5e7, years = kWh / 3600;
@@ -786,14 +809,14 @@ function labEnergy() {
 
 function labGeneral() {
   $("#stage").innerHTML = `<div class="sheet">
-    <p class="mission"><b>해 보기</b>별의 질량을 늘려 보세요. 그다음 빛이 별 가까이 지나가게 바꿔 보세요. 흰 선이 빛의 길이에요.</p>
+    ${mission(["별의 질량을 늘려 보세요.", "그다음 빛이 별 가까이 지나가게 바꿔 보세요.", "흰 선이 빛의 길이에요. 어떻게 휘는지 보세요."])}
     <canvas id="c4" aria-label="별 주변의 격자가 완만하게 휘고 빛의 길이 휘는 모습"></canvas>
     <div class="controls">
       <div class="control"><label for="mass">별의 질량<output id="massOut"></output></label><input id="mass" type="range" min="0" max="100" value="70"></div>
       <div class="control"><label for="gap">별과 빛 사이의 거리<output id="gapOut"></output></label><input id="gap" type="range" min="60" max="170" value="100"></div>
     </div>
     <p class="result" id="res"></p>
-    <p class="note">휘는 정도를 아주 크게 그렸어요. 공간의 휘어짐은 별에서 멀어질수록 서서히 약해져서 넓고 완만하게 그렸어요. 실제 공간은 평평한 천이 아니라 입체예요. 별빛은 태양 바로 옆을 지날 때도 약 0.0005도만 휘어요.</p></div>` + nextButton();
+    ${more("더 알아보기", `<p class="note">휘는 정도를 아주 크게 그렸어요. 공간의 휘어짐은 별에서 멀어질수록 서서히 약해져서 넓고 완만하게 그렸어요. 실제 공간은 평평한 천이 아니라 입체예요. 별빛은 태양 바로 옆을 지날 때도 약 0.0005도만 휘어요.</p>`)}</div>` + nextButton();
   const ctx = setupCanvas("#c4", 640, 340);
   const mass = $("#mass"), gap = $("#gap");
   const cx = 320, cy = 225, wide = 125;
@@ -886,9 +909,21 @@ document.querySelector(".jump").addEventListener("click", e => {
   const b = e.target.closest("[data-go]");
   if (b) document.getElementById(b.dataset.go).scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
 });
+const jump = document.querySelector(".jump"), jumpIn = document.querySelector(".jump-in");
+const markJumpEnd = () => jump.classList.toggle("at-end", jumpIn.scrollLeft + jumpIn.clientWidth >= jumpIn.scrollWidth - 4);
+jumpIn.addEventListener("scroll", markJumpEnd, { passive: true });
+window.addEventListener("resize", markJumpEnd);
+markJumpEnd();
+document.getElementById("allYears").addEventListener("click", e => {
+  const all = document.getElementById("years").classList.toggle("all");
+  e.currentTarget.textContent = all ? "주요 이야기만 보기" : "삶 이야기 전부 보기";
+  e.currentTarget.setAttribute("aria-expanded", String(all));
+});
 let compassTurn = 0;
 document.getElementById("spin").addEventListener("click", () => {
   compassTurn += 90 + Math.floor(Math.random() * 180);
   document.getElementById("compassBody").style.transform = `rotate(${compassTurn}deg)`;
 });
 </script>
+</body>
+</html>
