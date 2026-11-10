@@ -67,7 +67,7 @@ function nightBg(ctx, w, h) {
 const textScale = ctx => Math.min(1.7, Math.max(1, 640 / (ctx.canvas.clientWidth || 640)));
 const label = (ctx, t, x, y, size = 15, c = "#fff", align = "center") => {
   ctx.fillStyle = c;
-  ctx.font = `${size * textScale(ctx)}px "Do Hyeon", sans-serif`;
+  ctx.font = `700 ${size * textScale(ctx)}px "Pretendard Variable", Pretendard, sans-serif`;
   ctx.textAlign = align;
   ctx.fillText(t, x, y);
 };

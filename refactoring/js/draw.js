@@ -13,7 +13,7 @@ const ic = (n, x, y, s, rot = 0, flip = false) => {
 };
 let TS = 1;
 const txt = (x, y, t, size = 14, fill = INK) =>
-  `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="'Do Hyeon', sans-serif">${t}</text>`;
+  `<text x="${x}" y="${y}" font-size="${size * TS}" fill="${fill}" text-anchor="middle" font-family="'Pretendard Variable', Pretendard, sans-serif" font-weight="700">${t}</text>`;
 const tag = (x, y, t, bg = "#ffffff", fill = INK, size = 13) => {
   const s = size * TS,
     w = [...t].length * s * 0.86 + 18;

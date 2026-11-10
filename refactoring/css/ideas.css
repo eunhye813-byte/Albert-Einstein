@@ -44,7 +44,7 @@
   height: 40px;
 }
 .idea b {
-  font: 400 1.12rem/1.25 var(--display);
+  font: var(--display-weight) 1.12rem/1.25 var(--display);
 }
 .idea[aria-pressed="true"] {
   background: var(--gold);
@@ -80,7 +80,7 @@ main.inner {
   gap: 8px;
 }
 .method {
-  font: 400 1.04rem/1.25 var(--display);
+  font: var(--display-weight) 1.04rem/1.25 var(--display);
   color: var(--ink);
   background: var(--sheet);
   border: 2px solid var(--line);
@@ -135,6 +135,7 @@ main.inner {
   justify-content: space-between;
   gap: 10px;
   font-family: var(--display);
+  font-weight: var(--display-weight);
 }
 .flip .retry:disabled {
   opacity: 0.4;
@@ -172,7 +173,7 @@ main.inner {
   min-width: 0;
 }
 .who {
-  font: 400 0.92rem/1.3 var(--display);
+  font: var(--display-weight) 0.92rem/1.3 var(--display);
   color: var(--accent);
   display: block;
   margin-bottom: 2px;
@@ -209,7 +210,7 @@ main.inner {
 }
 .mission b {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   color: var(--accent);
   display: block;
 }
@@ -232,6 +233,7 @@ main.inner {
 }
 .control label {
   font-family: var(--display);
+  font-weight: var(--display-weight);
 }
 .ends {
   display: flex;
@@ -331,7 +333,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .steps b {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   font-size: 1.08rem;
   display: block;
   margin-bottom: 4px;
@@ -359,7 +361,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .case b {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   font-size: 1.08rem;
 }
 .tbl-wrap {
@@ -380,7 +382,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .tbl th {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   background: var(--paper);
 }
 #houses {
@@ -411,7 +413,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .life b {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   color: var(--accent);
   display: block;
 }
@@ -470,7 +472,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .why b {
   font-family: var(--display);
-  font-weight: 400;
+  font-weight: var(--display-weight);
   color: var(--accent);
 }
 .score {
@@ -480,10 +482,11 @@ input[type="range"]::-moz-range-thumb {
   justify-content: space-between;
   gap: 10px;
   font-family: var(--display);
+  font-weight: var(--display-weight);
   font-size: 1.14rem;
 }
 .retry {
-  font: 400 1rem/1.3 var(--display);
+  font: var(--display-weight) 1rem/1.3 var(--display);
   color: var(--ink);
   background: var(--sheet);
   border: 2px solid var(--line);
