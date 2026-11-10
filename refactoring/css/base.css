@@ -1,0 +1,158 @@
+/* 공통: 색과 글꼴, 기본 글자, 가운데 한 단 레이아웃.
+   한 가지 그림책 같은 밝은 테마로 고정하고, 휴대폰과 PC 모두 폭 600px 안의 한 단으로 보여 준다. */
+:root {
+  color-scheme: light;
+  --night: #15204a;
+  --night2: #26357a;
+  --paper: #f5f7fc;
+  --sheet: #ffffff;
+  --ink: #1b2340;
+  --soft: #545e7d;
+  --line: #d9e0ef;
+  --gold: #ffd166;
+  --accent: #c2410c;
+  --tint: #fff1e6;
+  --display: "Do Hyeon", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 18px/1.75 var(--body);
+  word-break: keep-all;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0;
+  text-wrap: balance;
+}
+p {
+  margin: 0;
+}
+.inner {
+  max-width: 632px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+[hidden] {
+  display: none !important;
+}
+
+/* 공통 부품: 문단 묶음, 작은 설명, 다음 버튼, 숫자 카드 */
+.lines {
+  display: grid;
+  gap: 4px;
+}
+.note {
+  font-size: 0.92rem;
+  color: var(--soft);
+  line-height: 1.6;
+}
+.next {
+  justify-self: end;
+  font: 400 1.08rem/1.3 var(--display);
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 22px;
+  cursor: pointer;
+}
+.stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+.stat {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+.stat span {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--soft);
+}
+.stat b {
+  display: block;
+  font: 400 1.4rem/1.3 var(--display);
+  overflow-wrap: anywhere;
+  margin-top: 4px;
+}
+
+/* 더 알아보기 */
+.more {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 0 14px;
+  min-width: 0;
+}
+.more > summary {
+  font-family: var(--display);
+  font-size: 1.04rem;
+  line-height: 1.4;
+  padding: 11px 0;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+}
+.more > summary::-webkit-details-marker {
+  display: none;
+}
+.more > summary::before {
+  content: "+";
+  color: var(--accent);
+  flex: none;
+  width: 1em;
+  text-align: center;
+}
+.more[open] > summary::before {
+  content: "−";
+}
+.more-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding-bottom: 14px;
+}
+.more .stat,
+.more .case {
+  background: var(--sheet);
+}
+summary:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* 키보드 초점 */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+/* 바닥글 */
+footer {
+  color: var(--soft);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+footer a {
+  color: inherit;
+}

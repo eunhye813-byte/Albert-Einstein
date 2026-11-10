@@ -1,0 +1,31 @@
+/* 그림 이름 → 그림 파일 (Microsoft Fluent Emoji) */
+const ICONS = Object.fromEntries(
+  [
+    "man-white-hair-light",
+    "girl-light",
+    "open-book",
+    "test-tube",
+    "artist-palette",
+    "red-question-mark",
+    "light-bulb",
+    "rocket",
+    "high-voltage",
+    "ringed-planet",
+    "coin",
+    "bullet-train",
+    "baseball",
+    "alarm-clock",
+    "globe-showing-asia-australia",
+    "paperclip",
+    "house",
+    "sun",
+    "glowing-star",
+    "satellite",
+    "camera",
+    "mobile-phone",
+    "sheaf-of-rice",
+    "red-apple",
+  ].map(n => [n, `images/${n}.svg`]),
+);
+const EIN = "man-white-hair-light",
+  HANA = "girl-light";
